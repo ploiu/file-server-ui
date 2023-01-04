@@ -1,6 +1,7 @@
 package ploiu.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.HttpHeaders;
@@ -17,7 +18,7 @@ import java.net.http.HttpResponse;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
 public class FolderClient {
     private final HttpClient client;
     private final AuthenticationConfig authConfig;

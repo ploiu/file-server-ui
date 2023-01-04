@@ -1,20 +1,16 @@
 package ploiu;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ploiu.client.FolderClient;
-import ploiu.config.AuthenticationConfig;
-import ploiu.config.ServerConfig;
-
-import java.net.http.HttpClient;
+import com.google.inject.Guice;
+import ploiu.client.ApiClient;
+import ploiu.module.ConfigModule;
+import ploiu.module.HttpModule;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        var folderClient = setupFolderClient();
-        var folder = folderClient.getFolder(1L).get();
-        System.out.println(new ObjectMapper().writeValueAsString(folder));
+        var injector = Guice.createInjector(new ConfigModule(), new HttpModule());
+        var client = injector.getInstance(ApiClient.class);
+        System.out.println(new ObjectMapper().writeValueAsString(client.getApiInfo()));
     }
 
-    private static FolderClient setupFolderClient() {
-        return new FolderClient(HttpClient.newBuilder().build(), new AuthenticationConfig(), new ServerConfig());
-    }
 }

@@ -5,15 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/exception/ServerUnavailableException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/ApiInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/ConfigModule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/ApiClientTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/config/AuthenticationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/config/AuthenticationConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/config/ServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/config/ServerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FolderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +54,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="module-info" />
         <option value="Record" />
         <option value="Class" />
-        <option value="module-info" />
       </list>
     </option>
   </component>
@@ -71,6 +77,7 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -80,7 +87,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "settings.editor.selected.configurable": "preferences.rainbow.brackets",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -90,9 +97,10 @@
       <command value="gradle build" />
       <command value="gradlew googleJavaFormat" />
       <command value="gradlew build" />
+      <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.FileClientTests">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ploiu.Main" />
       <module name="file-server-ui.main" />
@@ -129,6 +137,29 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="FileClientTests.testGetFolderUsesCorrectPath" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FileClientTests.testGetFolderUsesCorrectPath&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="file-server-ui [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -150,7 +181,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="file-server-ui [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -161,7 +192,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="run" />
+            <option value="test" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -173,16 +204,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.FileClientTests.testGetFolderUsesCorrectPath" />
+      <item itemvalue="Gradle.file-server-ui [test]" />
       <item itemvalue="Gradle.FileClientTests" />
       <item itemvalue="Gradle.file-server-ui [build]" />
-      <item itemvalue="Gradle.file-server-ui [run]" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Gradle.FileClientTests.testGetFolderUsesCorrectPath" />
         <item itemvalue="Gradle.FileClientTests" />
         <item itemvalue="Gradle.file-server-ui [build]" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Gradle.file-server-ui [run]" />
       </list>
     </recent_temporary>
   </component>
@@ -194,11 +227,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672781624128</updated>
-      <workItem from="1672781625203" duration="8908000" />
+      <workItem from="1672781625203" duration="9427000" />
+      <workItem from="1672869424272" duration="3191000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
