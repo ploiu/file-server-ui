@@ -7,9 +7,17 @@ module file.server.ui.main {
     requires org.apache.httpcomponents.core5.httpcore5;
     requires org.slf4j;
     requires com.google.guice;
+    requires java.desktop;
+    requires javafx.fxml;
+    requires javafx.controls;
 
     opens ploiu.model to com.fasterxml.jackson.databind;
     opens ploiu.module to com.google.guice;
+    opens ploiu.ui to javafx.fxml;
+    opens ploiu to javafx.graphics;
+
+    exports ploiu.ui to javafx.fxml;
+    exports ploiu to javafx.graphics;
 
     exports ploiu.client;
     exports ploiu.config;

@@ -12,7 +12,6 @@ import ploiu.config.ServerConfig;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;

@@ -9,6 +9,7 @@ import org.apache.hc.core5.net.URIBuilder;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.model.FolderApi;
+import ploiu.model.FolderRequest;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -39,5 +40,17 @@ public class FolderClient {
             throw new RuntimeException(e);
         }
         return Optional.empty();
+    }
+
+    public FolderApi createFolder(FolderRequest request) {
+        throw new UnsupportedOperationException();
+    }
+
+    public FolderApi updateFolder(FolderRequest request) {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean deleteFolder(long id) {
+        throw new UnsupportedOperationException();
     }
 }
