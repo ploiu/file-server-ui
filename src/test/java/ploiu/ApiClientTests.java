@@ -1,4 +1,4 @@
-package ploiutest;
+package ploiu;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
