@@ -3,7 +3,6 @@ package ploiu.ui;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ploiu.model.FolderApi;
@@ -17,8 +16,10 @@ public class FolderEntry extends AnchorPane {
     @FXML
     private Label folderName;
 
-    /** the folder backing this UI element */
-    private FolderApi folder;
+    /**
+     * the folder backing this UI element
+     */
+    private final FolderApi folder;
 
     public FolderEntry(FolderApi folder) {
         this.folder = folder;

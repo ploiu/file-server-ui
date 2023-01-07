@@ -1,7 +1,5 @@
 package ploiu.ui;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -10,8 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FolderClient;
 import ploiu.model.FolderApi;
-import ploiu.module.ConfigModule;
-import ploiu.module.HttpModule;
 
 import java.io.IOException;
 
