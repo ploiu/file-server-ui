@@ -18,9 +18,11 @@ module file.server.ui.main {
     opens ploiu.ui to javafx.fxml;
     opens ploiu to javafx.graphics;
 
-    exports ploiu.ui to javafx.fxml;
+    exports ploiu.ui to javafx.fxml, javafx.graphics;
     exports ploiu to javafx.graphics;
 
     exports ploiu.client;
     exports ploiu.config;
+    exports ploiu.exception;
+    exports ploiu.model;
 }

@@ -47,12 +47,8 @@ public class ApiClient {
                     .POST(HttpRequest.BodyPublishers.ofString(new ObjectMapper().writeValueAsString(body)))
                     .build();
             var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 201 || response.statusCode() == 400) {
-                // 400 means that a password is already set, so we can ignore this
-                return true;
-            } else {
-                return false;
-            }
+            // 400 means that a password is already set, so we can ignore this
+            return response.statusCode() == 201 || response.statusCode() == 400;
         } catch (IOException | InterruptedException e) {
             log.error("unforeseen error when setting password", e);
             throw new RuntimeException(e);
@@ -63,8 +59,8 @@ public class ApiClient {
         log.info("Checking if server is compatible with client (looking for pattern " + serverConfig.getCompatibleVersion() + ")");
         var serverVersion = this.getApiInfo().version();
         log.info("server version is " + serverVersion);
-        var matches =  serverConfig.getVersionMatcher().matcher(serverVersion).find();
-        if(matches) {
+        var matches = serverConfig.getVersionMatcher().matcher(serverVersion).find();
+        if (matches) {
             log.info("We're compatible!");
         } else {
             log.error("Incompatible with current server version.");

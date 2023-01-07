@@ -58,7 +58,7 @@ public class FolderClient {
             var response = client.send(clientRequest, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 201) {
                 return mapper.readValue(response.body(), FolderApi.class);
-            } else if(response.statusCode() != 401) {
+            } else if (response.statusCode() != 401) {
                 var message = mapper.readValue(response.body(), ApiMessage.class);
                 log.error("Failed to create folder, message is {}", message.message());
                 throw new RuntimeException(message.message());

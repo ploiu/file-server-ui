@@ -9,23 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/config/AuthenticationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/config/AuthenticationConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/config/ServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/config/ServerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/ApiInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/ApiInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/UpdateFileRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app-example.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app-example.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ApiClientTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,11 +49,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="FxmlFile" />
         <option value="Record" />
         <option value="AnnotationType" />
-        <option value="Class" />
         <option value="module-info" />
+        <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -99,12 +88,13 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "Errors",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/ploiu/ui" />
       <recent name="$PROJECT_DIR$/src/main/resources/ui" />
       <recent name="$PROJECT_DIR$/src/main/java/ploiu" />
     </key>
@@ -252,7 +242,10 @@
       <workItem from="1672877482152" duration="1904000" />
       <workItem from="1672879965598" duration="1883000" />
       <workItem from="1672964451216" duration="4933000" />
-      <workItem from="1673047627480" duration="7006000" />
+      <workItem from="1673047627480" duration="8936000" />
+      <workItem from="1673057079352" duration="1076000" />
+      <workItem from="1673111541368" duration="532000" />
+      <workItem from="1673112099649" duration="2550000" />
     </task>
     <servers />
   </component>
