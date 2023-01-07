@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.model.FileApi;
+import ploiu.model.UpdateFileRequest;
 
 import java.io.InputStream;
 import java.net.http.HttpClient;
@@ -29,7 +30,7 @@ public class FileClient {
         throw new UnsupportedOperationException();
     }
 
-    public Optional<FileApi> updateFile(FileApi request) {
+    public Optional<FileApi> updateFile(UpdateFileRequest request) {
         throw new UnsupportedOperationException();
     }
 

@@ -3,6 +3,7 @@ module file.server.ui.main {
 
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.datatype.jdk8;
     requires java.logging;
     requires org.apache.httpcomponents.core5.httpcore5;
     requires org.slf4j;
@@ -10,6 +11,7 @@ module file.server.ui.main {
     requires java.desktop;
     requires javafx.fxml;
     requires javafx.controls;
+    requires org.jetbrains.annotations;
 
     opens ploiu.model to com.fasterxml.jackson.databind;
     opens ploiu.module to com.google.guice;

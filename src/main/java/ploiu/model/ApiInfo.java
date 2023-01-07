@@ -1,4 +1,6 @@
 package ploiu.model;
 
-public record ApiInfo(String version) {
+import org.jetbrains.annotations.NotNull;
+
+public record ApiInfo(@NotNull String version) {
 }

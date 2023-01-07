@@ -25,12 +25,15 @@ repositories {
 
 dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.6'
-
+    implementation 'org.slf4j:slf4j-simple:2.0.5'
     implementation 'org.apache.httpcomponents.core5:httpcore5:5.2'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.14.0'
+    implementation 'org.jetbrains:annotations:23.1.0'
     implementation 'com.google.inject:guice:5.1.0'
     implementation 'org.openjfx:javafx:17'
+
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
