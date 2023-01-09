@@ -22,6 +22,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -44,7 +45,7 @@ public class FileClient {
                 .build();
         try {
             var res = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (res.statusCode() == 200) {
+            if (isStatus2xxOk(res.statusCode())) {
                 return mapper.readValue(res.body(), FileApi.class);
             } else {
                 var message = mapper.readValue(res.body(), ApiMessage.class).message();
@@ -56,12 +57,45 @@ public class FileClient {
         }
     }
 
-    public boolean deleteFile(long id) {
-        throw new UnsupportedOperationException();
+    public void deleteFile(long id) throws BadFileRequestException, BadFileResponseException{
+        if (id < 0) {
+            throw new BadFileRequestException("Id cannot be negative.");
+        }
+        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/" + id))
+                .DELETE()
+                .header("Authorization", authenticationConfig.basicAuth())
+                .build();
+        try {
+            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (!isStatus2xxOk(res.statusCode())) {
+                var message = mapper.readValue(res.body(), ApiMessage.class).message();
+                throw new BadFileResponseException(message);
+            }
+        } catch (IOException | InterruptedException e) {
+            log.error("Unforeseen deleting file", e);
+            throw new RuntimeException(e);
+        }
     }
 
-    public Optional<InputStream> downloadFile(long id) {
-        throw new UnsupportedOperationException();
+    public InputStream getFileContents(long id) throws BadFileRequestException, BadFileResponseException {
+        if (id < 0) {
+            throw new BadFileRequestException("Id cannot be negative.");
+        }
+        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/" + id))
+                .GET()
+                .header("Authorization", authenticationConfig.basicAuth())
+                .build();
+        try {
+            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
+            if (!isStatus2xxOk(res.statusCode())) {
+                var message = mapper.readValue(res.body(), ApiMessage.class).message();
+                throw new BadFileResponseException(message);
+            }
+            return res.body();
+        } catch (IOException | InterruptedException e) {
+            log.error("Unforeseen error getting file contents", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public Optional<FileApi> updateFile(UpdateFileRequest request) {
@@ -74,5 +108,9 @@ public class FileClient {
 
     public FileApi createFile(File file, String name) {
         throw new UnsupportedOperationException();
+    }
+
+    private boolean isStatus2xxOk(int statusCode) {
+        return List.of(200, 201, 202, 203, 204, 205, 206, 207, 208, 226).contains(statusCode);
     }
 }

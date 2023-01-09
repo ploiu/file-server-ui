@@ -9,9 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiutest/ApiClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ApiClientTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiutest/FolderClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,21 +111,8 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ploiu.Main" />
-      <module name="file-server-ui.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ploiu.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FolderClientTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+    <configuration name="FileClientTests.generateAuthTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -138,7 +125,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FolderClientTests&quot;" />
+            <option value="&quot;ploiu.FileClientTests.generateAuthTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -213,20 +200,27 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="Scratch" type="Java Scratch" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Scratch" />
+      <option name="SCRATCH_FILE_URL" value="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
-      <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.FolderClientTests" />
+      <item itemvalue="Gradle.FileClientTests.generateAuthTests" />
       <item itemvalue="Gradle.FolderClientTests.testCreateFolderPassesBody" />
       <item itemvalue="Gradle.file-server-ui [test]" />
       <item itemvalue="Gradle.file-server-ui [build]" />
+      <item itemvalue="Java Scratch.Scratch" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.FileClientTests.generateAuthTests" />
+        <item itemvalue="Java Scratch.Scratch" />
         <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.file-server-ui [build]" />
         <item itemvalue="Gradle.FolderClientTests.testCreateFolderPassesBody" />
-        <item itemvalue="Gradle.FolderClientTests" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -249,11 +243,24 @@
       <workItem from="1673111541368" duration="532000" />
       <workItem from="1673112099649" duration="5224000" />
       <workItem from="1673117362464" duration="1405000" />
+      <workItem from="1673223322218" duration="3695000" />
+      <workItem from="1673298276348" duration="3628000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

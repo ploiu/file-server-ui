@@ -55,7 +55,7 @@ public class ApiClient {
         }
     }
 
-    public boolean isCompatibleWithServer() throws Exception {
+    public boolean isCompatibleWithServer() {
         log.info("Checking if server is compatible with client (looking for pattern " + serverConfig.getCompatibleVersion() + ")");
         var serverVersion = this.getApiInfo().version();
         log.info("server version is " + serverVersion);
