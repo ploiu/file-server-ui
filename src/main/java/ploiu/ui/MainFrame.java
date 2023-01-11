@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FolderClient;
+import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class MainFrame extends AnchorPane {
         try {
             loader.load();
             loadInitialFolder();
+            itemPane.getChildren().add(new FileEntry(new FileApi(1, "test.docx")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

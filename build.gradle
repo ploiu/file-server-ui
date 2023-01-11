@@ -34,7 +34,6 @@ dependencies {
     implementation 'com.google.inject:guice:5.1.0'
     implementation 'org.openjfx:javafx:17'
 
-
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
