@@ -9,7 +9,6 @@ import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
-import ploiu.exception.BadFolderResponseException;
 import ploiu.model.ApiMessage;
 import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
@@ -57,7 +56,7 @@ public class FileClient {
         }
     }
 
-    public void deleteFile(long id) throws BadFileRequestException, BadFileResponseException{
+    public void deleteFile(long id) throws BadFileRequestException, BadFileResponseException {
         if (id < 0) {
             throw new BadFileRequestException("Id cannot be negative.");
         }

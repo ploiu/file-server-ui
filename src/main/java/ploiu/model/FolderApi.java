@@ -12,6 +12,6 @@ public record FolderApi(
         @NotNull
         Collection<FolderApi> folders,
         @NotNull
-        Collection<UpdateFileRequest> files
+        Collection<FileApi> files
 ) {
 }

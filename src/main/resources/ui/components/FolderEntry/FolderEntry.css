@@ -1,0 +1,7 @@
+#imagePane:hover {
+    -fx-cursor: hand;
+}
+
+#icon {
+    -fx-image: url("../../../assets/img/folder.png");
+}
