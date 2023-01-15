@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaView;
-import lombok.Getter;
 import ploiu.client.FileClient;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
