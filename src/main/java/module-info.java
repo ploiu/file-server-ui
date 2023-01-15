@@ -11,6 +11,7 @@ module file.server.ui.main {
     requires java.desktop;
     requires javafx.fxml;
     requires javafx.controls;
+    requires javafx.media;
     requires org.jetbrains.annotations;
 
     opens ploiu.model to com.fasterxml.jackson.databind;

@@ -2,18 +2,24 @@ package ploiu.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.Nullable;
 import ploiu.action.Callback;
 import ploiu.client.FolderClient;
+import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 
 import java.io.IOException;
+
+import static ploiu.util.DialogUtils.showErrorDialog;
 
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
@@ -68,18 +74,20 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadFolderFiles(FolderApi folder) {
-        folder.files()
-                .stream()
-                .map(FileEntry::new)
-                .forEach(itemPane.getChildren()::add);
-    }
-
-    private void showErrorDialog(String message, String title, @Nullable Callback callback) {
-        var alert = new Alert(Alert.AlertType.ERROR, message);
-        alert.setTitle(title);
-        alert.showAndWait();
-        if (callback != null) {
-            callback.invoke();
+        for (FileApi fileApi : folder.files()) {
+            FileEntry entry = new FileEntry(fileApi);
+            entry.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    var stage = new Stage();
+                    var view = new FileView(fileApi);
+                    var imageScene = new Scene(view);
+                    stage.setTitle(fileApi.name());
+                    stage.setScene(imageScene);
+                    stage.sizeToScene();
+                    stage.show();
+                }
+            });
+            itemPane.getChildren().add(entry);
         }
     }
 

@@ -9,10 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +35,11 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="file-server-ui" type="f1a62948:ProjectNode" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="file-server-ui" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -51,9 +54,9 @@
         <option value="AnnotationType" />
         <option value="module-info" />
         <option value="FxmlFile" />
-        <option value="Class" />
         <option value="CSS File" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -89,7 +92,7 @@
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.22936763",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
@@ -212,6 +215,7 @@
       <workItem from="1673310029879" duration="1610000" />
       <workItem from="1673395978881" duration="6330000" />
       <workItem from="1673717692028" duration="5171000" />
+      <workItem from="1673745013657" duration="3279000" />
     </task>
     <servers />
   </component>
