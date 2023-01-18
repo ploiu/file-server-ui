@@ -81,6 +81,9 @@ public class MainFrame extends AnchorPane {
                     stage.setScene(imageScene);
                     stage.sizeToScene();
                     stage.show();
+                    stage.setOnCloseRequest(closeEvent -> {
+                        view.stopMedia();
+                    });
                 }
             });
             itemPane.getChildren().add(entry);

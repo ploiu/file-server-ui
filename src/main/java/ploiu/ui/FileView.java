@@ -7,6 +7,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import ploiu.client.FileClient;
 import ploiu.exception.BadFileRequestException;
@@ -31,6 +33,8 @@ public class FileView extends AnchorPane {
     private Spinner<?> loader;
     @FXML
     private Label errorMessage;
+
+    private VideoPlayer player;
 
     private FileApi fileApi;
     private File savedFile;
@@ -64,6 +68,10 @@ public class FileView extends AnchorPane {
             throw new UnsupportedOperationException("TODO: default view when we can't render file");
         } else if ("image".equals(mimeType)) {
             loadAsImage(fileUri);
+        } else if ("audio".equals(mimeType)) {
+            loadAsAudio(fileUri);
+        } else if ("video".equals(mimeType)) {
+            loadAsVideo(fileUri);
         }
     }
 
@@ -86,4 +94,25 @@ public class FileView extends AnchorPane {
         setWidth(imageView.getFitWidth());
         setHeight(imageView.getFitHeight());
     }
+
+    private void loadAsAudio(String fileUrl) {
+        var media = new Media(fileUrl);
+        var player  = new MediaPlayer(media);
+        mediaView.setMediaPlayer(player);
+        mediaView.setVisible(true);
+        player.play();
+    }
+
+    private void loadAsVideo(String fileUrl) {
+        this.player = new VideoPlayer(fileUrl);
+        this.getChildren().add(player);
+    }
+
+    public void stopMedia() {
+        if (this.player != null) {
+            this.player.stop();
+        }
+        this.getChildren().clear();
+    }
+
 }

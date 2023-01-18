@@ -13,4 +13,5 @@
     <MediaView fx:id="mediaView"/>
     <Spinner fx:id="loader" visible="false" />
     <Label fx:id="errorMessage" />
+    <!--TODO media player controls-->
 </fx:root>

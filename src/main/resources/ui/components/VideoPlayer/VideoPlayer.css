@@ -1,0 +1,7 @@
+.play-button {
+    -fx-base:red;
+    -fx-background-position: center, center;
+    -fx-background-image: url("../../../assets/img/play.png");
+    -fx-background-size: cover, auto;
+    -fx-cursor: hand;
+}

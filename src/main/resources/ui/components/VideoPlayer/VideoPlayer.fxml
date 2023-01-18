@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<fx:root stylesheets="@VideoPlayer.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <MediaView fx:id="view" />
+    <!--<HBox fx:id="controlBox">-->
+    <!--    <Button fx:id="playButton" prefHeight="38.4" prefWidth="38.4" styleClass="play-button" />-->
+    <!--    <Rectangle fx:id="track" />-->
+    <!--</HBox>-->
+</fx:root>
