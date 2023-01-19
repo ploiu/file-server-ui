@@ -1,7 +1,17 @@
-.play-button {
-    -fx-base:red;
-    -fx-background-position: center, center;
-    -fx-background-image: url("../../../assets/img/play.png");
-    -fx-background-size: cover, auto;
-    -fx-cursor: hand;
+.track-background {
+    -fx-base: lightgray;
+    -fx-max-height: 15;
+}
+
+.track-foreground {
+    -fx-background-color: red;
+    -fx-max-height: 15;
+}
+
+.track-box {
+    -fx-max-height: 15;
+}
+
+.root {
+    -fx-background-color: black;
 }

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.media.*?>
-
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.shape.Rectangle?>
-<fx:root stylesheets="@VideoPlayer.css" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <MediaView fx:id="view" />
-    <!--<HBox fx:id="controlBox">-->
-    <!--    <Button fx:id="playButton" prefHeight="38.4" prefWidth="38.4" styleClass="play-button" />-->
-    <!--    <Rectangle fx:id="track" />-->
-    <!--</HBox>-->
+<?import javafx.scene.layout.Region?>
+<fx:root stylesheets="@VideoPlayer.css" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/17.0.2-ea"
+         xmlns:fx="http://javafx.com/fxml/1" styleClass="root">
+    <MediaView fx:id="view"/>
+    <StackPane fx:id="trackBox" styleClass="track-box" prefWidth="0">
+        <Region fx:id="trackBackground" styleClass="track-background" prefWidth="${trackBox.prefWidth}"/>
+        <Region fx:id="trackForeground" styleClass="track-foreground" prefWidth="0"/>
+    </StackPane>
 </fx:root>

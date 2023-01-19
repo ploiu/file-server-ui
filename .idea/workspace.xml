@@ -9,9 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileView/FileView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileView/FileView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/VideoPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/VideoPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/VideoPlayer/VideoPlayer.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/VideoPlayer/VideoPlayer.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/VideoPlayer/VideoPlayer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/VideoPlayer/VideoPlayer.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +219,8 @@
       <workItem from="1673745013657" duration="3608000" />
       <workItem from="1673884174369" duration="1106000" />
       <workItem from="1674003015016" duration="460000" />
-      <workItem from="1674003510897" duration="4247000" />
+      <workItem from="1674003510897" duration="4508000" />
+      <workItem from="1674083827810" duration="6169000" />
     </task>
     <servers />
   </component>
@@ -229,5 +230,10 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/file_server_ui$Main.ic" NAME="Main Coverage Results" MODIFIED="1674088377434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ploiu.*</FILTER>
+    </SUITE>
   </component>
 </project>
