@@ -1,10 +1,10 @@
 .track-background {
-    -fx-base: lightgray;
-    -fx-max-height: 15;
+    -fx-fill: lightgray;
+    -fx-fill-height: 100;
 }
 
 .track-foreground {
-    -fx-background-color: red;
+    -fx-fill: red;
     -fx-max-height: 15;
 }
 

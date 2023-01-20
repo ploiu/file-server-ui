@@ -1,16 +1,18 @@
 package ploiu.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -24,9 +26,9 @@ public class VideoPlayer extends StackPane {
     @FXML
     private Button playButton;
     @FXML
-    private Region trackBackground;
+    private Rectangle trackBackground;
     @FXML
-    private Region trackForeground;
+    private Rectangle trackForeground;
     @FXML
     private StackPane trackBox;
     private MediaPlayer player;
@@ -66,25 +68,27 @@ public class VideoPlayer extends StackPane {
         stage.sizeToScene();
         view.fitWidthProperty().bind(stage.widthProperty());
         view.fitHeightProperty().bind(stage.heightProperty());
-        ChangeListener<Number> trackBoxResizer = (observable, oldValue, newValue) -> trackBox.setPrefWidth(newValue.intValue());
-        stage.widthProperty().addListener(trackBoxResizer);
     }
 
     private void trackBoxBehavior() {
         var scene = getScene();
-        //trackBox.setVisible(false);
+        trackBox.setVisible(false);
         var mediaLength = player.getMedia().getDuration();
         // TODO change to bottom once we figure out why certain aspect ratios hide it
-        setAlignment(trackBox, Pos.TOP_CENTER);
+        setAlignment(trackBox, Pos.BOTTOM_LEFT);
+        setAlignment(trackForeground, Pos.TOP_LEFT);
+        ChangeListener<Number> trackBoxResizer = (observable, oldValue, newValue) -> trackBox.setPrefWidth(newValue.intValue());
+        scene.getWindow().widthProperty().addListener(trackBoxResizer);
         var hideDuration = Duration.ofSeconds(2);
         scene.setOnMouseMoved(e -> {
             trackBox.setVisible(true);
             lastMouseMoveTime = System.currentTimeMillis();
-           new Thread(() -> {
-               try {
-                   Thread.sleep(hideDuration.toMillis());
-               } catch (InterruptedException ex) {
-                   throw new RuntimeException(ex);
+            // I've found that using a new thread instead of an executor reduces memory load and is less-prone to memory leaking
+            new Thread(() -> {
+                try {
+                    Thread.sleep(hideDuration.toMillis());
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
                }
                // don't hide if the user has moved the mouse since last time
                if (System.currentTimeMillis() - lastMouseMoveTime >= hideDuration.toMillis()) {
@@ -94,7 +98,13 @@ public class VideoPlayer extends StackPane {
         });
         player.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
             var percentDone = newValue.toSeconds() / mediaLength.toSeconds();
-            trackForeground.setPrefWidth(scene.getWidth() * percentDone);
+            trackForeground.setWidth(scene.getWidth() * percentDone);
+        });
+        trackBox.setOnMouseClicked(event -> {
+            var x = event.getSceneX();
+            var percent = x / scene.getWidth();
+            var targetTime = mediaLength.toMillis() * percent;
+            player.seek(new javafx.util.Duration(targetTime));
         });
     }
 }

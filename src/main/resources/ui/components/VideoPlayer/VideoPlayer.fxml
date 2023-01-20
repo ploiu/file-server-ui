@@ -7,8 +7,8 @@
 <fx:root stylesheets="@VideoPlayer.css" type="javafx.scene.layout.StackPane" xmlns="http://javafx.com/javafx/17.0.2-ea"
          xmlns:fx="http://javafx.com/fxml/1" styleClass="root">
     <MediaView fx:id="view"/>
-    <StackPane fx:id="trackBox" styleClass="track-box" prefWidth="0">
-        <Region fx:id="trackBackground" styleClass="track-background" prefWidth="${trackBox.prefWidth}"/>
-        <Region fx:id="trackForeground" styleClass="track-foreground" prefWidth="0"/>
+    <StackPane fx:id="trackBox" styleClass="track-box">
+        <Rectangle fx:id="trackBackground" styleClass="track-background" width="${view.fitWidth}" height="15"/>
+        <Rectangle fx:id="trackForeground" styleClass="track-foreground" height="15" width="100"/>
     </StackPane>
 </fx:root>
