@@ -1,7 +1,11 @@
 package ploiu;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -157,6 +161,47 @@ public class FileClientTests {
         when(httpClient.send(any(), any())).thenReturn(mockResponse);
         fileClient.getFileContents(1);
         verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/files/1")), any());
+    }
+
+    @ParameterizedTest(name = "Test that [{0}] is rejected for search")
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "\n", "\r", "\t"})
+    void testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty(String query) {
+        var e = assertThrows(BadFileRequestException.class, () -> fileClient.search(query));
+        assertEquals("Query cannot be null or empty.", e.getMessage());
+    }
+
+    @Test
+    void testSearchContentsPassesAuth() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn("[]");
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        fileClient.search("whatever");
+        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
+    }
+
+    @Test
+    void testSearchContentsUsesGET() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn("[]");
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        fileClient.search("whatever");
+        verify(httpClient).send(argThat(req -> req.method().equals("GET")), any());
+    }
+
+    @Test
+    void testSearchContentsUsesCorrectPath() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn("[]");
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        fileClient.search("whatever");
+        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/files?query=whatever")), any());
     }
 
 }

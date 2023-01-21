@@ -1,5 +1,6 @@
 package ploiu.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.inject.Inject;
@@ -101,8 +102,26 @@ public class FileClient {
         throw new UnsupportedOperationException();
     }
 
-    public Collection<FileApi> search(String query) {
-        throw new UnsupportedOperationException();
+    public Collection<FileApi> search(String query) throws BadFileRequestException, BadFileResponseException {
+        if (query == null || query.isBlank()) {
+            throw new BadFileRequestException("Query cannot be null or empty.");
+        }
+        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files?query=" + query))
+                .GET()
+                .header("Authorization", authenticationConfig.basicAuth())
+                .build();
+        try {
+            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (!isStatus2xxOk(res.statusCode())) {
+                var message = mapper.readValue(res.body(), ApiMessage.class).message();
+                throw new BadFileResponseException(message);
+            }
+            return mapper.readValue(res.body(), new TypeReference<>() {
+            });
+        } catch (IOException | InterruptedException e) {
+            log.error("Unforeseen error getting file contents", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public FileApi createFile(File file, String name) {
