@@ -13,14 +13,13 @@ public class App extends Application {
     public static final Injector INJECTOR = Guice.createInjector(new ConfigModule(), new HttpModule());
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         var client = INJECTOR.getInstance(ApiClient.class);
         if (!client.isCompatibleWithServer()) {
             System.exit(1);
         }
         var root = new MainFrame();
         Scene scene = new Scene(root);
-        //scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         stage.setTitle("File Server UI");
         stage.setScene(scene);
         stage.show();

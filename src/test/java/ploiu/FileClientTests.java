@@ -201,7 +201,7 @@ public class FileClientTests {
         when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
         when(httpClient.send(any(), any())).thenReturn(mockResponse);
         fileClient.search("whatever");
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/files?query=whatever")), any());
+        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/files?search=whatever")), any());
     }
 
 }

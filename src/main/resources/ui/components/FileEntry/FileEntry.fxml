@@ -4,8 +4,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <fx:root prefHeight="101.25" prefWidth="100.25" type="javafx.scene.layout.AnchorPane"
-         xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
-    <ImageView fx:id="icon">
+         xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@FileEntry.css">
+    <ImageView fx:id="icon" styleClass="image">
     </ImageView>
-    <Label fx:id="fileName" alignment="CENTER" layoutY="87.0" prefHeight="16.0" prefWidth="102" textAlignment="CENTER"/>
+    <Label fx:id="fileName" layoutY="87.0" prefHeight="16.0" prefWidth="102" styleClass="file-name"/>
 </fx:root>

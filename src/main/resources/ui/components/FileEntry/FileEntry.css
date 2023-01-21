@@ -1,0 +1,8 @@
+.file-name {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.image {
+    -fx-cursor: hand;
+}

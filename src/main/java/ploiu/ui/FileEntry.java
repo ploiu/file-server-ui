@@ -21,8 +21,9 @@ public class FileEntry extends AnchorPane {
     private final FileApi file;
 
     public FileEntry(FileApi file) {
+        super();
         this.file = file;
-        var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry.fxml"));
+        var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

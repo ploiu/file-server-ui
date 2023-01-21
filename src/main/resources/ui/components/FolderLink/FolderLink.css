@@ -1,0 +1,5 @@
+.folder-link {
+    -fx-underline: true;
+    -fx-text-fill: steelblue;
+    -fx-border-color: transparent;
+}
