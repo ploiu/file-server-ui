@@ -65,10 +65,3 @@ jlink {
         name = 'test!'
     }
 }
-
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
-    }
-}

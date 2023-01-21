@@ -2,23 +2,32 @@ package ploiu.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.stage.Stage;
+import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
+import ploiu.exception.BadFileRequestException;
+import ploiu.exception.BadFileResponseException;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static ploiu.Constants.CACHE_DIR;
 import static ploiu.util.DialogUtils.showErrorDialog;
+import static ploiu.util.ThreadUtils.runInThread;
 
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
+    private final FileClient fileClient = App.INJECTOR.getInstance(FileClient.class);
+    private final Desktop desktop = Desktop.getDesktop();
     @FXML
     private TextField searchField;
     @FXML
@@ -74,20 +83,30 @@ public class MainFrame extends AnchorPane {
             FileEntry entry = new FileEntry(fileApi);
             entry.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
-                    var stage = new Stage();
-                    var view = new FileView(fileApi);
-                    var imageScene = new Scene(view);
-                    stage.setTitle(fileApi.name());
-                    stage.setScene(imageScene);
-                    stage.sizeToScene();
-                    stage.show();
-                    stage.setOnCloseRequest(closeEvent -> {
-                        view.stopMedia();
+                    runInThread(() -> {
+                        try {
+                            var file = saveAndGetFile(fileApi);
+                            desktop.open(file);
+                        } catch (BadFileRequestException | BadFileResponseException | IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                 }
             });
             itemPane.getChildren().add(entry);
         }
+    }
+
+    private File saveAndGetFile(FileApi fileApi) throws BadFileRequestException, BadFileResponseException, IOException {
+        // ensure the cache directory exists
+        new File(CACHE_DIR).mkdir();
+        var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
+        if (!cacheFile.exists()) {
+            var inStream = fileClient.getFileContents(fileApi.id());
+            cacheFile.createNewFile();
+            Files.copy(inStream, cacheFile.toPath(), REPLACE_EXISTING);
+        }
+        return cacheFile;
     }
 
 }
