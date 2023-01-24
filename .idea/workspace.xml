@@ -9,17 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderLink.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/DialogUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/DialogUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/ThreadUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/ThreadUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +94,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "preferences.sourceCode.Java",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -196,8 +187,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.file-server-ui [build]" />
       </list>
     </recent_temporary>
@@ -234,6 +225,8 @@
       <workItem from="1674170948257" duration="3014000" />
       <workItem from="1674322414984" duration="1563000" />
       <workItem from="1674332119726" duration="4774000" />
+      <workItem from="1674516678418" duration="133000" />
+      <workItem from="1674516833107" duration="7412000" />
     </task>
     <servers />
   </component>
@@ -247,6 +240,21 @@
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
           <line>113</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>173</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>171</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>165</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

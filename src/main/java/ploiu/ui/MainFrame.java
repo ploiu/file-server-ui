@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,13 +19,14 @@ import ploiu.exception.BadFileResponseException;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -37,7 +39,7 @@ public class MainFrame extends AnchorPane {
     private final FileClient fileClient = App.INJECTOR.getInstance(FileClient.class);
     private final Desktop desktop = Desktop.getDesktop();
     // keep track of where the user has navigated
-    private Set<FolderApi> folderNavigation = new HashSet<>();
+    private final List<FolderApi> folderNavigation = new ArrayList<>();
     @FXML
     private TextField searchField;
     @FXML
@@ -46,6 +48,8 @@ public class MainFrame extends AnchorPane {
     private FlowPane itemPane;
     @FXML
     private HBox navigationBar;
+    // atomic because we need to change this in a lambda click event
+    private final AtomicBoolean isSearching = new AtomicBoolean(false);
 
     public MainFrame() {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/MainFrame.fxml"));
@@ -78,6 +82,8 @@ public class MainFrame extends AnchorPane {
             folderEntry.setOnMouseClicked(mouseEvent -> {
                 // left click is used for entry, right click is used for modifying properties
                 if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                    folderNavigation.add(folderEntry.getFolder());
+                    drawNavBar();
                     itemPane.getChildren().clear();
                     var retrievedFolder = folderClient.getFolder(folderEntry.getFolder().id());
                     if (retrievedFolder.isEmpty()) {
@@ -136,6 +142,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void handleSearch(String text) {
+        isSearching.set(true);
         try {
             var files = fileClient.search(text);
             this.itemPane.getChildren().clear();
@@ -151,9 +158,22 @@ public class MainFrame extends AnchorPane {
     private void drawNavBar() {
         // inefficient but can be optimized later, since this won't be invoked too often
         navigationBar.getChildren().clear();
-        for (var folder : folderNavigation) {
+
+        for (int i = 0; i < folderNavigation.size(); i++) {
+            final int j = i;
+            var folder = folderNavigation.get(i);
             var folderLink = new FolderLink(folder);
             navigationBar.getChildren().add(folderLink);
+            var label = new Label("/");
+            navigationBar.getChildren().add(label);
+            folderLink.setOnClick(event -> {
+                if (event.getButton() == MouseButton.PRIMARY && (j < folderNavigation.size() - 1 || isSearching.get())) {
+                    isSearching.set(false);
+                    folderNavigation.subList(j + 1, folderNavigation.size()).clear();
+                    drawNavBar();
+                    setFolderView(folder);
+                }
+            });
         }
     }
 }

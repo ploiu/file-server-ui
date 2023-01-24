@@ -1,8 +1,10 @@
 package ploiu.ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 import ploiu.model.FolderApi;
@@ -28,5 +30,9 @@ public class FolderLink extends HBox {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setOnClick(EventHandler<MouseEvent> e) {
+        link.setOnMouseClicked(e);
     }
 }
