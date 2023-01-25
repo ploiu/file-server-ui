@@ -3,6 +3,7 @@ package ploiu.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -162,11 +163,13 @@ public class MainFrame extends AnchorPane {
         for (int i = 0; i < folderNavigation.size(); i++) {
             final int j = i;
             var folder = folderNavigation.get(i);
-            var folderLink = new FolderLink(folder);
+            var folderLink = new Label(folder.path());
+            folderLink.getStyleClass().add("folder-link");
             navigationBar.getChildren().add(folderLink);
             var label = new Label("/");
+            navigationBar.setAlignment(Pos.BOTTOM_LEFT);
             navigationBar.getChildren().add(label);
-            folderLink.setOnClick(event -> {
+            folderLink.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY && (j < folderNavigation.size() - 1 || isSearching.get())) {
                     isSearching.set(false);
                     folderNavigation.subList(j + 1, folderNavigation.size()).clear();

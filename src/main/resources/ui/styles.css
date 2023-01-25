@@ -1,0 +1,25 @@
+* {
+    -liberty: #5b64b5;
+    -paradise-pink: #ef476f;
+    -orange-yellow-crayola: #ffd166;
+    -caribbean-green: #06d6a0;
+    -raisin-black: #201a23;
+    -alice-blue: #E9F1F7;
+}
+
+.folder-link {
+    -fx-underline: true;
+    -fx-text-fill: -liberty;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.search-button {
+    -fx-background-color: -liberty;
+    -fx-text-fill: -alice-blue;
+    -fx-cursor: hand;
+}
+
+.frame {
+    -fx-background-color: -raisin-black;
+}

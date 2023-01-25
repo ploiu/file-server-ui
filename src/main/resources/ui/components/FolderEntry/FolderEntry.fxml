@@ -13,5 +13,5 @@
     <StackPane id="imagePane">
         <ImageView fx:id="icon" id="icon" preserveRatio="true"/>
     </StackPane>
-    <Label fx:id="folderName" layoutX="20.0" layoutY="67.0" id="label"/>
+    <Label fx:id="folderName" layoutX="20.0" layoutY="67.0" styleClass="label"/>
 </fx:root>

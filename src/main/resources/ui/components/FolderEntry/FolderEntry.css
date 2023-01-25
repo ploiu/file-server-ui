@@ -1,7 +1,20 @@
+* {
+    -liberty: #5b64b5;
+    -paradise-pink: #ef476f;
+    -orange-yellow-crayola: #ffd166;
+    -caribbean-green: #06d6a0;
+    -raisin-black: #201a23;
+    -alice-blue: #E9F1F7;
+}
+
 #imagePane:hover {
     -fx-cursor: hand;
 }
 
 #icon {
     -fx-image: url("../../../assets/img/folder.png");
+}
+
+.label {
+    -fx-text-fill: -alice-blue;
 }
