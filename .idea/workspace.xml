@@ -9,14 +9,13 @@
   <component name="ChangeListManager">
     <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderLink.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderLink/FolderLink.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderLink/FolderLink.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderNavLink/FolderNavLink.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,6 +233,7 @@
       <workItem from="1674516678418" duration="133000" />
       <workItem from="1674516833107" duration="7412000" />
       <workItem from="1674607479997" duration="3881000" />
+      <workItem from="1674773829114" duration="3029000" />
     </task>
     <servers />
   </component>
@@ -247,21 +247,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
           <line>113</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>176</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>174</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>167</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

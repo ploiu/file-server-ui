@@ -167,6 +167,7 @@ public class MainFrame extends AnchorPane {
             folderLink.getStyleClass().add("folder-link");
             navigationBar.getChildren().add(folderLink);
             var label = new Label("/");
+            label.getStyleClass().add("text");
             navigationBar.setAlignment(Pos.BOTTOM_LEFT);
             navigationBar.getChildren().add(label);
             folderLink.setOnMouseClicked(event -> {

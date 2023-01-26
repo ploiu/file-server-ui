@@ -1,8 +1,13 @@
-.file-name {
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-}
+@import "../../theme.css";
 
 .image {
     -fx-cursor: hand;
+}
+
+.text {
+    -fx-alignment: center;
+    -fx-text-overrun: center-ellipsis;
+    -fx-max-width: 75px;
+    -fx-wrap-text: true;
+    -fx-content-display: center;
 }

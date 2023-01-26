@@ -1,11 +1,5 @@
-* {
-    -liberty: #5b64b5;
-    -paradise-pink: #ef476f;
-    -orange-yellow-crayola: #ffd166;
-    -caribbean-green: #06d6a0;
-    -raisin-black: #201a23;
-    -alice-blue: #E9F1F7;
-}
+@import "theme.css";
+
 
 .folder-link {
     -fx-underline: true;
@@ -22,4 +16,9 @@
 
 .frame {
     -fx-background-color: -raisin-black;
+}
+
+.search-bar {
+    -fx-background-color: #cacaca;
+    -fx-border-radius: 0px;
 }

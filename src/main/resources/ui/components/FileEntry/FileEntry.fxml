@@ -7,5 +7,5 @@
          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@FileEntry.css">
     <ImageView fx:id="icon" styleClass="image">
     </ImageView>
-    <Label fx:id="fileName" layoutY="87.0" prefHeight="16.0" prefWidth="102" styleClass="file-name"/>
+    <Label fx:id="fileName" layoutY="87.0" styleClass="text,file-name"/>
 </fx:root>
