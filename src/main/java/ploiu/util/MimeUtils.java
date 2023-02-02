@@ -14,14 +14,14 @@ public class MimeUtils {
         var generalType = mimeType.split("/")[0];
         /*
 
-        application (gear, done)
-        audio       (music note, done but scuffed)
-        font        (F)
+        application (gear)
+        audio       (music note, done)
+        font        (F, done)
         image       (sun with mountain, done)
         message     (envelope)
-        model       (cube, done)
+        model       (cube)
         multipart   (puzzle)
-        text        (lines of text)
+        text        (lines of text, done)
         video       (play button)
         unknown     (question mark, done)
          */
