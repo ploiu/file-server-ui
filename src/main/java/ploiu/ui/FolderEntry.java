@@ -30,7 +30,10 @@ public class FolderEntry extends AnchorPane {
         loader.setController(this);
         try {
             loader.load();
-            this.folderName.setText(folder.path());
+            // currently api doesn't have a field for name, just full path
+            var splitPath = folder.path().split("/");
+            var name = splitPath[splitPath.length - 1];
+            this.folderName.setText(name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

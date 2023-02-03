@@ -17,8 +17,11 @@ import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
+import ploiu.exception.BadFolderRequestException;
+import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
+import ploiu.model.FolderRequest;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -27,6 +30,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -46,11 +50,15 @@ public class MainFrame extends AnchorPane {
     @FXML
     private Button searchButton;
     @FXML
-    private FlowPane itemPane;
+    private FlowPane folderPane;
+    @FXML
+    private FlowPane filePane;
     @FXML
     private HBox navigationBar;
     // atomic because we need to change this in a lambda click event
     private final AtomicBoolean isSearching = new AtomicBoolean(false);
+    // so we know where to add files / folders
+    private FolderApi currentFolder;
 
     public MainFrame() {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/MainFrame.fxml"));
@@ -69,11 +77,13 @@ public class MainFrame extends AnchorPane {
         var folder = folderClient.getFolder(null).get();
         folderNavigation.add(folder);
         // null folder is the root folder, so this will always exist
-        setFolderView(folder);
+        loadFolder(folder);
     }
 
-    private void setFolderView(FolderApi folder) {
-        itemPane.getChildren().clear();
+    private void loadFolder(FolderApi folder) {
+        folderPane.getChildren().clear();
+        filePane.getChildren().clear();
+        currentFolder = folder;
         var folderEntries = folder.folders()
                 .stream()
                 .map(FolderEntry::new)
@@ -85,17 +95,18 @@ public class MainFrame extends AnchorPane {
                 if (mouseEvent.getButton() == MouseButton.PRIMARY) {
                     folderNavigation.add(folderEntry.getFolder());
                     drawNavBar();
-                    itemPane.getChildren().clear();
+                    folderPane.getChildren().clear();
                     var retrievedFolder = folderClient.getFolder(folderEntry.getFolder().id());
                     if (retrievedFolder.isEmpty()) {
-                        showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> setFolderView(folder));
+                        showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> loadFolder(folder));
                     } else {
-                        setFolderView(retrievedFolder.get());
+                        loadFolder(retrievedFolder.get());
                     }
                 }
             });
-            this.itemPane.getChildren().add(folderEntry);
+            this.folderPane.getChildren().add(folderEntry);
         }
+        drawAddFolder();
         loadFiles(folder.files());
     }
 
@@ -114,7 +125,7 @@ public class MainFrame extends AnchorPane {
                     });
                 }
             });
-            itemPane.getChildren().add(entry);
+            filePane.getChildren().add(entry);
         }
     }
 
@@ -146,7 +157,7 @@ public class MainFrame extends AnchorPane {
         isSearching.set(true);
         try {
             var files = fileClient.search(text);
-            this.itemPane.getChildren().clear();
+            this.folderPane.getChildren().clear();
             loadFiles(files);
         } catch (BadFileRequestException e) {
             showErrorDialog(e.getMessage(), "Bad Search Text", null);
@@ -175,9 +186,28 @@ public class MainFrame extends AnchorPane {
                     isSearching.set(false);
                     folderNavigation.subList(j + 1, folderNavigation.size()).clear();
                     drawNavBar();
-                    setFolderView(folder);
+                    loadFolder(folder);
                 }
             });
         }
+    }
+
+    private void drawAddFolder() {
+        var addFolder = new AddFolder(e -> showNewFolderPane());
+        this.folderPane.getChildren().add(addFolder);
+    }
+
+    private void showNewFolderPane() {
+        AddFolderDialog.CreateAction callback = folderName -> {
+            // translate for the api
+            var folderId = currentFolder.id() == 0 ? null : currentFolder.id();
+            try {
+                folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.ofNullable(folderId), folderName));
+            } catch (BadFolderRequestException | BadFolderResponseException e) {
+                showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);
+            }
+            loadFolder(folderClient.getFolder(folderId).get());
+        };
+        var addFolderDialog = new AddFolderDialog(this.getScene().getWindow(), callback);
     }
 }

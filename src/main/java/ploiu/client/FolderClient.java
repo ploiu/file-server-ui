@@ -48,7 +48,7 @@ public class FolderClient {
         return Optional.empty();
     }
 
-    public FolderApi createFolder(FolderRequest request) {
+    public FolderApi createFolder(FolderRequest request) throws BadFolderRequestException, BadFolderResponseException {
         try {
             var body = mapper.writeValueAsString(request);
             var clientRequest = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/folders"))
@@ -61,12 +61,12 @@ public class FolderClient {
             } else if (response.statusCode() != 401) {
                 var message = mapper.readValue(response.body(), ApiMessage.class);
                 log.error("Failed to create folder, message is {}", message.message());
-                throw new RuntimeException(message.message());
+                throw new BadFolderRequestException(message.message());
             }
-            throw new RuntimeException("Received 401 from server");
+            throw new BadFolderRequestException("Received 401 from server");
         } catch (IOException | InterruptedException e) {
             log.error("Failed to build or send create folder request!", e);
-            throw new RuntimeException(e);
+            throw new BadFolderResponseException(e.getMessage());
         }
     }
 

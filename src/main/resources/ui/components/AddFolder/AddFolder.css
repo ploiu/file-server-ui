@@ -1,0 +1,13 @@
+@import "../../theme.css";
+
+
+.add-folder:hover {
+    -fx-border-style: dashed;
+    -fx-border-color: -liberty;
+}
+
+.item-root {
+    -fx-pref-width: 96px;
+    -fx-pref-height: 96px;
+    -fx-cursor: hand;
+}

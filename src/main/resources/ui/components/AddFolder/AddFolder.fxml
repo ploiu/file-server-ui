@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<fx:root styleClass="add-folder,item-root" stylesheets="@AddFolder.css" type="javafx.scene.layout.AnchorPane"
+         xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView layoutX="32" layoutY="32">
+        <Image requestedHeight="32" requestedWidth="32" url="@../../../assets/img/plus.png"/>
+    </ImageView>
+    <Label fx:id="fileName" layoutX="13.0" layoutY="74.0" styleClass="text" text="Add Folder">Add Folder</Label>
+</fx:root>

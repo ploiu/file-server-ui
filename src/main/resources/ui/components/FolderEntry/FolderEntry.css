@@ -8,3 +8,11 @@
 #icon {
     -fx-image: url("../../../assets/img/folder.png");
 }
+
+.text {
+    -fx-alignment: center;
+    -fx-text-overrun: center-ellipsis;
+    -fx-max-width: 75px;
+    -fx-wrap-text: true;
+    -fx-content-display: center;
+}

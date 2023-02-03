@@ -1,0 +1,18 @@
+@import "../../theme.css";
+
+.add-folder-dialog-root {
+    -fx-pref-width: 400;
+    -fx-pref-height: 200;
+    -fx-background-color: -raisin-black;
+}
+
+.submit-button {
+    -fx-background-color: -liberty;
+    -fx-text-fill: -alice-blue;
+    -fx-cursor: hand;
+}
+
+.folder-title {
+    -fx-background-color: #cacaca;
+    -fx-border-radius: 0px;
+}
