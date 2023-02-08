@@ -158,6 +158,7 @@ public class MainFrame extends AnchorPane {
         try {
             var files = fileClient.search(text);
             this.folderPane.getChildren().clear();
+            this.filePane.getChildren().clear();
             loadFiles(files);
         } catch (BadFileRequestException e) {
             showErrorDialog(e.getMessage(), "Bad Search Text", null);
