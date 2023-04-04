@@ -1,0 +1,8 @@
+@import "../../theme.css";
+
+.folder-link {
+    -fx-underline: true;
+    -fx-text-fill: -liberty;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}

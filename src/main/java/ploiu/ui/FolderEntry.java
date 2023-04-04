@@ -11,17 +11,15 @@ import ploiu.model.FolderApi;
 import java.io.IOException;
 
 public class FolderEntry extends AnchorPane {
-    @FXML
-    private ImageView icon;
-
-    @FXML
-    private Label folderName;
-
     /**
      * the folder backing this UI element
      */
     @Getter
     private final FolderApi folder;
+    @FXML
+    private ImageView icon;
+    @FXML
+    private Label folderName;
 
     public FolderEntry(FolderApi folder) {
         this.folder = folder;

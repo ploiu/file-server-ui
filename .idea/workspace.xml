@@ -3,15 +3,25 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="BookmarksViewState">
-    <option name="rewriteBookmarkType" value="true" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="">
+    <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/event/Event.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/event/EventReceiver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,142 +33,62 @@
       <ProjectState />
     </projectState>
   </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Record" />
-        <option value="AnnotationType" />
-        <option value="module-info" />
-        <option value="Interface" />
-        <option value="package-info" />
-        <option value="FxmlFile" />
         <option value="CSS File" />
         <option value="Class" />
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MacroExpansionManager">
-    <option name="directoryName" value="6fpg22yw" />
+    <option name="directoryName" value="54a7dn4f" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2JpirJe1ncWqGLsOAKwOLRH6MRf" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectId" id="2NhkT6YSS4yNBiHQXG1uPElbTNp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last.edited.regexp&quot;: &quot;1.3.x&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/main/resources/ui/components/FileEntry&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.22936763&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.Java&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-  },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;JAVA&quot;
-    ]
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.22936763",
+    "settings.editor.selected.configurable": "preferences.rainbow.brackets",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry" />
-      <recent name="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/ploiu/ui" />
-      <recent name="$PROJECT_DIR$/src/main/resources/ui" />
-      <recent name="$PROJECT_DIR$/src/main/java/ploiu" />
-    </key>
-  </component>
+}]]></component>
   <component name="RunAnythingCache">
     <option name="myCommands">
-      <command value="gradlew run" />
-      <command value="gradle build" />
-      <command value="gradlew googleJavaFormat" />
-      <command value="gradlew build" />
-      <command value="open file_server" />
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ploiu.Main" />
+  <component name="RunManager" selected="Application.App">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ploiu.ui.App" />
       <module name="file-server-ui.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ploiu.*" />
+          <option name="PATTERN" value="ploiu.ui.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="file-server-ui [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
     </configuration>
     <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -179,105 +109,31 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.file-server-ui [test]" />
-      <item itemvalue="Gradle.file-server-ui [build]" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.App" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.file-server-ui [build]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="cccb1484-ac4d-4fb4-8c16-6323ab266531" name="Changes" comment="" />
-      <created>1672781624128</created>
+      <changelist id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="" />
+      <created>1680123706675</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1672781624128</updated>
-      <workItem from="1672781625203" duration="9427000" />
-      <workItem from="1672869424272" duration="4486000" />
-      <workItem from="1672873925934" duration="3121000" />
-      <workItem from="1672877482152" duration="1904000" />
-      <workItem from="1672879965598" duration="1883000" />
-      <workItem from="1672964451216" duration="4933000" />
-      <workItem from="1673047627480" duration="8936000" />
-      <workItem from="1673057079352" duration="1076000" />
-      <workItem from="1673111541368" duration="532000" />
-      <workItem from="1673112099649" duration="5224000" />
-      <workItem from="1673117362464" duration="1405000" />
-      <workItem from="1673223322218" duration="3695000" />
-      <workItem from="1673298276348" duration="3628000" />
-      <workItem from="1673310029879" duration="1610000" />
-      <workItem from="1673395978881" duration="6330000" />
-      <workItem from="1673717692028" duration="5171000" />
-      <workItem from="1673745013657" duration="3608000" />
-      <workItem from="1673884174369" duration="1106000" />
-      <workItem from="1674003015016" duration="460000" />
-      <workItem from="1674003510897" duration="4508000" />
-      <workItem from="1674083827810" duration="6205000" />
-      <workItem from="1674170948257" duration="3014000" />
-      <workItem from="1674322414984" duration="1563000" />
-      <workItem from="1674332119726" duration="4774000" />
-      <workItem from="1674516678418" duration="133000" />
-      <workItem from="1674516833107" duration="7412000" />
-      <workItem from="1674607479997" duration="3881000" />
-      <workItem from="1674773829114" duration="4336000" />
-      <workItem from="1674924066160" duration="942000" />
-      <workItem from="1675379256153" duration="6099000" />
-      <workItem from="1675392333329" duration="118000" />
-      <workItem from="1675525147861" duration="141000" />
-      <workItem from="1675537196556" duration="130000" />
-      <workItem from="1675818078866" duration="1278000" />
+      <updated>1680123706675</updated>
+      <workItem from="1680123708848" duration="615000" />
+      <workItem from="1680127411691" duration="276000" />
+      <workItem from="1680641508402" duration="5556000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>113</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java</url>
-          <line>45</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java</url>
-          <line>26</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/file_server_ui$Main.ic" NAME="Main Coverage Results" MODIFIED="1674088377434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>ploiu.*</FILTER>
-    </SUITE>
   </component>
 </project>

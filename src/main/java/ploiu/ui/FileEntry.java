@@ -25,13 +25,11 @@ public class FileEntry extends AnchorPane {
         }
     }
 
+    private final FileApi file;
     @FXML
     private ImageView icon;
-
     @FXML
     private Label fileName;
-
-    private final FileApi file;
 
     public FileEntry(FileApi file) {
         super();

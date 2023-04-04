@@ -106,7 +106,7 @@ public class FileClient {
         if (query == null || query.isBlank()) {
             throw new BadFileRequestException("Query cannot be null or empty.");
         }
-        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files?search=" + query))
+        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/metadata?search=" + query))
                 .GET()
                 .header("Authorization", authenticationConfig.basicAuth())
                 .build();

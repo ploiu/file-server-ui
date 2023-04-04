@@ -17,9 +17,11 @@ module file.server.ui.main {
     opens ploiu.model to com.fasterxml.jackson.databind;
     opens ploiu.module to com.google.guice;
     opens ploiu.ui to javafx.fxml;
+    opens ploiu.ui.event to javafx.fxml;
     opens ploiu to javafx.graphics;
 
     exports ploiu.ui to javafx.fxml, javafx.graphics;
+    exports ploiu.ui.event to javafx.fxml, javafx.graphics;
     exports ploiu to javafx.graphics;
 
     exports ploiu.client;

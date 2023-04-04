@@ -1,13 +1,5 @@
 @import "theme.css";
 
-
-.folder-link {
-    -fx-underline: true;
-    -fx-text-fill: -liberty;
-    -fx-border-color: transparent;
-    -fx-cursor: hand;
-}
-
 .search-button {
     -fx-background-color: -liberty;
     -fx-text-fill: -alice-blue;

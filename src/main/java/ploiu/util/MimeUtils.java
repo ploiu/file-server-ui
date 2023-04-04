@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MimeUtils {
-    private static final String IMAGE_DIR = "assets/img";
     /*
     application (gear)
     audio       (music note, done)
@@ -20,8 +19,8 @@ public class MimeUtils {
     unknown     (question mark, done)
      */
     public static final List<String> MIME_TYPES = List.of("application", "audio", "font", "image", "message", "model", "multipart", "text", "video", "unknown");
-
     public static final Map<String, String> MIME_TYPE_ICON_NAMES = new HashMap<>();
+    private static final String IMAGE_DIR = "assets/img";
 
     static {
         MIME_TYPES.forEach(type -> MIME_TYPE_ICON_NAMES.put(type, IMAGE_DIR + "/" + type + ".png"));

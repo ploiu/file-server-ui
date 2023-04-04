@@ -3,16 +3,13 @@ package ploiu.ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.exception.BadFileRequestException;
@@ -22,16 +19,14 @@ import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
+import ploiu.ui.event.EventReceiver;
 
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -44,7 +39,6 @@ public class MainFrame extends AnchorPane {
     private final FileClient fileClient = App.INJECTOR.getInstance(FileClient.class);
     private final Desktop desktop = Desktop.getDesktop();
     // keep track of where the user has navigated
-    private final List<FolderApi> folderNavigation = new ArrayList<>();
     @FXML
     private TextField searchField;
     @FXML
@@ -54,9 +48,7 @@ public class MainFrame extends AnchorPane {
     @FXML
     private FlowPane filePane;
     @FXML
-    private HBox navigationBar;
-    // atomic because we need to change this in a lambda click event
-    private final AtomicBoolean isSearching = new AtomicBoolean(false);
+    private NavBar navigationBar;
     // so we know where to add files / folders
     private FolderApi currentFolder;
 
@@ -64,18 +56,23 @@ public class MainFrame extends AnchorPane {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/MainFrame.fxml"));
         loader.setRoot(this);
         loader.setController(this);
+        // for the nav bar
+        EventReceiver<FolderApi> folderEvents = event -> {
+            loadFolder(event.get());
+            return true;
+        };
+        loader.getNamespace().put("folderEvents", folderEvents);
         try {
             loader.load();
             loadInitialFolder();
-            drawNavBar();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void loadInitialFolder() {
-        var folder = folderClient.getFolder(null).get();
-        folderNavigation.add(folder);
+        var folder = folderClient.getFolder(null).orElseThrow();
+        navigationBar.push(folder);
         // null folder is the root folder, so this will always exist
         loadFolder(folder);
     }
@@ -83,8 +80,9 @@ public class MainFrame extends AnchorPane {
     private void loadFolder(FolderApi folder) {
         folderPane.getChildren().clear();
         filePane.getChildren().clear();
-        currentFolder = folder;
-        var folderEntries = folder.folders()
+        // need to get fresh copy of the folder, as the object may be stale if other folders were added to it
+        currentFolder = folderClient.getFolder(folder.id() == 0 ? null : folder.id()).orElseThrow();
+        var folderEntries = currentFolder.folders()
                 .stream()
                 .map(FolderEntry::new)
                 .toList();
@@ -93,13 +91,12 @@ public class MainFrame extends AnchorPane {
             folderEntry.setOnMouseClicked(mouseEvent -> {
                 // left click is used for entry, right click is used for modifying properties
                 if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                    folderNavigation.add(folderEntry.getFolder());
-                    drawNavBar();
                     folderPane.getChildren().clear();
                     var retrievedFolder = folderClient.getFolder(folderEntry.getFolder().id());
                     if (retrievedFolder.isEmpty()) {
-                        showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> loadFolder(folder));
+                        showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> loadFolder(currentFolder));
                     } else {
+                        navigationBar.push(retrievedFolder.get());
                         loadFolder(retrievedFolder.get());
                     }
                 }
@@ -107,7 +104,7 @@ public class MainFrame extends AnchorPane {
             this.folderPane.getChildren().add(folderEntry);
         }
         drawAddFolder();
-        loadFiles(folder.files());
+        loadFiles(currentFolder.files());
     }
 
     private void loadFiles(Collection<FileApi> files) {
@@ -131,10 +128,12 @@ public class MainFrame extends AnchorPane {
 
     private File saveAndGetFile(FileApi fileApi) throws BadFileRequestException, BadFileResponseException, IOException {
         // ensure the cache directory exists
+        //noinspection ResultOfMethodCallIgnored
         new File(CACHE_DIR).mkdir();
         var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
         if (!cacheFile.exists()) {
             var inStream = fileClient.getFileContents(fileApi.id());
+            //noinspection ResultOfMethodCallIgnored
             cacheFile.createNewFile();
             Files.copy(inStream, cacheFile.toPath(), REPLACE_EXISTING);
         }
@@ -154,7 +153,6 @@ public class MainFrame extends AnchorPane {
     }
 
     private void handleSearch(String text) {
-        isSearching.set(true);
         try {
             var files = fileClient.search(text);
             this.folderPane.getChildren().clear();
@@ -165,31 +163,6 @@ public class MainFrame extends AnchorPane {
         } catch (BadFileResponseException e) {
             showErrorDialog(e.getMessage(), "Server Error", null);
 
-        }
-    }
-
-    private void drawNavBar() {
-        // inefficient but can be optimized later, since this won't be invoked too often
-        navigationBar.getChildren().clear();
-
-        for (int i = 0; i < folderNavigation.size(); i++) {
-            final int j = i;
-            var folder = folderNavigation.get(i);
-            var folderLink = new Label(folder.path());
-            folderLink.getStyleClass().add("folder-link");
-            navigationBar.getChildren().add(folderLink);
-            var label = new Label("/");
-            label.getStyleClass().add("text");
-            navigationBar.setAlignment(Pos.BOTTOM_LEFT);
-            navigationBar.getChildren().add(label);
-            folderLink.setOnMouseClicked(event -> {
-                if (event.getButton() == MouseButton.PRIMARY && (j < folderNavigation.size() - 1 || isSearching.get())) {
-                    isSearching.set(false);
-                    folderNavigation.subList(j + 1, folderNavigation.size()).clear();
-                    drawNavBar();
-                    loadFolder(folder);
-                }
-            });
         }
     }
 
@@ -207,7 +180,7 @@ public class MainFrame extends AnchorPane {
             } catch (BadFolderRequestException | BadFolderResponseException e) {
                 showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);
             }
-            loadFolder(folderClient.getFolder(folderId).get());
+            folderClient.getFolder(folderId).ifPresent(this::loadFolder);
         };
         var addFolderDialog = new AddFolderDialog(this.getScene().getWindow(), callback);
     }

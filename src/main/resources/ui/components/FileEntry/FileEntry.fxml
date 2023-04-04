@@ -3,8 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<fx:root prefHeight="101.25" prefWidth="100.25" type="javafx.scene.layout.AnchorPane"
-         xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@FileEntry.css">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="101.25" prefWidth="100.25"
+         type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" stylesheets="@FileEntry.css">
     <ImageView fx:id="icon" styleClass="image">
     </ImageView>
     <Label fx:id="fileName" layoutY="87.0" styleClass="text,file-name"/>
