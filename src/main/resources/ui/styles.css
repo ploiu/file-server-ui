@@ -1,18 +1,7 @@
 @import "theme.css";
 
-.search-button {
-    -fx-background-color: -liberty;
-    -fx-text-fill: -alice-blue;
-    -fx-cursor: hand;
-}
-
 .frame {
     -fx-background-color: -raisin-black;
-}
-
-.search-bar {
-    -fx-background-color: #cacaca;
-    -fx-border-radius: 0px;
 }
 
 .item-root {

@@ -1,0 +1,12 @@
+@import "../../theme.css";
+
+.search-button {
+    -fx-background-color: -liberty;
+    -fx-text-fill: -alice-blue;
+    -fx-cursor: hand;
+}
+
+.search-bar {
+    -fx-background-color: #cacaca;
+    -fx-border-radius: 0px;
+}

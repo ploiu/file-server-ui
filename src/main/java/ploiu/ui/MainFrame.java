@@ -1,12 +1,7 @@
 package ploiu.ui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -38,30 +33,35 @@ public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
     private final FileClient fileClient = App.INJECTOR.getInstance(FileClient.class);
     private final Desktop desktop = Desktop.getDesktop();
-    // keep track of where the user has navigated
-    @FXML
-    private TextField searchField;
-    @FXML
-    private Button searchButton;
     @FXML
     private FlowPane folderPane;
     @FXML
     private FlowPane filePane;
+    /// EVENT HANDLERS
+    // search bar
+    private final EventReceiver<String> searchEvents = event -> {
+        handleSearch(event.get());
+        return true;
+    };
     @FXML
     private NavBar navigationBar;
+    @FXML
+    private SearchBar searchBar;
     // so we know where to add files / folders
     private FolderApi currentFolder;
+    // nav bar
+    private final EventReceiver<FolderApi> folderEvents = event -> {
+        loadFolder(event.get());
+        return true;
+    };
 
     public MainFrame() {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/MainFrame.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-        // for the nav bar
-        EventReceiver<FolderApi> folderEvents = event -> {
-            loadFolder(event.get());
-            return true;
-        };
+        // add event handlers to the namespace
         loader.getNamespace().put("folderEvents", folderEvents);
+        loader.getNamespace().put("searchEvents", searchEvents);
         try {
             loader.load();
             loadInitialFolder();
@@ -140,18 +140,6 @@ public class MainFrame extends AnchorPane {
         return cacheFile;
     }
 
-    @FXML
-    private void searchButtonClicked(ActionEvent event) {
-        handleSearch(searchButton.getText());
-    }
-
-    @FXML
-    private void searchBarKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            handleSearch(searchField.getText());
-        }
-    }
-
     private void handleSearch(String text) {
         try {
             var files = fileClient.search(text);
@@ -162,7 +150,6 @@ public class MainFrame extends AnchorPane {
             showErrorDialog(e.getMessage(), "Bad Search Text", null);
         } catch (BadFileResponseException e) {
             showErrorDialog(e.getMessage(), "Server Error", null);
-
         }
     }
 
