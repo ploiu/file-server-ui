@@ -9,11 +9,8 @@ import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
-import ploiu.exception.BadFolderRequestException;
-import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
-import ploiu.model.FolderRequest;
 import ploiu.ui.event.EventReceiver;
 
 import java.awt.Desktop;
@@ -21,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
-import java.util.Optional;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -37,21 +33,28 @@ public class MainFrame extends AnchorPane {
     private FlowPane folderPane;
     @FXML
     private FlowPane filePane;
-    /// EVENT HANDLERS
-    // search bar
-    private final EventReceiver<String> searchEvents = event -> {
-        handleSearch(event.get());
-        return true;
-    };
     @FXML
     private NavBar navigationBar;
     @FXML
     private SearchBar searchBar;
     // so we know where to add files / folders
     private FolderApi currentFolder;
+
+    /// EVENT HANDLERS
+    // search bar
+    private final EventReceiver<String> searchEvents = event -> {
+        handleSearch(event.get());
+        return true;
+    };
     // nav bar
-    private final EventReceiver<FolderApi> folderEvents = event -> {
+    private final EventReceiver<FolderApi> navigateFolderEvents = event -> {
         loadFolder(event.get());
+        return true;
+    };
+    // add folder
+    private final EventReceiver<FolderApi> addFolderEvents = event -> {
+        var id = this.currentFolder.id() == 0 ? null : this.currentFolder.id();
+        folderClient.getFolder(id).ifPresent(this::loadFolder);
         return true;
     };
 
@@ -60,7 +63,7 @@ public class MainFrame extends AnchorPane {
         loader.setRoot(this);
         loader.setController(this);
         // add event handlers to the namespace
-        loader.getNamespace().put("folderEvents", folderEvents);
+        loader.getNamespace().put("folderEvents", navigateFolderEvents);
         loader.getNamespace().put("searchEvents", searchEvents);
         try {
             loader.load();
@@ -154,21 +157,8 @@ public class MainFrame extends AnchorPane {
     }
 
     private void drawAddFolder() {
-        var addFolder = new AddFolder(e -> showNewFolderPane());
+        var addFolder = new AddFolder(addFolderEvents, currentFolder.id());
         this.folderPane.getChildren().add(addFolder);
     }
 
-    private void showNewFolderPane() {
-        AddFolderDialog.CreateAction callback = folderName -> {
-            // translate for the api
-            var folderId = currentFolder.id() == 0 ? null : currentFolder.id();
-            try {
-                folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.ofNullable(folderId), folderName));
-            } catch (BadFolderRequestException | BadFolderResponseException e) {
-                showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);
-            }
-            folderClient.getFolder(folderId).ifPresent(this::loadFolder);
-        };
-        var addFolderDialog = new AddFolderDialog(this.getScene().getWindow(), callback);
-    }
 }
