@@ -7,8 +7,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1"
-         prefHeight="115"
-         prefWidth="115"
+         prefHeight="96"
+         prefWidth="96"
          type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/17.0.2-ea"
          stylesheets="@FolderEntry.css">
