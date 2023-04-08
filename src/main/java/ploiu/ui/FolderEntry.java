@@ -1,11 +1,14 @@
 package ploiu.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
+import ploiu.event.EventReceiver;
 import ploiu.model.FolderApi;
 
 import java.io.IOException;
@@ -20,8 +23,12 @@ public class FolderEntry extends AnchorPane {
     private ImageView icon;
     @FXML
     private Label folderName;
+    @FXML
+    private ContextMenu folderMenu;
 
-    public FolderEntry(FolderApi folder) {
+    private final EventReceiver<FolderApi> receiver;
+
+    public FolderEntry(FolderApi folder, EventReceiver<FolderApi> receiver) {
         this.folder = folder;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FolderEntry/FolderEntry.fxml"));
         loader.setRoot(this);
@@ -35,5 +42,26 @@ public class FolderEntry extends AnchorPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.receiver = receiver;
+    }
+
+    @FXML
+    @SuppressWarnings("unused")
+    private void initialize() {
+        this.setOnContextMenuRequested(event -> {
+            folderMenu.show(this, event.getScreenX(), event.getScreenY());
+        });
+    }
+
+    @FXML
+    @SuppressWarnings("unused")
+    private void renameItemClicked(ActionEvent event) {
+        System.out.println(event);
+    }
+
+    @FXML
+    @SuppressWarnings("unused")
+    private void deleteItemClicked(ActionEvent event) {
+        System.out.println(event);
     }
 }

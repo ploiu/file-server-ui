@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1"
-         prefHeight="96"
-         prefWidth="96"
+         prefHeight="115"
+         prefWidth="115"
          type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/17.0.2-ea"
          stylesheets="@FolderEntry.css">
@@ -14,4 +16,12 @@
         <ImageView fx:id="icon" id="icon" preserveRatio="true"/>
     </StackPane>
     <Label fx:id="folderName" layoutX="20.0" layoutY="67.0" styleClass="text"/>
+    <fx:define>
+        <ContextMenu fx:id="folderMenu">
+            <items>
+                <MenuItem text="Rename Folder" onAction="#renameItemClicked"/>
+                <MenuItem text="Delete Folder" onAction="#deleteItemClicked"/>
+            </items>
+        </ContextMenu>
+    </fx:define>
 </fx:root>

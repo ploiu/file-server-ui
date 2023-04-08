@@ -6,12 +6,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import ploiu.client.FolderClient;
+import ploiu.event.Event;
+import ploiu.event.EventReceiver;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
-import ploiu.ui.event.Event;
-import ploiu.ui.event.EventReceiver;
 
 import java.io.IOException;
 import java.util.Optional;

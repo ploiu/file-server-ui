@@ -7,17 +7,21 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
+import ploiu.event.EventReceiver;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
+import ploiu.exception.BadFolderRequestException;
+import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
-import ploiu.ui.event.EventReceiver;
+import ploiu.model.FolderRequest;
 
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Collection;
+import java.util.Optional;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -57,6 +61,20 @@ public class MainFrame extends AnchorPane {
         folderClient.getFolder(id).ifPresent(this::loadFolder);
         return true;
     };
+    // update folder
+    private final EventReceiver<FolderApi> updateFolderEvents = event -> {
+        var folder = event.get();
+        // I really need to make the api return 0 instead of null for the root folder...
+        var parentId = folder.parentId() == 0 ? null : folder.parentId();
+        try {
+            var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), Optional.ofNullable(parentId), folder.path()));
+            // need to redraw the current folder
+            loadFolder(currentFolder);
+            return true;
+        } catch (BadFolderRequestException | BadFolderResponseException e) {
+            return false;
+        }
+    };
 
     public MainFrame() {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/MainFrame.fxml"));
@@ -87,7 +105,7 @@ public class MainFrame extends AnchorPane {
         currentFolder = folderClient.getFolder(folder.id() == 0 ? null : folder.id()).orElseThrow();
         var folderEntries = currentFolder.folders()
                 .stream()
-                .map(FolderEntry::new)
+                .map(folderApi -> new FolderEntry(folderApi, updateFolderEvents))
                 .toList();
         for (FolderEntry folderEntry : folderEntries) {
             // when clicking any of the folder entries, clear the page and populate it with the new folder contents
