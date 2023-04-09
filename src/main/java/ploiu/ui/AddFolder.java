@@ -42,15 +42,17 @@ public class AddFolder extends AnchorPane {
     @FXML
     private void showNewFolderPane(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            AddFolderDialog.CreateAction callback = folderName -> {
+            EventReceiver<String> callback = evt -> {
+                var folderName = evt.get();
                 var folderId = currentFolderId == 0 ? null : currentFolderId;
                 try {
                     this.receiver.process(new Event<>(folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.ofNullable(folderId), folderName))));
                 } catch (BadFolderRequestException | BadFolderResponseException e) {
                     showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);
                 }
+                return true;
             };
-            new AddFolderDialog(this.getScene().getWindow(), callback);
+            new TextInputDialog(this.getScene().getWindow(), callback, "Create Folder");
         }
     }
 }

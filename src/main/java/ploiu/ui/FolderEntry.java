@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
+import ploiu.event.Event;
 import ploiu.event.EventReceiver;
 import ploiu.model.FolderApi;
 
@@ -56,7 +57,13 @@ public class FolderEntry extends AnchorPane {
     @FXML
     @SuppressWarnings("unused")
     private void renameItemClicked(ActionEvent event) {
-        System.out.println(event);
+        EventReceiver<String> dialogCallback = evt -> {
+            var newName = evt.get();
+            var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, folder.folders(), folder.files());
+            receiver.process(new Event<>(newFolder));
+            return true;
+        };
+        var dialog = new TextInputDialog(this.getScene().getWindow(), dialogCallback, "Rename Folder");
     }
 
     @FXML

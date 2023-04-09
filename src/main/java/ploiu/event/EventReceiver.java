@@ -1,5 +1,6 @@
 package ploiu.event;
 
+@FunctionalInterface
 public interface EventReceiver<T> {
     /**
      * handles the passed event. The event may or may not be processed, and the return value is used to indicate this. {@code true} means the event was accepted, and {@code false} means it was rejected
