@@ -1,6 +1,6 @@
 package ploiu.event;
 
-public final class Event<T> {
+public sealed class Event<T> permits FolderEvent {
     private final T value;
 
     public Event(T value) {

@@ -8,6 +8,7 @@ import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.event.EventReceiver;
+import ploiu.event.FolderEvent;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
@@ -55,25 +56,37 @@ public class MainFrame extends AnchorPane {
         loadFolder(event.get());
         return true;
     };
-    // add folder
-    private final EventReceiver<FolderApi> addFolderEvents = event -> {
-        var id = this.currentFolder.id() == 0 ? null : this.currentFolder.id();
-        folderClient.getFolder(id).ifPresent(this::loadFolder);
-        return true;
-    };
-    // update folder
-    private final EventReceiver<FolderApi> updateFolderEvents = event -> {
+    private final EventReceiver<FolderApi> folderCrudEvents = event -> {
         var folder = event.get();
-        // I really need to make the api return 0 instead of null for the root folder...
-        var parentId = folder.parentId() == 0 ? null : folder.parentId();
-        try {
-            var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), Optional.ofNullable(parentId), folder.path()));
-            // need to redraw the current folder
-            loadFolder(currentFolder);
-            return true;
-        } catch (BadFolderRequestException | BadFolderResponseException e) {
-            return false;
+        if (event instanceof FolderEvent fe) {
+            return switch (fe.getType()) {
+                case UPDATE -> {
+                    try {
+                        // I really need to make the api return 0 instead of null for the root folder...
+                        var parentId = folder.parentId() == 0 ? null : folder.parentId();
+                        var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), Optional.ofNullable(parentId), folder.path()));
+                        // need to redraw the current folder
+                        loadFolder(currentFolder);
+                        yield true;
+                    } catch (BadFolderRequestException | BadFolderResponseException e) {
+                        yield false;
+                    }
+                }
+                case DELETE -> {
+                    if (folderClient.deleteFolder(folder.id())) {
+                        loadFolder(currentFolder);
+                        yield true;
+                    }
+                    yield false;
+                }
+                case CREATE -> {
+                    var id = this.currentFolder.id() == 0 ? null : this.currentFolder.id();
+                    folderClient.getFolder(id).ifPresent(this::loadFolder);
+                    yield true;
+                }
+            };
         }
+        return false;
     };
 
     public MainFrame() {
@@ -105,7 +118,7 @@ public class MainFrame extends AnchorPane {
         currentFolder = folderClient.getFolder(folder.id() == 0 ? null : folder.id()).orElseThrow();
         var folderEntries = currentFolder.folders()
                 .stream()
-                .map(folderApi -> new FolderEntry(folderApi, updateFolderEvents))
+                .map(folderApi -> new FolderEntry(folderApi, folderCrudEvents))
                 .toList();
         for (FolderEntry folderEntry : folderEntries) {
             // when clicking any of the folder entries, clear the page and populate it with the new folder contents
@@ -175,7 +188,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void drawAddFolder() {
-        var addFolder = new AddFolder(addFolderEvents, currentFolder.id());
+        var addFolder = new AddFolder(folderCrudEvents, currentFolder.id());
         this.folderPane.getChildren().add(addFolder);
     }
 

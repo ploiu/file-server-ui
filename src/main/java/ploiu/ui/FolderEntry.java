@@ -8,11 +8,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
-import ploiu.event.Event;
 import ploiu.event.EventReceiver;
+import ploiu.event.FolderEvent;
 import ploiu.model.FolderApi;
+import ploiu.model.TextInputDialogOptions;
 
 import java.io.IOException;
+
+import static ploiu.util.DialogUtils.showErrorDialog;
 
 public class FolderEntry extends AnchorPane {
     /**
@@ -60,15 +63,24 @@ public class FolderEntry extends AnchorPane {
         EventReceiver<String> dialogCallback = evt -> {
             var newName = evt.get();
             var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, folder.folders(), folder.files());
-            receiver.process(new Event<>(newFolder));
+            receiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE));
             return true;
         };
-        var dialog = new TextInputDialog(this.getScene().getWindow(), dialogCallback, "Rename Folder");
+        var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Rename Folder"));
     }
 
     @FXML
     @SuppressWarnings("unused")
     private void deleteItemClicked(ActionEvent event) {
-        System.out.println(event);
+        EventReceiver<String> dialogCallback = res -> {
+            if (res.get().equals(folderName.getText())) {
+                return receiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE));
+            }
+            showErrorDialog("[" + res.get() + "] does not match the folder name [" + folderName.getText() + "]", "Failed to delete folder", null);
+            return false;
+        };
+        var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")
+                .bodyText("Are you sure you want to delete? Type the name of the folder and click Confirm to delete")
+                .windowTitle("Confirm Delete?"));
     }
 }

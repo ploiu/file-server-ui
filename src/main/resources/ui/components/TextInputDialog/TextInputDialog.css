@@ -16,3 +16,9 @@
     -fx-background-color: #cacaca;
     -fx-border-radius: 0px;
 }
+
+.body-text {
+    -fx-text-fill: -paradise-pink;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+}

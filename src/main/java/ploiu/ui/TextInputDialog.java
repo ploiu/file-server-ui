@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import ploiu.event.Event;
 import ploiu.event.EventReceiver;
+import ploiu.model.TextInputDialogOptions;
 
 import java.io.IOException;
 
@@ -24,20 +25,17 @@ public class TextInputDialog extends AnchorPane {
     private Button actionButton;
     private final String windowTitle;
 
-    public TextInputDialog(Window parentWindow, EventReceiver<String> createAction, String confirmText) {
-        this(parentWindow, createAction, confirmText, confirmText);
-    }
-
-    public TextInputDialog(Window parentWindow, EventReceiver<String> createAction, String confirmText, String windowTitle) {
+    public TextInputDialog(TextInputDialogOptions options) {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/TextInputDialog/TextInputDialog.fxml"));
-        this.windowTitle = windowTitle;
+        this.windowTitle = options.windowTitle();
         loader.setRoot(this);
         loader.setController(this);
-        loader.getNamespace().put("confirmText", confirmText);
+        loader.getNamespace().put("confirmText", options.confirmText());
+        loader.getNamespace().put("bodyText", options.bodyText());
         try {
             loader.load();
-            registerEvents(createAction);
-            popup(parentWindow);
+            registerEvents(options.createAction());
+            popup(options.parentWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
