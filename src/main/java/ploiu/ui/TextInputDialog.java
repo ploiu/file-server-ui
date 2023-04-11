@@ -12,23 +12,30 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import ploiu.event.Event;
+import ploiu.event.EventReceiver;
+import ploiu.model.TextInputDialogOptions;
 
 import java.io.IOException;
 
-public class AddFolderDialog extends AnchorPane {
+public class TextInputDialog extends AnchorPane {
     @FXML
-    private TextField folderTitle;
+    private TextField textBox;
     @FXML
-    private Button createFolder;
+    private Button actionButton;
+    private final String windowTitle;
 
-    public AddFolderDialog(Window parentWindow, CreateAction createAction) {
-        var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/AddFolderDialog/AddFolderDialog.fxml"));
+    public TextInputDialog(TextInputDialogOptions options) {
+        var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/TextInputDialog/TextInputDialog.fxml"));
+        this.windowTitle = options.windowTitle();
         loader.setRoot(this);
         loader.setController(this);
+        loader.getNamespace().put("confirmText", options.confirmText());
+        loader.getNamespace().put("bodyText", options.bodyText());
         try {
             loader.load();
-            registerEvents(createAction);
-            popup(parentWindow);
+            registerEvents(options.createAction());
+            popup(options.parentWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -41,26 +48,21 @@ public class AddFolderDialog extends AnchorPane {
         var scene = new Scene(this);
         stage.setScene(scene);
         stage.show();
-        stage.setTitle("Create Folder");
+        stage.setTitle(windowTitle);
     }
 
-    private void registerEvents(CreateAction createAction) {
+    private void registerEvents(EventReceiver<String> createAction) {
         EventHandler<ActionEvent> submitEvent = ignored -> {
-            if (!folderTitle.getText().isBlank()) {
-                createAction.handle(folderTitle.getText());
+            if (!textBox.getText().isBlank()) {
+                createAction.process(new Event<>(textBox.getText()));
                 ((Stage) this.getScene().getWindow()).close();
             }
         };
-        createFolder.setOnAction(submitEvent);
-        folderTitle.setOnKeyPressed(event -> {
+        actionButton.setOnAction(submitEvent);
+        textBox.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 submitEvent.handle(null);
             }
         });
-    }
-
-    @FunctionalInterface
-    public interface CreateAction {
-        void handle(String folderName);
     }
 }

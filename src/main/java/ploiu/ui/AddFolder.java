@@ -6,12 +6,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import ploiu.client.FolderClient;
+import ploiu.event.EventReceiver;
+import ploiu.event.FolderEvent;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
-import ploiu.ui.event.Event;
-import ploiu.ui.event.EventReceiver;
+import ploiu.model.TextInputDialogOptions;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -40,17 +41,20 @@ public class AddFolder extends AnchorPane {
     }
 
     @FXML
+    @SuppressWarnings("unused")
     private void showNewFolderPane(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            AddFolderDialog.CreateAction callback = folderName -> {
+            EventReceiver<String> callback = evt -> {
+                var folderName = evt.get();
                 var folderId = currentFolderId == 0 ? null : currentFolderId;
                 try {
-                    this.receiver.process(new Event<>(folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.ofNullable(folderId), folderName))));
+                    this.receiver.process(new FolderEvent(folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.ofNullable(folderId), folderName)), FolderEvent.Type.CREATE));
                 } catch (BadFolderRequestException | BadFolderResponseException e) {
                     showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);
                 }
+                return true;
             };
-            new AddFolderDialog(this.getScene().getWindow(), callback);
+            new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), callback, "Create Folder"));
         }
     }
 }

@@ -1,6 +1,6 @@
-package ploiu.ui.event;
+package ploiu.event;
 
-public final class Event<T> {
+public class Event<T> {
     private final T value;
 
     public Event(T value) {

@@ -6,9 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import ploiu.event.Event;
+import ploiu.event.EventReceiver;
 import ploiu.model.FolderApi;
-import ploiu.ui.event.Event;
-import ploiu.ui.event.EventReceiver;
 
 import java.io.IOException;
 import java.util.ArrayList;
