@@ -95,7 +95,25 @@ public class FolderClient {
         }
     }
 
-    public boolean deleteFolder(long id) {
-        throw new UnsupportedOperationException();
+    public boolean deleteFolder(long id) throws BadFolderRequestException, BadFolderResponseException {
+        if (id < 1) {
+            throw new BadFolderRequestException("id must be greater than 0");
+        }
+        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/folders/" + id))
+                .DELETE()
+                .header("Authorization", authConfig.basicAuth())
+                .build();
+        try {
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 204) {
+                return true;
+            } else {
+                var errorMessage = mapper.readValue(response.body(), ApiMessage.class);
+                throw new BadFolderResponseException(errorMessage.message());
+            }
+        } catch (IOException | InterruptedException e) {
+            log.error("Unforeseen error with delete folder", e);
+            throw new RuntimeException(e);
+        }
     }
 }

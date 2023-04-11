@@ -152,9 +152,9 @@ class FolderClientTests {
     }
 
     @Test
-    void testDeleteFolderRequiresNonZeroId() {
+    void testDeleteFolderRequiresPositiveId() {
         var exception = Assertions.assertThrows(BadFolderRequestException.class, () -> folderClient.deleteFolder(0L));
-        assertEquals("0 is the root folder id, and cannot be deleted", exception.getMessage());
+        assertEquals("id must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -162,8 +162,7 @@ class FolderClientTests {
         when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
         when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
         when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(200);
-        when(dummyResponse.body()).thenReturn("{}");
+        when(dummyResponse.statusCode()).thenReturn(204);
         folderClient.deleteFolder(1L);
         verify(httpClient).send(argThat(req -> req.method() == "DELETE"), any());
     }
@@ -173,10 +172,9 @@ class FolderClientTests {
         when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
         when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
         when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(200);
-        when(dummyResponse.body()).thenReturn("{}");
+        when(dummyResponse.statusCode()).thenReturn(204);
         folderClient.deleteFolder(1L);
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders")), any());
+        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders/1")), any());
     }
 
     @Test
@@ -184,8 +182,7 @@ class FolderClientTests {
         when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
         when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
         when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(200);
-        when(dummyResponse.body()).thenReturn("{}");
+        when(dummyResponse.statusCode()).thenReturn(204);
         folderClient.deleteFolder(1L);
         verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
     }
