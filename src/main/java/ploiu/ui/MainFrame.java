@@ -73,9 +73,13 @@ public class MainFrame extends AnchorPane {
                     }
                 }
                 case DELETE -> {
-                    if (folderClient.deleteFolder(folder.id())) {
-                        loadFolder(currentFolder);
-                        yield true;
+                    try {
+                        if (folderClient.deleteFolder(folder.id())) {
+                            loadFolder(currentFolder);
+                            yield true;
+                        }
+                    } catch (BadFolderRequestException | BadFolderResponseException e) {
+                        showErrorDialog(e.getMessage(), "Failed to delete folder", null);
                     }
                     yield false;
                 }

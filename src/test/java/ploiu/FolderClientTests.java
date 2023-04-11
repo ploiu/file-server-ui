@@ -150,4 +150,40 @@ class FolderClientTests {
         folderClient.updateFolder(new FolderRequest(Optional.of(1L), Optional.empty(), "test"));
         verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
     }
+
+    @Test
+    void testDeleteFolderRequiresPositiveId() {
+        var exception = Assertions.assertThrows(BadFolderRequestException.class, () -> folderClient.deleteFolder(0L));
+        assertEquals("id must be greater than 0", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteFolderUsesDelete() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
+        when(dummyResponse.statusCode()).thenReturn(204);
+        folderClient.deleteFolder(1L);
+        verify(httpClient).send(argThat(req -> req.method() == "DELETE"), any());
+    }
+
+    @Test
+    void testDeleteFolderUsesCorrectPath() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
+        when(dummyResponse.statusCode()).thenReturn(204);
+        folderClient.deleteFolder(1L);
+        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders/1")), any());
+    }
+
+    @Test
+    void testDeleteFolderPassesAuth() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
+        when(dummyResponse.statusCode()).thenReturn(204);
+        folderClient.deleteFolder(1L);
+        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
+    }
 }
