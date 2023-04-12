@@ -124,7 +124,7 @@ public class FileClient {
         }
     }
 
-    public FileApi createFile(File file, String name) {
+    public FileApi createFile(File file) {
         throw new UnsupportedOperationException();
     }
 
