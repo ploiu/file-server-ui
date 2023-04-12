@@ -13,10 +13,10 @@ import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
+import ploiu.model.CreateFileRequest;
 
-import java.net.URI;
+import java.io.File;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -203,6 +203,62 @@ public class FileClientTests {
         when(httpClient.send(any(), any())).thenReturn(mockResponse);
         fileClient.search("whatever");
         verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/files/metadata?search=whatever")), any());
+    }
+
+    @Test
+    void testCreateFileRequiresNonNullFile() {
+        var e = assertThrows(NullPointerException.class, () -> fileClient.createFile(new CreateFileRequest(null, null)));
+        assertEquals("File cannot be null.", e.getMessage());
+    }
+
+    @Test
+    void testCreateFileRequiresFileToExist() {
+        var e = assertThrows(BadFileRequestException.class, () -> fileClient.createFile(new CreateFileRequest(null, new File("bad file.bad file" + System.currentTimeMillis()))));
+        assertEquals("The selected file does not exist.", e.getMessage());
+    }
+
+    @Test
+    void testCreateFilePassesAuth() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(201);
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        when(mockResponse.body()).thenReturn("{}");
+        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
+    }
+
+    @Test
+    void testCreateFileUsesPOST() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(201);
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        when(mockResponse.body()).thenReturn("{}");
+        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        verify(httpClient).send(argThat(req -> req.method().equals("POST")), any());
+    }
+
+    @Test
+    void testCreateFileUsesCorrectPath() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(201);
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        when(mockResponse.body()).thenReturn("{}");
+        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/files")), any());
+    }
+
+    @Test
+    void testCreateFilePassesMultipart() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
+        when(mockResponse.statusCode()).thenReturn(201);
+        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
+        when(httpClient.send(any(), any())).thenReturn(mockResponse);
+        when(mockResponse.body()).thenReturn("{}");
+        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        verify(httpClient).send(argThat(req -> req.headers().firstValue("Content-Type").get().contains("multipart/form-data; boundary=")), any());
     }
 
 }

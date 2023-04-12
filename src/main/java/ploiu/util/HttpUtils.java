@@ -35,7 +35,8 @@ public class HttpUtils {
                 """.strip()
                 .replace("$boundary", boundary)
                 .replace("$name", name)
-                .replace("$value", value.toString());
+                // value.toString may cause NPE
+                .replace("$value", String.valueOf(value));
     }
 
     private static String buildPartFile(String name, File value, String boundary) {

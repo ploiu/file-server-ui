@@ -11,19 +11,18 @@ import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.ApiMessage;
+import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
+import ploiu.util.HttpUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
@@ -124,8 +123,36 @@ public class FileClient {
         }
     }
 
-    public FileApi createFile(File file) {
-        throw new UnsupportedOperationException();
+    public FileApi createFile(CreateFileRequest request) throws BadFileRequestException, BadFileResponseException {
+        var file = request.file();
+        Objects.requireNonNull(file, "File cannot be null.");
+        if (!file.exists()) {
+            throw new BadFileRequestException("The selected file does not exist.");
+        }
+        var splitName = file.getName().split("\\.");
+        // folderId can be null, so need to manually add entries...really need to fix that server side to be 0 for root folder id
+        var body = new HashMap<String, Object>();
+        body.put("file", file);
+        body.put("extension", splitName[splitName.length - 1]);
+        body.put("folder_id", request.folderId());
+        var multipart = HttpUtils.multipart(body);
+        var req = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files"))
+                .POST(HttpRequest.BodyPublishers.ofString(multipart.body()))
+                .header("Content-Type", "multipart/form-data; boundary=----------------------------" + multipart.boundary())
+                .header("Authorization", authenticationConfig.basicAuth())
+                .build();
+        try {
+            var res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+            if (res.statusCode() != 201) {
+                var message = mapper.readValue(res.body(), ApiMessage.class).message();
+                throw new BadFileResponseException(message);
+            }
+            return mapper.readValue(res.body(), new TypeReference<>() {
+            });
+        } catch (IOException | InterruptedException e) {
+            log.error("Unforeseen error creating file", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean isStatus2xxOk(int statusCode) {

@@ -8,12 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/Multipart.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/HttpUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/HttpUtilsTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/test.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/CreateFileRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/HttpUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/HttpUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,8 +39,8 @@
       <list>
         <option value="FxmlFile" />
         <option value="CSS File" />
-        <option value="Record" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -97,7 +95,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.HttpUtilsTests">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ploiu.ui.App" />
       <module name="file-server-ui.main" />
@@ -110,6 +108,30 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="FileClientTests.testCreateFileUsesPOST" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FileClientTests.testCreateFileUsesPOST&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
     </configuration>
     <configuration name="HttpUtilsTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -183,10 +205,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Gradle.FileClientTests.testCreateFileUsesPOST" />
         <item itemvalue="Gradle.HttpUtilsTests" />
         <item itemvalue="Gradle.HttpUtilsTests.testMultipartFile" />
         <item itemvalue="Application.App" />
-        <item itemvalue="Gradle.file-server-ui [test]" />
       </list>
     </recent_temporary>
   </component>
@@ -213,7 +236,7 @@
       <workItem from="1680995496823" duration="1045000" />
       <workItem from="1680996941287" duration="2406000" />
       <workItem from="1681167803236" duration="6257000" />
-      <workItem from="1681253438007" duration="5669000" />
+      <workItem from="1681253438007" duration="8199000" />
     </task>
     <servers />
   </component>
