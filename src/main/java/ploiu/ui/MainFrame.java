@@ -19,6 +19,7 @@ import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
 
 import java.awt.Desktop;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -187,10 +188,10 @@ public class MainFrame extends AnchorPane {
         new File(CACHE_DIR).mkdir();
         var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
         if (!cacheFile.exists()) {
-            var inStream = fileClient.getFileContents(fileApi.id());
+            var contents = fileClient.getFileContents(fileApi.id());
             //noinspection ResultOfMethodCallIgnored
             cacheFile.createNewFile();
-            Files.copy(inStream, cacheFile.toPath(), REPLACE_EXISTING);
+            Files.copy(new ByteArrayInputStream(contents.getBytes()), cacheFile.toPath(), REPLACE_EXISTING);
         }
         return cacheFile;
     }

@@ -8,21 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/uploadFileTest.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/config/ServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/config/ServerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/exception/BadFileResponseException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/exception/BadFileResponseException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/HttpUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/HttpUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/AddFile/AddFile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/AddFile/AddFile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/AddFile/AddFile.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/AddFile/AddFile.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/HttpUtils.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/HttpUtilsTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/HttpUtilsTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,14 +104,14 @@
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
-      <command value="gradlew test" />
       <command value="gradle test" />
-      <command value="open untitled" />
       <command value="gradlew build" />
+      <command value="open untitled" />
       <command value="open file_server" />
+      <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ploiu.Main" />
       <module name="file-server-ui.main" />
@@ -156,7 +147,26 @@
       <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
-    <configuration name="uploadFileTest | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/uploadFileTest.http" requestIdentifier="#1" runType="Run single request">
+    <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <configuration name="uploadFileTest | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/uploadFileTest.http" index="3" requestIdentifier="#3" runType="Run single request">
@@ -167,18 +177,18 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.file-server-ui [test]" />
       <item itemvalue="Gradle.file-server-ui [build]" />
       <item itemvalue="HTTP Request.uploadFileTest | what the fuck" />
       <item itemvalue="HTTP Request.uploadFileTest | #3" />
-      <item itemvalue="HTTP Request.uploadFileTest | #1" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="HTTP Request.uploadFileTest | what the fuck" />
         <item itemvalue="HTTP Request.uploadFileTest | #3" />
-        <item itemvalue="Application.Main" />
         <item itemvalue="Gradle.file-server-ui [build]" />
-        <item itemvalue="HTTP Request.uploadFileTest | #1" />
       </list>
     </recent_temporary>
   </component>
@@ -211,7 +221,8 @@
       <workItem from="1681432741438" duration="3249000" />
       <workItem from="1681587647686" duration="262000" />
       <workItem from="1681588849601" duration="2362000" />
-      <workItem from="1681605620457" duration="2954000" />
+      <workItem from="1681605620457" duration="5739000" />
+      <workItem from="1681652864640" duration="888000" />
     </task>
     <servers />
   </component>
@@ -223,11 +234,21 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>138</line>
-          <option name="timeStamp" value="2" />
+          <line>100</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
+          <line>155</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

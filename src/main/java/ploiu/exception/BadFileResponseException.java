@@ -1,6 +1,6 @@
 package ploiu.exception;
 
-public class BadFileResponseException extends Exception {
+public class BadFileResponseException extends RuntimeException {
     public BadFileResponseException(String message) {
         super(message);
     }
