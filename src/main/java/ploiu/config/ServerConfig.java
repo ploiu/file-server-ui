@@ -15,14 +15,16 @@ public class ServerConfig {
     private final String baseUrl;
     private final Pattern versionMatcher;
     private final String compatibleVersion;
+    private final String host;
+    private final int port;
 
     public ServerConfig() {
         var props = new Properties();
         try (var inStream = getClass().getClassLoader().getResourceAsStream("app.properties")) {
             props.load(inStream);
-            var address = props.getProperty("server.address");
-            var port = props.getProperty("server.port");
-            this.baseUrl = String.format("https://%s:%s", address, port);
+            this.host = props.getProperty("server.address");
+            this.port = Integer.parseInt(props.getProperty("server.port"));
+            this.baseUrl = String.format("https://%s:%s", host, port);
             this.versionMatcher = generateCompatibleVersionPattern(props);
             this.compatibleVersion = props.getProperty("server.compatible.version");
         } catch (IOException e) {

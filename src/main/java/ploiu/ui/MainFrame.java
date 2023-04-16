@@ -13,6 +13,7 @@ import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
+import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
@@ -92,6 +93,21 @@ public class MainFrame extends AnchorPane {
         }
         return false;
     };
+    // upload file
+    private final EventReceiver<File> createFileEvent = event -> {
+        var file = event.get();
+        if (!file.exists()) {
+            return false;
+        }
+        try {
+            fileClient.createFile(new CreateFileRequest(currentFolder.id(), file));
+            loadFolder(currentFolder);
+            return true;
+        } catch (BadFileRequestException | BadFileResponseException e) {
+            showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null);
+            return false;
+        }
+    };
 
     public MainFrame() {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/MainFrame.fxml"));
@@ -162,6 +178,7 @@ public class MainFrame extends AnchorPane {
             });
             filePane.getChildren().add(entry);
         }
+        drawAddFile();
     }
 
     private File saveAndGetFile(FileApi fileApi) throws BadFileRequestException, BadFileResponseException, IOException {
@@ -194,6 +211,11 @@ public class MainFrame extends AnchorPane {
     private void drawAddFolder() {
         var addFolder = new AddFolder(folderCrudEvents, currentFolder.id());
         this.folderPane.getChildren().add(addFolder);
+    }
+
+    private void drawAddFile() {
+        var addFile = new AddFile(createFileEvent, currentFolder.id());
+        this.filePane.getChildren().add(addFile);
     }
 
 }

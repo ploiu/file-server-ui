@@ -19,7 +19,7 @@ public class HttpUtils {
      */
     public static Multipart multipart(Map<String, Object> properties) {
         var boundary = Long.toString(System.currentTimeMillis());
-        var body = properties.entrySet().stream().map(entry -> buildPart(entry.getKey(), entry.getValue(), boundary)).collect(Collectors.joining("\n")) + "\n----------------------------" + boundary + "--";
+        var body = properties.entrySet().stream().map(entry -> buildPart(entry.getKey(), entry.getValue(), boundary)).collect(Collectors.joining("\n")) + "\n--" + boundary + "--";
         return new Multipart(boundary, body);
     }
 
@@ -28,11 +28,12 @@ public class HttpUtils {
             return buildPartFile(name, file, boundary);
         }
         return """
-                ----------------------------$boundary
+                --$boundary
                 Content-Disposition: form-data; name="$name"
+                Content-Type: text/plain; charset=ISO-8859-1
+                Content-Transfer-Encoding: binary
                                 
-                $value
-                """.strip()
+                $value""".stripIndent()
                 .replace("$boundary", boundary)
                 .replace("$name", name)
                 // value.toString may cause NPE
@@ -41,15 +42,19 @@ public class HttpUtils {
 
     private static String buildPartFile(String name, File value, String boundary) {
         var mediaType = URLConnection.guessContentTypeFromName(value.getName());
+        if (mediaType == null) {
+            mediaType = "text/plain";
+        }
         try (var reader = new BufferedReader(new FileReader(value))) {
             var text = reader.lines().collect(Collectors.joining("\n"));
             return """
-                    ----------------------------$boundary
-                    Content-Disposition: form-data; name="$name"; filename="$fileName"
-                    Content-Type: $mediaType
+                    --$boundary
+                    Content-Disposition: inline; name="$name"; filename="$fileName"
+                    Content-Type: $mediaType; charset=ISO-8859-1
+                    Content-Transfer-Encoding: binary
                                         
                     $fileText
-                    """.strip()
+                    """.stripIndent()
                     .replace("$boundary", boundary)
                     .replace("$name", name)
                     .replace("$fileName", value.getName())

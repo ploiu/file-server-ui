@@ -134,12 +134,13 @@ public class FileClient {
         var body = new HashMap<String, Object>();
         body.put("file", file);
         body.put("extension", splitName[splitName.length - 1]);
-        body.put("folder_id", request.folderId());
+        body.put("folder_id", request.folderId() == 0 ? null : request.folderId());
         var multipart = HttpUtils.multipart(body);
-        var req = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files"))
+        var req = HttpRequest.newBuilder(URI.create(/*serverConfig.getBaseUrl() + */"http://localhost:8001/files"))
                 .POST(HttpRequest.BodyPublishers.ofString(multipart.body()))
-                .header("Content-Type", "multipart/form-data; boundary=----------------------------" + multipart.boundary())
-                .header("Authorization", authenticationConfig.basicAuth())
+                .setHeader("Content-Type", "multipart/form-data; boundary=" + multipart.boundary())
+                .setHeader("Authorization", authenticationConfig.basicAuth())
+                .setHeader("Accept", "application/json")
                 .build();
         try {
             var res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());

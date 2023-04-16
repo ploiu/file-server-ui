@@ -35,15 +35,15 @@ public class HttpUtilsTests {
         ));
         var part = multipart(body);
         var expectedBody = """
-                ----------------------------$boundary
+                --$boundary
                 Content-Disposition: form-data; name="test"
                                 
                 hello
-                ----------------------------$boundary
+                --$boundary
                 Content-Disposition: form-data; name="test2"
                                 
                 5
-                ----------------------------$boundary--
+                --$boundary--
                 """.replace("$boundary", part.boundary()).strip();
         assertEquals(expectedBody, part.body());
     }
@@ -62,20 +62,20 @@ public class HttpUtilsTests {
             ));
             var part = multipart(body);
             var expectedBody = """
-                    ----------------------------$boundary
+                    --$boundary
                     Content-Disposition: form-data; name="extension"
                                         
                     txt
-                    ----------------------------$boundary
+                    --$boundary
                     Content-Disposition: form-data; name="file"; filename="$fileName"
                     Content-Type: text/plain
                      
                     $fileText
-                    ----------------------------$boundary
+                    --$boundary
                     Content-Disposition: form-data; name="folder_id"
                                         
                     5
-                    ----------------------------$boundary--
+                    --$boundary--
                     """.replace("$boundary", part.boundary())
                     .replace("$fileText", fileText)
                     .replace("$fileName", file.getName()).trim();

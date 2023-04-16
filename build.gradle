@@ -43,6 +43,10 @@ dependencies {
     implementation 'org.jetbrains:annotations:23.1.0'
     implementation 'com.google.inject:guice:5.1.0'
     implementation 'org.openjfx:javafx:17'
+    // because apparently I can't properly build a multipart form to save my life
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+    implementation 'org.apache.httpcomponents:httpmime:4.5.14'
+
 
     compileOnly "org.projectlombok:lombok:$versions.lombok"
     annotationProcessor "org.projectlombok:lombok:$versions.lombok"

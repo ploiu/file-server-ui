@@ -4,6 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.message.StatusLine;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.exception.ServerUnavailableException;
@@ -11,45 +16,44 @@ import ploiu.model.ApiInfo;
 import ploiu.model.CreatePasswordRequest;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
 public class ApiClient {
     private final ServerConfig serverConfig;
-    private final HttpClient httpClient;
+    private final org.apache.hc.client5.http.classic.HttpClient httpClient;
     private final AuthenticationConfig authConfig;
 
     public ApiInfo getApiInfo() {
         try {
-            var request = HttpRequest.newBuilder(new URI(serverConfig.getBaseUrl() + "/api/version")).GET().build();
-            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                return new ObjectMapper().readValue(response.body(), ApiInfo.class);
-            } else {
+            var req = new HttpGet(serverConfig.getBaseUrl() + "/api/version");
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                if (status.getStatusCode() == 200) {
+                    var entity = res.getEntity();
+                    return new ObjectMapper().readValue(entity.getContent(), ApiInfo.class);
+                }
                 // only way this fails is if the server is down
                 throw new ServerUnavailableException();
-            }
-        } catch (URISyntaxException | IOException | InterruptedException e) {
+            });
+        } catch (IOException e) {
             log.error("Failed to get api info from server", e);
             throw new RuntimeException(e);
         }
     }
 
     public boolean setPassword() {
-        var body = new CreatePasswordRequest(authConfig.getUsername(), authConfig.getPassword());
         try {
-            var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/password"))
-                    .POST(HttpRequest.BodyPublishers.ofString(new ObjectMapper().writeValueAsString(body)))
-                    .build();
-            var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            // 400 means that a password is already set, so we can ignore this
-            return response.statusCode() == 201 || response.statusCode() == 400;
-        } catch (IOException | InterruptedException e) {
+            var body = new ObjectMapper().writeValueAsString(new CreatePasswordRequest(authConfig.getUsername(), authConfig.getPassword()));
+            var req = new HttpPost(serverConfig.getBaseUrl() + "/password");
+            req.setEntity(new StringEntity(body));
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                EntityUtils.consume(res.getEntity());
+                // 400 means a password is already set, so it's ignorable
+                return status.getStatusCode() == 201 || status.getStatusCode() == 400;
+            });
+        } catch (IOException e) {
             log.error("unforeseen error when setting password", e);
             throw new RuntimeException(e);
         }
