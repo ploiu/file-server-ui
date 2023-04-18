@@ -7,16 +7,17 @@ plugins {
     id 'java'
     id 'idea'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
-    id 'org.beryx.jlink' version '2.12.0'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
 }
 
 def versions = [
-        junit: '5.9.2',
+        junit  : '5.9.2',
         mockito: '4.11.0',
-        lombok: '1.18.24',
+        lombok : '1.18.24',
         jackson: '2.14.0',
-        slf4j: '2.0.5'
+        slf4j  : '2.0.5',
+        wiremock : '3.0.0-beta-7'
 ]
 
 apply plugin: 'java'
@@ -42,7 +43,6 @@ dependencies {
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$versions.jackson"
     implementation 'org.jetbrains:annotations:23.1.0'
     implementation 'com.google.inject:guice:5.1.0'
-    implementation 'org.openjfx:javafx:17'
     // because apparently I can't properly build a multipart form to save my life
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
     implementation 'org.apache.httpcomponents:httpmime:4.5.14'
@@ -58,6 +58,8 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:$versions.junit"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "org.mockito:mockito-junit-jupiter:$versions.mockito"
+    testImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.11'
+
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$versions.junit"
 }
 
@@ -66,7 +68,7 @@ test {
 }
 
 javafx {
-    version '17'
+    version '20'
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.media' ]
 }
 

@@ -46,7 +46,7 @@ public class FileClient {
         if (id < 0) {
             throw new BadFileRequestException("Id cannot be negative.");
         }
-        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata" + id);
+        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata/" + id);
         try {
             return httpClient.execute(req, res -> {
                 var status = new StatusLine(res);
@@ -143,7 +143,7 @@ public class FileClient {
                 .setMode(HttpMultipartMode.STRICT)
                 .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName())
                 // folderId can be null, so need to manually add entries...really need to fix that server side to be 0 for root folder id
-                .addTextBody("folder_id", request.folderId() == 0 ? "null" : request.folderId().toString())
+                .addTextBody("folder_id", request.folderId() == null || request.folderId() == 0 ? "null" : request.folderId().toString())
                 // some files don't have a file extension
                 .addTextBody("extension", splitName.length == 1 ? "" : splitName[splitName.length - 1])
                 .build()) {
