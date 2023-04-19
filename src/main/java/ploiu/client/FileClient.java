@@ -149,7 +149,6 @@ public class FileClient {
                 .build()) {
             var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
             req.setEntity(multipart);
-            // TODO this is returning 404
             return httpClient.execute(req, res -> {
                 var status = new StatusLine(res);
                 if (status.getStatusCode() != 201) {
