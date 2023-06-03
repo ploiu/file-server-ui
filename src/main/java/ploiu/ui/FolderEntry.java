@@ -87,7 +87,8 @@ public class FolderEntry extends AnchorPane {
                 .windowTitle("Confirm Delete?"));
     }
 
-    @FXML
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
     private void onDragOver(DragEvent e) {
         var board = e.getDragboard();
         if (board.hasFiles()) {
@@ -96,7 +97,8 @@ public class FolderEntry extends AnchorPane {
         e.consume();
     }
 
-    @FXML
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
     private void onDragDropped(DragEvent event) {
         var board = event.getDragboard();
         if (board.hasFiles()) {

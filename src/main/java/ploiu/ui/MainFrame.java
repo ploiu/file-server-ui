@@ -10,6 +10,7 @@ import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.event.EventReceiver;
+import ploiu.event.FileUploadEvent;
 import ploiu.event.FolderEvent;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
@@ -96,20 +97,24 @@ public class MainFrame extends AnchorPane {
         return false;
     };
 
-    // upload file
-    private final EventReceiver<File> createFileEvent = event -> {
+    private final EventReceiver<File> fileCrudEvents = event -> {
         var file = event.get();
         if (!file.exists()) {
             return false;
         }
-        try {
-            fileClient.createFile(new CreateFileRequest(currentFolder.id(), file));
-            loadFolder(currentFolder);
-            return true;
-        } catch (BadFileRequestException | BadFileResponseException e) {
-            showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null);
-            return false;
+        if (event instanceof FileUploadEvent uploadEvent) {
+            try {
+                fileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file));
+                if (uploadEvent.getFolderId() == currentFolder.id()) {
+                    loadFolder(currentFolder);
+                }
+                return true;
+            } catch (BadFileRequestException e) {
+                showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null);
+                return false;
+            }
         }
+        return false;
     };
 
     public MainFrame() {
@@ -217,11 +222,12 @@ public class MainFrame extends AnchorPane {
     }
 
     private void drawAddFile() {
-        var addFile = new AddFile(createFileEvent, currentFolder.id());
+        var addFile = new AddFile(fileCrudEvents, currentFolder.id());
         this.filePane.getChildren().add(addFile);
     }
 
-    @FXML
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
     private void onDragOver(DragEvent e) {
         var board = e.getDragboard();
         if (board.hasFiles()) {
@@ -232,8 +238,16 @@ public class MainFrame extends AnchorPane {
         e.consume();
     }
 
-    @FXML
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
     private void onDragDropped(DragEvent event) {
-        System.out.println("DROPPED");
+        var board = event.getDragboard();
+        if (board.hasFiles()) {
+            event.acceptTransferModes(TransferMode.COPY);
+            for (File file : board.getFiles()) {
+
+            }
+        }
+        event.consume();
     }
 }

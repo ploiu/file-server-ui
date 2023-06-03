@@ -142,7 +142,6 @@ public class FileClient {
         try (var multipart = MultipartEntityBuilder.create()
                 .setMode(HttpMultipartMode.STRICT)
                 .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName())
-                // folderId can be null, so need to manually add entries...really need to fix that server side to be 0 for root folder id
                 .addTextBody("folder_id", String.valueOf(request.folderId()))
                 // some files don't have a file extension
                 .addTextBody("extension", splitName.length == 1 ? "" : splitName[splitName.length - 1])

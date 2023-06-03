@@ -6,8 +6,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import ploiu.event.Event;
 import ploiu.event.EventReceiver;
+import ploiu.event.FileUploadEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class AddFile extends AnchorPane {
             chooser.setTitle("Upload Files");
             var selectedFiles = chooser.showOpenMultipleDialog(getScene().getWindow());
             for (File selectedFile : selectedFiles) {
-                receiver.process(new Event<>(selectedFile));
+                receiver.process(new FileUploadEvent(selectedFile, currentFolderId));
             }
         }
     }
