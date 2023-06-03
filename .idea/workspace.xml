@@ -9,9 +9,14 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/ConfigModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/ConfigModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +34,34 @@
         <task path="$PROJECT_DIR$">
           <activation />
         </task>
-        <projects_view />
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="file-server-ui" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="file-server-ui" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="file-server-ui" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="testCompileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="file-server-ui" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="testRuntimeClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
       </state>
     </system>
   </component>
@@ -38,8 +70,9 @@
       <list>
         <option value="FxmlFile" />
         <option value="CSS File" />
-        <option value="Record" />
         <option value="Class" />
+        <option value="Record" />
+        <option value="HTTP Request" />
       </list>
     </option>
   </component>
@@ -57,26 +90,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "folder__delete",
-    "last_opened_file_path": "/home/ploiu/git/file_server",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;create__file&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file_server&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.22936763&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.cargo.check&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;HTTP Request&quot;
+    ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ploiu.event" />
@@ -90,25 +128,16 @@
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
-      <command value="open file_server" />
+      <command value="gradle test" />
+      <command value="open untitled" />
+      <command value="gradlew build" />
+      <command value="gradlew jlink" />
       <command value="gradlew test" />
+      <command value="open file_server" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.App">
-    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ploiu.ui.App" />
-      <module name="file-server-ui.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ploiu.ui.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="FolderClientTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -119,21 +148,67 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="test" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FolderClientTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <ForceTestExec>true</ForceTestExec>
       <method v="2" />
     </configuration>
+    <configuration name="FolderClientTests.testGetFolderUsesGet" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FolderClientTests.testGetFolderUsesGet&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_2 | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.http" requestIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_2 | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.http" index="2" requestIdentifier="#2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_2 | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.http" index="3" requestIdentifier="#3" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.FolderClientTests" />
+      <item itemvalue="Gradle.FolderClientTests.testGetFolderUsesGet" />
+      <item itemvalue="HTTP Request.scratch_2 | #1" />
+      <item itemvalue="HTTP Request.scratch_2 | #2" />
+      <item itemvalue="HTTP Request.scratch_2 | #3" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.App" />
-        <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="HTTP Request.scratch_2 | #1" />
+        <item itemvalue="HTTP Request.scratch_2 | #3" />
+        <item itemvalue="HTTP Request.scratch_2 | #2" />
+        <item itemvalue="Gradle.FolderClientTests" />
+        <item itemvalue="Gradle.FolderClientTests.testGetFolderUsesGet" />
       </list>
     </recent_temporary>
   </component>
@@ -160,11 +235,63 @@
       <workItem from="1680995496823" duration="1045000" />
       <workItem from="1680996941287" duration="2406000" />
       <workItem from="1681167803236" duration="6257000" />
+      <workItem from="1681253438007" duration="8824000" />
+      <workItem from="1681340840481" duration="889000" />
+      <workItem from="1681342016464" duration="4840000" />
+      <workItem from="1681432741438" duration="3249000" />
+      <workItem from="1681587647686" duration="262000" />
+      <workItem from="1681588849601" duration="2362000" />
+      <workItem from="1681605620457" duration="5739000" />
+      <workItem from="1681652864640" duration="888000" />
+      <workItem from="1681684112920" duration="7233000" />
+      <workItem from="1681851813756" duration="6043000" />
+      <workItem from="1681862091097" duration="1299000" />
+      <workItem from="1685750323555" duration="334000" />
+      <workItem from="1685802571564" duration="4231000" />
+      <workItem from="1685807008749" duration="560000" />
+      <workItem from="1685818705840" duration="1452000" />
+      <workItem from="1685820312781" duration="343000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
+          <line>144</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
+          <line>153</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

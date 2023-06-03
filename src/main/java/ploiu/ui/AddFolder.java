@@ -46,9 +46,8 @@ public class AddFolder extends AnchorPane {
         if (event.getButton() == MouseButton.PRIMARY) {
             EventReceiver<String> callback = evt -> {
                 var folderName = evt.get();
-                var folderId = currentFolderId == 0 ? null : currentFolderId;
                 try {
-                    this.receiver.process(new FolderEvent(folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.ofNullable(folderId), folderName)), FolderEvent.Type.CREATE));
+                    this.receiver.process(new FolderEvent(folderClient.createFolder(new FolderRequest(Optional.empty(), currentFolderId, folderName)), FolderEvent.Type.CREATE));
                 } catch (BadFolderRequestException | BadFolderResponseException e) {
                     showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);
                 }

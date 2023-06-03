@@ -15,6 +15,5 @@
                 <FlowPane fx:id="filePane" layoutX="13.0" layoutY="64.0" prefWidth="777.0" styleClass="item-row"/>
             </VBox>
         </VBox>
-
     </children>
 </fx:root>

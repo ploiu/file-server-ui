@@ -1,154 +1,126 @@
 package ploiu;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ploiu.client.FolderClient;
-import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.model.FolderRequest;
 
-import java.net.http.HttpClient;
-import java.net.http.HttpResponse;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FolderClientTests {
     @Mock
-    AuthenticationConfig authConfig;
-    @Mock
     ServerConfig serverConfig;
-    @Mock
-    HttpClient httpClient;
-    @Mock
-    HttpResponse dummyResponse;
+    @Spy
+    HttpClient httpClient = HttpClients.createDefault();
     @InjectMocks
     FolderClient folderClient;
 
-    @Test
-    void testGetFolderWithId() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("whatever");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        folderClient.getFolder(1L);
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/1")), any());
+    MockWebServer backend;
+
+    @BeforeEach
+    void setupAll() throws Exception {
+        backend = new MockWebServer();
+        backend.start();
+    }
+
+    @AfterEach
+    void teardownAll() throws IOException {
+        backend.shutdown();
     }
 
     @Test
-    void testGetFolderPassesAuth() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        folderClient.getFolder(null);
-        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
+    void testGetFolderWithIdUsesCorrectPath() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setBody("{}"));
+        folderClient.getFolder(1L);
+        var req = backend.takeRequest();
+        assertEquals("/folders/1", req.getPath());
     }
 
     @Test
     void testGetFolderUsesGet() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        folderClient.getFolder(null);
-        verify(httpClient).send(argThat(req -> req.method().equals("GET")), any());
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setBody("{}"));
+        folderClient.getFolder(0);
+        var req = backend.takeRequest();
+        assertEquals("GET", req.getMethod());
     }
 
     @Test
     void testGetFolderUsesCorrectPath() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        folderClient.getFolder(null);
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders/null")), any());
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setBody("{}"));
+        folderClient.getFolder(0);
+        var req = backend.takeRequest();
+        assertEquals("/folders/0", req.getPath());
     }
 
     @Test
     void testCreateFolderUsesPost() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(201);
-        when(dummyResponse.body()).thenReturn("{}");
-        folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.empty(), "test"));
-        verify(httpClient).send(argThat(req -> req.method() == "POST"), any());
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
+        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test"));
+        var req = backend.takeRequest();
+        assertEquals("POST", req.getMethod());
     }
 
     @Test
     void testCreateFolderUsesCorrectPath() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(201);
-        when(dummyResponse.body()).thenReturn("{}");
-        folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.empty(), "test"));
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders")), any());
-    }
-
-    @Test
-    void testCreateFolderPassesAuth() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(201);
-        when(dummyResponse.body()).thenReturn("{}");
-        folderClient.createFolder(new FolderRequest(Optional.empty(), Optional.empty(), "test"));
-        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
+        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test"));
+        var req = backend.takeRequest();
+        assertEquals("/folders", req.getPath());
     }
 
     @Test
     void testUpdateFolderRequiresFolderId() {
-        var request = new FolderRequest(Optional.empty(), Optional.empty(), "test");
+        var request = new FolderRequest(Optional.empty(), 0, "test");
         var exception = Assertions.assertThrows(BadFolderRequestException.class, () -> folderClient.updateFolder(request));
         assertEquals("Cannot update folder without id", exception.getMessage());
     }
 
     @Test
     void testUpdateFolderRequiresNonZeroId() {
-        var request = new FolderRequest(Optional.of(0L), Optional.empty(), "test");
+        var request = new FolderRequest(Optional.of(0L), 0, "test");
         var exception = Assertions.assertThrows(BadFolderRequestException.class, () -> folderClient.updateFolder(request));
         assertEquals("0 is the root folder id, and cannot be updated", exception.getMessage());
     }
 
     @Test
     void testUpdateFolderUsesPut() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(200);
-        when(dummyResponse.body()).thenReturn("{}");
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), Optional.empty(), "test"));
-        verify(httpClient).send(argThat(req -> req.method() == "PUT"), any());
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setBody("{}"));
+        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test"));
+        var req = backend.takeRequest();
+        assertEquals("PUT", req.getMethod());
     }
 
     @Test
     void testUpdateFolderUsesCorrectPath() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(200);
-        when(dummyResponse.body()).thenReturn("{}");
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), Optional.empty(), "test"));
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders")), any());
-    }
-
-    @Test
-    void testUpdateFolderPassesAuth() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(200);
-        when(dummyResponse.body()).thenReturn("{}");
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), Optional.empty(), "test"));
-        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setBody("{}"));
+        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test"));
+        var req = backend.takeRequest();
+        assertEquals("/folders", req.getPath());
     }
 
     @Test
@@ -159,31 +131,20 @@ class FolderClientTests {
 
     @Test
     void testDeleteFolderUsesDelete() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(204);
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(204));
         folderClient.deleteFolder(1L);
-        verify(httpClient).send(argThat(req -> req.method() == "DELETE"), any());
+        var req = backend.takeRequest();
+        assertEquals("DELETE", req.getMethod());
     }
 
     @Test
     void testDeleteFolderUsesCorrectPath() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(204);
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(204));
         folderClient.deleteFolder(1L);
-        verify(httpClient).send(argThat(req -> req.uri().toString().endsWith("/folders/1")), any());
+        var req = backend.takeRequest();
+        assertEquals("/folders/1", req.getPath());
     }
 
-    @Test
-    void testDeleteFolderPassesAuth() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("https://www.example.com");
-        when(authConfig.basicAuth()).thenReturn("Basic dGVzdDp0ZXN0");
-        when(httpClient.send(any(), any())).thenReturn(dummyResponse);
-        when(dummyResponse.statusCode()).thenReturn(204);
-        folderClient.deleteFolder(1L);
-        verify(httpClient).send(argThat(req -> req.headers().firstValue("Authorization").get().equals("Basic dGVzdDp0ZXN0")), any());
-    }
 }

@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import ploiu.event.EventReceiver;
@@ -17,6 +19,7 @@ import java.io.IOException;
 
 import static ploiu.util.DialogUtils.showErrorDialog;
 
+@SuppressWarnings("unused")
 public class FolderEntry extends AnchorPane {
     /**
      * the folder backing this UI element
@@ -30,9 +33,9 @@ public class FolderEntry extends AnchorPane {
     @FXML
     private ContextMenu folderMenu;
 
-    private final EventReceiver<FolderApi> receiver;
+    private final EventReceiver<FolderApi> folderReceiver;
 
-    public FolderEntry(FolderApi folder, EventReceiver<FolderApi> receiver) {
+    public FolderEntry(FolderApi folder, EventReceiver<FolderApi> folderReceiver) {
         this.folder = folder;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FolderEntry/FolderEntry.fxml"));
         loader.setRoot(this);
@@ -46,7 +49,7 @@ public class FolderEntry extends AnchorPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.receiver = receiver;
+        this.folderReceiver = folderReceiver;
     }
 
     @FXML
@@ -63,7 +66,7 @@ public class FolderEntry extends AnchorPane {
         EventReceiver<String> dialogCallback = evt -> {
             var newName = evt.get();
             var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, folder.folders(), folder.files());
-            receiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE));
+            folderReceiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE));
             return true;
         };
         var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Rename Folder"));
@@ -74,7 +77,7 @@ public class FolderEntry extends AnchorPane {
     private void deleteItemClicked(ActionEvent event) {
         EventReceiver<String> dialogCallback = res -> {
             if (res.get().equals(folderName.getText())) {
-                return receiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE));
+                return folderReceiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE));
             }
             showErrorDialog("[" + res.get() + "] does not match the folder name [" + folderName.getText() + "]", "Failed to delete folder", null);
             return false;
@@ -82,5 +85,28 @@ public class FolderEntry extends AnchorPane {
         var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")
                 .bodyText("Are you sure you want to delete? Type the name of the folder and click Confirm to delete")
                 .windowTitle("Confirm Delete?"));
+    }
+
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    private void onDragOver(DragEvent e) {
+        var board = e.getDragboard();
+        if (board.hasFiles()) {
+            e.acceptTransferModes(TransferMode.COPY);
+        }
+        e.consume();
+    }
+
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    private void onDragDropped(DragEvent event) {
+        var board = event.getDragboard();
+        if (board.hasFiles()) {
+            event.consume();
+            var files = board.getFiles();
+            for (var file : files) {
+                //fileUploadReceiver.process()
+            }
+        }
     }
 }

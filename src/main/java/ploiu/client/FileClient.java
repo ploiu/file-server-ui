@@ -6,23 +6,30 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.mime.HttpMultipartMode;
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.message.StatusLine;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.ApiMessage;
+import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
 
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.URLConnection;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -39,19 +46,19 @@ public class FileClient {
         if (id < 0) {
             throw new BadFileRequestException("Id cannot be negative.");
         }
-        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/metadata/" + id))
-                .GET()
-                .header("Authorization", authenticationConfig.basicAuth())
-                .build();
+        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata/" + id);
         try {
-            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (isStatus2xxOk(res.statusCode())) {
-                return mapper.readValue(res.body(), FileApi.class);
-            } else {
-                var message = mapper.readValue(res.body(), ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-        } catch (IOException | InterruptedException e) {
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                var body = res.getEntity().getContent();
+                if (status.isSuccessful()) {
+                    return mapper.readValue(body, FileApi.class);
+                } else {
+                    var message = mapper.readValue(body, ApiMessage.class).message();
+                    throw new BadFileResponseException(message);
+                }
+            });
+        } catch (IOException e) {
             log.error("Unforeseen error getting file metadata", e);
             throw new RuntimeException(e);
         }
@@ -61,38 +68,39 @@ public class FileClient {
         if (id < 0) {
             throw new BadFileRequestException("Id cannot be negative.");
         }
-        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/" + id))
-                .DELETE()
-                .header("Authorization", authenticationConfig.basicAuth())
-                .build();
+        var req = new HttpDelete(serverConfig.getBaseUrl() + "/files/" + id);
         try {
-            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (!isStatus2xxOk(res.statusCode())) {
-                var message = mapper.readValue(res.body(), ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-        } catch (IOException | InterruptedException e) {
+            httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                if (!status.isSuccessful()) {
+                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                    throw new BadFileResponseException(message);
+                } else {
+                    EntityUtils.consume(res.getEntity());
+                }
+                return null;
+            });
+        } catch (IOException e) {
             log.error("Unforeseen deleting file", e);
             throw new RuntimeException(e);
         }
     }
 
-    public InputStream getFileContents(long id) throws BadFileRequestException, BadFileResponseException {
+    public String getFileContents(long id) throws BadFileRequestException, BadFileResponseException {
         if (id < 0) {
             throw new BadFileRequestException("Id cannot be negative.");
         }
-        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/" + id))
-                .GET()
-                .header("Authorization", authenticationConfig.basicAuth())
-                .build();
+        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
         try {
-            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
-            if (!isStatus2xxOk(res.statusCode())) {
-                var message = mapper.readValue(res.body(), ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-            return res.body();
-        } catch (IOException | InterruptedException e) {
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                if (!status.isSuccessful()) {
+                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                    throw new BadFileResponseException(message);
+                }
+                return new String(new BufferedInputStream(res.getEntity().getContent()).readAllBytes());
+            });
+        } catch (IOException e) {
             log.error("Unforeseen error getting file contents", e);
             throw new RuntimeException(e);
         }
@@ -106,26 +114,54 @@ public class FileClient {
         if (query == null || query.isBlank()) {
             throw new BadFileRequestException("Query cannot be null or empty.");
         }
-        var request = HttpRequest.newBuilder(URI.create(serverConfig.getBaseUrl() + "/files/metadata?search=" + query))
-                .GET()
-                .header("Authorization", authenticationConfig.basicAuth())
-                .build();
+        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata?search=" + query);
         try {
-            var res = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            if (!isStatus2xxOk(res.statusCode())) {
-                var message = mapper.readValue(res.body(), ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-            return mapper.readValue(res.body(), new TypeReference<>() {
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                if (!status.isSuccessful()) {
+                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                    throw new BadFileResponseException(message);
+                }
+                return mapper.readValue(res.getEntity().getContent(), new TypeReference<>() {
+                });
             });
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             log.error("Unforeseen error getting file contents", e);
             throw new RuntimeException(e);
         }
     }
 
-    public FileApi createFile(File file, String name) {
-        throw new UnsupportedOperationException();
+    public FileApi createFile(CreateFileRequest request) throws BadFileRequestException, BadFileResponseException {
+        var file = request.file();
+        Objects.requireNonNull(file, "File cannot be null.");
+        if (!file.exists()) {
+            throw new BadFileRequestException("The selected file does not exist.");
+        }
+        var splitName = file.getName().split("\\.");
+        var mimeType = URLConnection.guessContentTypeFromName(file.getName());
+        try (var multipart = MultipartEntityBuilder.create()
+                .setMode(HttpMultipartMode.STRICT)
+                .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName())
+                .addTextBody("folder_id", String.valueOf(request.folderId()))
+                // some files don't have a file extension
+                .addTextBody("extension", splitName.length == 1 ? "" : splitName[splitName.length - 1])
+                .build()) {
+            var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
+            req.setEntity(multipart);
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                if (status.getStatusCode() != 201) {
+                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                    throw new BadFileResponseException(message);
+                }
+                return mapper.readValue(res.getEntity().getContent(), new TypeReference<>() {
+                });
+            });
+
+        } catch (IOException e) {
+            log.error("Unforeseen error creating file", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean isStatus2xxOk(int statusCode) {

@@ -2,22 +2,27 @@ package ploiu.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.event.EventReceiver;
+import ploiu.event.FileUploadEvent;
 import ploiu.event.FolderEvent;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
+import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
 
 import java.awt.Desktop;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -63,8 +68,7 @@ public class MainFrame extends AnchorPane {
                 case UPDATE -> {
                     try {
                         // I really need to make the api return 0 instead of null for the root folder...
-                        var parentId = folder.parentId() == 0 ? null : folder.parentId();
-                        var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), Optional.ofNullable(parentId), folder.path()));
+                        var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()));
                         // need to redraw the current folder
                         loadFolder(currentFolder);
                         yield true;
@@ -84,11 +88,31 @@ public class MainFrame extends AnchorPane {
                     yield false;
                 }
                 case CREATE -> {
-                    var id = this.currentFolder.id() == 0 ? null : this.currentFolder.id();
+                    var id = this.currentFolder.id();
                     folderClient.getFolder(id).ifPresent(this::loadFolder);
                     yield true;
                 }
             };
+        }
+        return false;
+    };
+
+    private final EventReceiver<File> fileCrudEvents = event -> {
+        var file = event.get();
+        if (!file.exists()) {
+            return false;
+        }
+        if (event instanceof FileUploadEvent uploadEvent) {
+            try {
+                fileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file));
+                if (uploadEvent.getFolderId() == currentFolder.id()) {
+                    loadFolder(currentFolder);
+                }
+                return true;
+            } catch (BadFileRequestException e) {
+                showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null);
+                return false;
+            }
         }
         return false;
     };
@@ -109,7 +133,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
-        var folder = folderClient.getFolder(null).orElseThrow();
+        var folder = folderClient.getFolder(0).orElseThrow();
         navigationBar.push(folder);
         // null folder is the root folder, so this will always exist
         loadFolder(folder);
@@ -119,7 +143,7 @@ public class MainFrame extends AnchorPane {
         folderPane.getChildren().clear();
         filePane.getChildren().clear();
         // need to get fresh copy of the folder, as the object may be stale if other folders were added to it
-        currentFolder = folderClient.getFolder(folder.id() == 0 ? null : folder.id()).orElseThrow();
+        currentFolder = folderClient.getFolder(folder.id()).orElseThrow();
         var folderEntries = currentFolder.folders()
                 .stream()
                 .map(folderApi -> new FolderEntry(folderApi, folderCrudEvents))
@@ -162,6 +186,7 @@ public class MainFrame extends AnchorPane {
             });
             filePane.getChildren().add(entry);
         }
+        drawAddFile();
     }
 
     private File saveAndGetFile(FileApi fileApi) throws BadFileRequestException, BadFileResponseException, IOException {
@@ -170,10 +195,10 @@ public class MainFrame extends AnchorPane {
         new File(CACHE_DIR).mkdir();
         var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
         if (!cacheFile.exists()) {
-            var inStream = fileClient.getFileContents(fileApi.id());
+            var contents = fileClient.getFileContents(fileApi.id());
             //noinspection ResultOfMethodCallIgnored
             cacheFile.createNewFile();
-            Files.copy(inStream, cacheFile.toPath(), REPLACE_EXISTING);
+            Files.copy(new ByteArrayInputStream(contents.getBytes()), cacheFile.toPath(), REPLACE_EXISTING);
         }
         return cacheFile;
     }
@@ -196,4 +221,33 @@ public class MainFrame extends AnchorPane {
         this.folderPane.getChildren().add(addFolder);
     }
 
+    private void drawAddFile() {
+        var addFile = new AddFile(fileCrudEvents, currentFolder.id());
+        this.filePane.getChildren().add(addFile);
+    }
+
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    private void onDragOver(DragEvent e) {
+        var board = e.getDragboard();
+        if (board.hasFiles()) {
+            System.out.println(e.getTarget());
+            e.acceptTransferModes(TransferMode.COPY);
+            System.out.println(e.getEventType());
+        }
+        e.consume();
+    }
+
+    //@FXML
+    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    private void onDragDropped(DragEvent event) {
+        var board = event.getDragboard();
+        if (board.hasFiles()) {
+            event.acceptTransferModes(TransferMode.COPY);
+            for (File file : board.getFiles()) {
+
+            }
+        }
+        event.consume();
+    }
 }
