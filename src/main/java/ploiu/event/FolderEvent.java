@@ -13,6 +13,6 @@ public final class FolderEvent extends Event<FolderApi> {
     }
 
     public enum Type {
-        UPDATE, DELETE, CREATE
+        CREATE, UPDATE, DELETE
     }
 }

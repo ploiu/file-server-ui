@@ -162,13 +162,13 @@ public class FileClientTests {
 
     @Test
     void testCreateFileRequiresNonNullFile() {
-        var e = assertThrows(NullPointerException.class, () -> fileClient.createFile(new CreateFileRequest(null, null)));
+        var e = assertThrows(NullPointerException.class, () -> fileClient.createFile(new CreateFileRequest(0, null)));
         assertEquals("File cannot be null.", e.getMessage());
     }
 
     @Test
     void testCreateFileRequiresFileToExist() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.createFile(new CreateFileRequest(null, new File("bad file.bad file" + System.currentTimeMillis()))));
+        var e = assertThrows(BadFileRequestException.class, () -> fileClient.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis()))));
         assertEquals("The selected file does not exist.", e.getMessage());
     }
 
@@ -176,7 +176,7 @@ public class FileClientTests {
     void testCreateFileUsesPOST() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
         verify(httpClient).execute(argThat(req -> req instanceof HttpPost), any(HttpClientResponseHandler.class));
     }
 
@@ -184,7 +184,7 @@ public class FileClientTests {
     void testCreateFileUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files")), any(HttpClientResponseHandler.class));
     }
 
@@ -192,7 +192,7 @@ public class FileClientTests {
     void testCreateFilePassesMultipart() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(null, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
         var req = backend.takeRequest();
         assertTrue(req.getHeader("Content-Type").contains("multipart/form-data"));
     }

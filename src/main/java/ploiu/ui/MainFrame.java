@@ -2,7 +2,9 @@ package ploiu.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
@@ -65,8 +67,7 @@ public class MainFrame extends AnchorPane {
                 case UPDATE -> {
                     try {
                         // I really need to make the api return 0 instead of null for the root folder...
-                        var parentId = folder.parentId() == 0 ? null : folder.parentId();
-                        var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), Optional.ofNullable(parentId), folder.path()));
+                        var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()));
                         // need to redraw the current folder
                         loadFolder(currentFolder);
                         yield true;
@@ -86,7 +87,7 @@ public class MainFrame extends AnchorPane {
                     yield false;
                 }
                 case CREATE -> {
-                    var id = this.currentFolder.id() == 0 ? null : this.currentFolder.id();
+                    var id = this.currentFolder.id();
                     folderClient.getFolder(id).ifPresent(this::loadFolder);
                     yield true;
                 }
@@ -94,6 +95,7 @@ public class MainFrame extends AnchorPane {
         }
         return false;
     };
+
     // upload file
     private final EventReceiver<File> createFileEvent = event -> {
         var file = event.get();
@@ -126,7 +128,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
-        var folder = folderClient.getFolder(null).orElseThrow();
+        var folder = folderClient.getFolder(0).orElseThrow();
         navigationBar.push(folder);
         // null folder is the root folder, so this will always exist
         loadFolder(folder);
@@ -136,7 +138,7 @@ public class MainFrame extends AnchorPane {
         folderPane.getChildren().clear();
         filePane.getChildren().clear();
         // need to get fresh copy of the folder, as the object may be stale if other folders were added to it
-        currentFolder = folderClient.getFolder(folder.id() == 0 ? null : folder.id()).orElseThrow();
+        currentFolder = folderClient.getFolder(folder.id()).orElseThrow();
         var folderEntries = currentFolder.folders()
                 .stream()
                 .map(folderApi -> new FolderEntry(folderApi, folderCrudEvents))
@@ -219,4 +221,19 @@ public class MainFrame extends AnchorPane {
         this.filePane.getChildren().add(addFile);
     }
 
+    @FXML
+    private void onDragOver(DragEvent e) {
+        var board = e.getDragboard();
+        if (board.hasFiles()) {
+            System.out.println(e.getTarget());
+            e.acceptTransferModes(TransferMode.COPY);
+            System.out.println(e.getEventType());
+        }
+        e.consume();
+    }
+
+    @FXML
+    private void onDragDropped(DragEvent event) {
+        System.out.println("DROPPED");
+    }
 }

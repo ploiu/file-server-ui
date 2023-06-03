@@ -16,7 +16,7 @@ public class AddFile extends AnchorPane {
     private final EventReceiver<File> receiver;
     private final Long currentFolderId;
 
-    public AddFile(EventReceiver<File> receiver, Long currentFolderId) {
+    public AddFile(EventReceiver<File> receiver, long currentFolderId) {
         super();
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/AddFile/AddFile.fxml"));
         loader.setRoot(this);

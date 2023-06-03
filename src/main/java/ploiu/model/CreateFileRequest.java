@@ -4,5 +4,5 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public record CreateFileRequest(Long folderId, @NotNull File file) {
+public record CreateFileRequest(long folderId, @NotNull File file) {
 }

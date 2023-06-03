@@ -29,7 +29,7 @@ public class FolderClient {
     private final ServerConfig serverConfig;
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module());
 
-    public Optional<FolderApi> getFolder(Long id) {
+    public Optional<FolderApi> getFolder(long id) {
         try {
             var req = new HttpGet(serverConfig.getBaseUrl() + "/folders/" + id);
             return client.execute(req, res -> {
