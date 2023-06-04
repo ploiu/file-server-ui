@@ -1,17 +1,26 @@
 package ploiu.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import ploiu.event.EventReceiver;
+import ploiu.event.FileDeleteEvent;
+import ploiu.event.FolderEvent;
 import ploiu.model.FileApi;
+import ploiu.model.TextInputDialogOptions;
 import ploiu.util.MimeUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static ploiu.util.DialogUtils.showErrorDialog;
 
 public class FileEntry extends AnchorPane {
     // cache because creating an image takes a lot of time
@@ -26,12 +35,15 @@ public class FileEntry extends AnchorPane {
     }
 
     private final FileApi file;
+    private final EventReceiver<FileApi> fileReceiver;
     @FXML
     private ImageView icon;
     @FXML
     private Label fileName;
+    @FXML
+    private ContextMenu fileMenu;
 
-    public FileEntry(FileApi file) {
+    public FileEntry(FileApi file, EventReceiver<FileApi> fileReceiver) {
         super();
         this.file = file;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
@@ -42,8 +54,36 @@ public class FileEntry extends AnchorPane {
             this.fileName.setText(file.name());
             var image = MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
             icon.setImage(image);
+            this.fileReceiver = fileReceiver;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    @SuppressWarnings("unused")
+    private void initialize() {
+        this.setOnContextMenuRequested(event -> {
+            fileMenu.show(this, event.getScreenX(), event.getScreenY());
+        });
+    }
+
+    @FXML
+    private void renameItemClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void deleteItemClicked(ActionEvent ignored) {
+        EventReceiver<String> dialogCallback = res -> {
+            if (res.get().equals(fileName.getText())) {
+                return fileReceiver.process(new FileDeleteEvent(file));
+            }
+            showErrorDialog("[" + res.get() + "] does not match the file name [" + fileName.getText() + "]", "Failed to delete file", null);
+            return false;
+        };
+        var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")
+                .bodyText("Are you sure you want to delete? Type the name of the file and click Confirm to delete")
+                .windowTitle("Confirm Delete?"));
     }
 }
