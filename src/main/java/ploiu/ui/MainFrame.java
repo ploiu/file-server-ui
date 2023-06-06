@@ -9,18 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
-import ploiu.event.EventReceiver;
-import ploiu.event.FileDeleteEvent;
-import ploiu.event.FileUploadEvent;
-import ploiu.event.FolderEvent;
+import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
-import ploiu.model.CreateFileRequest;
-import ploiu.model.FileApi;
-import ploiu.model.FolderApi;
-import ploiu.model.FolderRequest;
+import ploiu.model.*;
 
 import java.awt.Desktop;
 import java.io.ByteArrayInputStream;
@@ -128,6 +122,16 @@ public class MainFrame extends AnchorPane {
             } catch (BadFileRequestException e) {
                 showErrorDialog("Failed to delete file [" + event.get().name() + "] Please check server logs for details", "Failed to delete file", null);
                 return false;
+            }
+        } else if (event instanceof FileUpdateEvent updateEvent) {
+            var file = updateEvent.get();
+            var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
+            try {
+                fileClient.updateFile(req);
+                loadFolder(currentFolder);
+                return true;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         return false;

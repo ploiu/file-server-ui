@@ -1,5 +1,6 @@
 package ploiu;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.apache.hc.client5.http.classic.HttpClient;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
@@ -25,6 +27,7 @@ import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.CreateFileRequest;
+import ploiu.model.UpdateFileRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -195,6 +198,50 @@ public class FileClientTests {
         fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
         var req = backend.takeRequest();
         assertTrue(req.getHeader("Content-Type").contains("multipart/form-data"));
+    }
+
+
+    @Test
+    void testUpdateFileUsesPUT() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
+        fileClient.updateFile(new UpdateFileRequest(0, 0, "test"));
+        var req = backend.takeRequest();
+        assertEquals("PUT", req.getMethod());
+    }
+
+    @Test
+    void testUpdateFileUsesCorrectPath() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
+        fileClient.updateFile(new UpdateFileRequest(0, 0, "test"));
+        var req = backend.takeRequest();
+        assertEquals("/files", req.getPath());
+    }
+
+    @Test
+    void testUpdateFilePassesBody() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
+        var reqBody = new UpdateFileRequest(0, 0, "test");
+        fileClient.updateFile(reqBody);
+        var req = backend.takeRequest();
+        var receivedBody = new ObjectMapper().readValue(req.getBody().inputStream(), UpdateFileRequest.class);
+        assertEquals(reqBody, receivedBody);
+    }
+
+    @ParameterizedTest(name = "Test that [{0}] is not accepted as a file name for update")
+    @EmptySource
+    @ValueSource(strings = {" "})
+    void testUpdateFileRequiresFileName(String name) {
+        var e = assertThrows(BadFileRequestException.class, () -> fileClient.updateFile(new UpdateFileRequest(0, 0, name)));
+        assertEquals("Name cannot be blank.", e.getMessage());
+    }
+
+    @Test
+    void testUpdateFileRequiresPositiveId() {
+        var e = assertThrows(BadFileRequestException.class, () -> fileClient.updateFile(new UpdateFileRequest(-1, 0, "name")));
+        assertEquals("Id cannot be negative.", e.getMessage());
     }
 
 }

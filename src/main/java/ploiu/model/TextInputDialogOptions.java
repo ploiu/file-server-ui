@@ -12,10 +12,11 @@ import ploiu.event.EventReceiver;
 @Accessors(fluent = true, chain = true)
 public class TextInputDialogOptions {
     private final Window parentWindow;
-    private final EventReceiver<String> createAction;
+    private final EventReceiver<String> confirmCallback;
     private final String confirmText;
     private String windowTitle;
     private String bodyText;
+    private String initialText;
 
     public String windowTitle() {
         return windowTitle == null ? confirmText : windowTitle;

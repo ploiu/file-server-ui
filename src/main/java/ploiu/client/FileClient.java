@@ -10,10 +10,12 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.entity.mime.HttpMultipartMode;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.StatusLine;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
@@ -30,7 +32,6 @@ import java.net.URLConnection;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
@@ -106,8 +107,32 @@ public class FileClient {
         }
     }
 
-    public Optional<FileApi> updateFile(UpdateFileRequest request) {
-        throw new UnsupportedOperationException();
+    public FileApi updateFile(UpdateFileRequest request) throws BadFileRequestException, BadFileResponseException {
+        if (request.id() < 0) {
+            throw new BadFileRequestException("Id cannot be negative.");
+        }
+        if (request.name().isBlank()) {
+            throw new BadFileRequestException("Name cannot be blank.");
+        }
+        var req = new HttpPut(serverConfig.getBaseUrl() + "/files");
+        try {
+            req.setEntity(new StringEntity(mapper.writeValueAsString(request)));
+            req.setHeader("Content-Type", "application/json");
+            return httpClient.execute(req, res -> {
+                var status = new StatusLine(res);
+                var body = res.getEntity().getContent();
+                if (status.getStatusCode() == 200) {
+                    return mapper.readValue(body, FileApi.class);
+                } else {
+                    var message = mapper.readValue(body, ApiMessage.class);
+                    log.error("Failed to update file, message is {}", message.message());
+                    throw new BadFileResponseException(message.message());
+                }
+            });
+        } catch (IOException e) {
+            log.error("Failed to build or send update file request!", e);
+            throw new BadFileResponseException(e.getMessage());
+        }
     }
 
     public Collection<FileApi> search(String query) throws BadFileRequestException, BadFileResponseException {

@@ -10,8 +10,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ploiu.event.EventReceiver;
 import ploiu.event.FileDeleteEvent;
+import ploiu.event.FileUpdateEvent;
 import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
+import ploiu.model.TextInputDialogOptions;
 import ploiu.util.MimeUtils;
 
 import java.io.IOException;
@@ -66,7 +68,14 @@ public class FileEntry extends AnchorPane {
 
     @FXML
     private void renameItemClicked(ActionEvent event) {
-
+        EventReceiver<String> renameCallback = evt -> {
+            var newName = evt.get();
+            if (newName != null && !newName.isBlank()) {
+                return fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName)));
+            }
+            return false;
+        };
+        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), renameCallback, "Rename File").initialText(file.name()));
     }
 
     @FXML
