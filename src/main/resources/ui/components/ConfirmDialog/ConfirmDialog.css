@@ -1,24 +1,23 @@
 @import "../../theme.css";
 
-.text-input-dialog-root {
+.confirm-dialog-root {
     -fx-pref-width: 400;
     -fx-pref-height: 200;
     -fx-background-color: -raisin-black;
 }
 
-.submit-button {
+.confirm-button, .cancel-button {
     -fx-background-color: -liberty;
     -fx-text-fill: -alice-blue;
     -fx-cursor: hand;
-}
-
-.text-box {
-    -fx-background-color: #cacaca;
-    -fx-border-radius: 0px;
 }
 
 .body-text {
     -fx-text-fill: -paradise-pink;
     -fx-font-weight: bold;
     -fx-wrap-text: true;
+}
+
+.button-wrapper {
+    -fx-spacing: 5px;
 }

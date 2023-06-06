@@ -34,7 +34,10 @@ public class TextInputDialog extends AnchorPane {
         loader.getNamespace().put("bodyText", options.bodyText());
         try {
             loader.load();
-            registerEvents(options.createAction());
+            if (options.initialText() != null) {
+                textBox.setText(options.initialText());
+            }
+            registerEvents(options.confirmCallback());
             popup(options.parentWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);

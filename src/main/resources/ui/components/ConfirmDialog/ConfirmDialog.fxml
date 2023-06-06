@@ -2,17 +2,17 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
-<fx:root styleClass="text-input-dialog-root" stylesheets="@TextInputDialog.css" type="javafx.scene.layout.AnchorPane"
+<fx:root styleClass="confirm-dialog-root" stylesheets="@ConfirmDialog.css" type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <Label AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" alignment="CENTER"
            contentDisplay="CENTER"
            styleClass="body-text" text="$bodyText"/>
-    <TextField fx:id="textBox" layoutX="37.0" layoutY="88.0" prefHeight="24.0" prefWidth="328.0"
-               styleClass="text-box"/>
-    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="50" alignment="CENTER">
-        <Button fx:id="actionButton" styleClass="submit-button"
+    <HBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="50" alignment="CENTER"
+          styleClass="button-wrapper">
+        <Button fx:id="cancelButton" styleClass="cancel-button"
+                text="$cancelText"/>
+        <Button fx:id="confirmButton" styleClass="confirm-button"
                 text="$confirmText"/>
-    </VBox>
+    </HBox>
 </fx:root>

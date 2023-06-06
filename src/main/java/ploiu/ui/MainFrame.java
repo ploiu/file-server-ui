@@ -9,17 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
-import ploiu.event.EventReceiver;
-import ploiu.event.FileUploadEvent;
-import ploiu.event.FolderEvent;
+import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
-import ploiu.model.CreateFileRequest;
-import ploiu.model.FileApi;
-import ploiu.model.FolderApi;
-import ploiu.model.FolderRequest;
+import ploiu.model.*;
 
 import java.awt.Desktop;
 import java.io.ByteArrayInputStream;
@@ -97,7 +92,8 @@ public class MainFrame extends AnchorPane {
         return false;
     };
 
-    private final EventReceiver<File> fileCrudEvents = event -> {
+    // for files that don't exist yet (no file api object)
+    private final EventReceiver<File> fileUploadEvent = event -> {
         var file = event.get();
         if (!file.exists()) {
             return false;
@@ -112,6 +108,30 @@ public class MainFrame extends AnchorPane {
             } catch (BadFileRequestException e) {
                 showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null);
                 return false;
+            }
+        }
+        return false;
+    };
+
+    private final EventReceiver<FileApi> fileCrudEvents = event -> {
+        if (event instanceof FileDeleteEvent deleteEvent) {
+            try {
+                fileClient.deleteFile(event.get().id());
+                loadFolder(currentFolder);
+                return true;
+            } catch (BadFileRequestException e) {
+                showErrorDialog("Failed to delete file [" + event.get().name() + "] Please check server logs for details", "Failed to delete file", null);
+                return false;
+            }
+        } else if (event instanceof FileUpdateEvent updateEvent) {
+            var file = updateEvent.get();
+            var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
+            try {
+                fileClient.updateFile(req);
+                loadFolder(currentFolder);
+                return true;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         return false;
@@ -171,7 +191,7 @@ public class MainFrame extends AnchorPane {
 
     private void loadFiles(Collection<FileApi> files) {
         for (FileApi fileApi : files) {
-            FileEntry entry = new FileEntry(fileApi);
+            FileEntry entry = new FileEntry(fileApi, fileCrudEvents);
             entry.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     runInThread(() -> {
@@ -222,7 +242,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void drawAddFile() {
-        var addFile = new AddFile(fileCrudEvents, currentFolder.id());
+        var addFile = new AddFile(fileUploadEvent, currentFolder.id());
         this.filePane.getChildren().add(addFile);
     }
 
