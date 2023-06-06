@@ -10,17 +10,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ploiu.event.EventReceiver;
 import ploiu.event.FileDeleteEvent;
-import ploiu.event.FolderEvent;
+import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
-import ploiu.model.TextInputDialogOptions;
 import ploiu.util.MimeUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static ploiu.util.DialogUtils.showErrorDialog;
 
 public class FileEntry extends AnchorPane {
     // cache because creating an image takes a lot of time
@@ -75,15 +71,12 @@ public class FileEntry extends AnchorPane {
 
     @FXML
     private void deleteItemClicked(ActionEvent ignored) {
-        EventReceiver<String> dialogCallback = res -> {
-            if (res.get().equals(fileName.getText())) {
+        EventReceiver<Boolean> dialogCallback = res -> {
+            if (res.get()) {
                 return fileReceiver.process(new FileDeleteEvent(file));
             }
-            showErrorDialog("[" + res.get() + "] does not match the file name [" + fileName.getText() + "]", "Failed to delete file", null);
             return false;
         };
-        var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")
-                .bodyText("Are you sure you want to delete? Type the name of the file and click Confirm to delete")
-                .windowTitle("Confirm Delete?"));
+        new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), dialogCallback, "Are you sure you want to delete this file?"));
     }
 }
