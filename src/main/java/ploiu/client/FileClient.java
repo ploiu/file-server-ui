@@ -164,15 +164,17 @@ public class FileClient {
         }
         var splitName = file.getName().split("\\.");
         var mimeType = URLConnection.guessContentTypeFromName(file.getName());
-        try (var multipart = MultipartEntityBuilder.create()
+        var multipart = MultipartEntityBuilder.create()
                 .setMode(HttpMultipartMode.STRICT)
                 .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName())
-                .addTextBody("folder_id", String.valueOf(request.folderId()))
-                // some files don't have a file extension
-                .addTextBody("extension", splitName.length == 1 ? "" : splitName[splitName.length - 1])
-                .build()) {
+                .addTextBody("folder_id", String.valueOf(request.folderId()));
+        if (splitName.length > 1) {
+            // file has extension, add it
+            multipart.addTextBody("extension", splitName[splitName.length - 1]);
+        }
+        try (var built = multipart.build()) {
             var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
-            req.setEntity(multipart);
+            req.setEntity(built);
             return httpClient.execute(req, res -> {
                 var status = new StatusLine(res);
                 if (status.getStatusCode() != 201) {
