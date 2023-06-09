@@ -29,8 +29,12 @@ import ploiu.exception.BadFileResponseException;
 import ploiu.model.CreateFileRequest;
 import ploiu.model.UpdateFileRequest;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -198,8 +202,24 @@ public class FileClientTests {
         fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
         var req = backend.takeRequest();
         assertTrue(req.getHeader("Content-Type").contains("multipart/form-data"));
+        try (var reader = new BufferedReader(new InputStreamReader(req.getBody().inputStream()))) {
+            var body = reader.lines().collect(Collectors.joining("\n"));
+            // make sure extension is passed
+            assertTrue(Pattern.compile("name=\"extension\"").matcher(body).find());
+        }
     }
 
+    @Test
+    void testCreateFileWithoutExtensionDoesNotIncludeTrailingDot() throws Exception {
+        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
+        backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("testNoExtension").getPath())));
+        var req = backend.takeRequest();
+        try (var reader = new BufferedReader(new InputStreamReader(req.getBody().inputStream()))) {
+            var body = reader.lines().collect(Collectors.joining("\n"));
+            assertFalse(Pattern.compile("name=\"extension\"").matcher(body).find());
+        }
+    }
 
     @Test
     void testUpdateFileUsesPUT() throws Exception {
