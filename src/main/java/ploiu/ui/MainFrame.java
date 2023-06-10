@@ -17,7 +17,6 @@ import ploiu.exception.BadFolderResponseException;
 import ploiu.model.*;
 
 import java.awt.Desktop;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -218,7 +217,7 @@ public class MainFrame extends AnchorPane {
             var contents = fileClient.getFileContents(fileApi.id());
             //noinspection ResultOfMethodCallIgnored
             cacheFile.createNewFile();
-            Files.copy(new ByteArrayInputStream(contents.getBytes()), cacheFile.toPath(), REPLACE_EXISTING);
+            Files.copy(contents, cacheFile.toPath(), REPLACE_EXISTING);
         }
         return cacheFile;
     }

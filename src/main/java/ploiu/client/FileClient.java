@@ -26,11 +26,12 @@ import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
 
-import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -87,7 +88,7 @@ public class FileClient {
         }
     }
 
-    public String getFileContents(long id) throws BadFileRequestException, BadFileResponseException {
+    public InputStream getFileContents(long id) throws BadFileRequestException, BadFileResponseException {
         if (id < 0) {
             throw new BadFileRequestException("Id cannot be negative.");
         }
@@ -99,7 +100,9 @@ public class FileClient {
                     var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
                     throw new BadFileResponseException(message);
                 }
-                return new String(new BufferedInputStream(res.getEntity().getContent()).readAllBytes());
+                var outStream = new ByteArrayOutputStream();
+                res.getEntity().getContent().transferTo(outStream);
+                return new ByteArrayInputStream(outStream.toByteArray());
             });
         } catch (IOException e) {
             log.error("Unforeseen error getting file contents", e);
@@ -189,7 +192,4 @@ public class FileClient {
         }
     }
 
-    private boolean isStatus2xxOk(int statusCode) {
-        return List.of(200, 201, 202, 203, 204, 205, 206, 207, 208, 226).contains(statusCode);
-    }
 }
