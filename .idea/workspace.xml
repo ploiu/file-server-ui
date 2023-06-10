@@ -129,7 +129,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="FolderClientTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -265,12 +265,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>173</line>
+          <line>171</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>182</line>
+          <line>180</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

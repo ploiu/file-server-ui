@@ -100,10 +100,8 @@ public class FileClient {
                     var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
                     throw new BadFileResponseException(message);
                 }
-                // we can't read it as a string because that messes up the encoding, and we can't return the original stream because apache closes it.
-                var outStream = new ByteArrayOutputStream();
-                res.getEntity().getContent().transferTo(outStream);
-                return new ByteArrayInputStream(outStream.toByteArray());
+                // we can't read it as a string because that messes up the encoding
+                return new ByteArrayInputStream( res.getEntity().getContent().readAllBytes());
             });
         } catch (IOException e) {
             log.error("Unforeseen error getting file contents", e);
