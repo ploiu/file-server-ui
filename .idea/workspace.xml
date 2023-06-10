@@ -113,6 +113,7 @@
       <recent name="ploiu.event" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/resources" />
       <recent name="$PROJECT_DIR$/src/main/resources/ui/components" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -129,7 +130,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="FolderClientTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -244,6 +245,7 @@
       <workItem from="1685820312781" duration="343000" />
       <workItem from="1685840730694" duration="2879000" />
       <workItem from="1686009206163" duration="10079000" />
+      <workItem from="1686271649224" duration="2151000" />
     </task>
     <servers />
   </component>
@@ -253,11 +255,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java</url>
-          <line>80</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java</url>
           <line>40</line>
