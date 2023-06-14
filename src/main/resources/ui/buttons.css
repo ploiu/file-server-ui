@@ -1,0 +1,70 @@
+@import "theme.css";
+
+.btn {
+    -fx-cursor: hand;
+}
+
+.btn-primary {
+    -fx-background-color: -primary;
+    -fx-text-fill: -text
+}
+
+.btn-primary:hover {
+    -fx-background-color: -primary-1;
+}
+
+.btn-primary:armed {
+    -fx-background-color: -primary-2;
+}
+
+.btn-secondary {
+    -fx-background-color: -secondary;
+    -fx-text-fill: -background
+}
+
+.btn-secondary:hover {
+    -fx-background-color: -secondary-1;
+}
+
+.btn-secondary:armed {
+    -fx-background-color: -secondary-2;
+}
+
+.btn-success {
+    -fx-background-color: -success;
+    -fx-text-fill: -text
+}
+
+.btn-success:hover {
+    -fx-background-color: -success-1;
+}
+
+.btn-success:armed {
+    -fx-background-color: -success-2;
+}
+
+.btn-warning {
+    -fx-background-color: -warning;
+    -fx-text-fill: -background
+}
+
+.btn-warning:hover {
+    -fx-background-color: -warning-1;
+}
+
+.btn-warning:armed {
+    -fx-background-color: -warning-2;
+}
+
+.btn-error {
+    -fx-background-color: -error;
+    -fx-text-fill: -text
+}
+
+.btn-error:hover {
+    -fx-background-color: -error-1;
+}
+
+.btn-error:armed {
+    -fx-background-color: -error-2;
+}

@@ -27,7 +27,6 @@ import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -101,7 +100,7 @@ public class FileClient {
                     throw new BadFileResponseException(message);
                 }
                 // we can't read it as a string because that messes up the encoding
-                return new ByteArrayInputStream( res.getEntity().getContent().readAllBytes());
+                return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
             });
         } catch (IOException e) {
             log.error("Unforeseen error getting file contents", e);

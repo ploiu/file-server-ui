@@ -2,7 +2,7 @@
 
 .folder-link {
     -fx-underline: true;
-    -fx-text-fill: -liberty;
+    -fx-text-fill: -primary;
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }

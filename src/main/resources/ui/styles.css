@@ -1,15 +1,2 @@
 @import "theme.css";
-
-.frame {
-    -fx-background-color: -raisin-black;
-}
-
-.item-root {
-    -fx-pref-width: 96px;
-    -fx-pref-height: 96px;
-}
-
-.item-row {
-    -fx-min-height: 128px;
-    -fx-padding: 20;
-}
+@import "buttons.css";

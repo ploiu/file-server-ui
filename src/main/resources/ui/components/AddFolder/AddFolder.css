@@ -3,7 +3,7 @@
 
 .add-folder:hover {
     -fx-border-style: dashed;
-    -fx-border-color: -liberty;
+    -fx-border-color: -primary;
 }
 
 .item-root {
