@@ -8,22 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/cssdialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extras/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/extras/generate_button_styles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/buttons.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/AddFile/AddFile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/AddFile/AddFile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/AddFolder/AddFolder.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/AddFolder/AddFolder.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/ConfirmDialog/ConfirmDialog.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/ConfirmDialog/ConfirmDialog.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/SearchBar/SearchBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/SearchBar/SearchBar.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/SearchBar/SearchBar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/SearchBar/SearchBar.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/TextInputDialog/TextInputDialog.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/TextInputDialog/TextInputDialog.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/theme.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,7 +249,7 @@
       <workItem from="1686009206163" duration="10079000" />
       <workItem from="1686271649224" duration="2151000" />
       <workItem from="1686681933014" duration="1193000" />
-      <workItem from="1686700251438" duration="2746000" />
+      <workItem from="1686700251438" duration="3617000" />
     </task>
     <servers />
   </component>
@@ -278,12 +266,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>171</line>
+          <line>170</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>180</line>
+          <line>179</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

@@ -6,14 +6,8 @@
     -fx-background-color: -background;
 }
 
-.submit-button {
-    -fx-background-color: -primary;
-    -fx-text-fill: -text;
-    -fx-cursor: hand;
-}
-
 .text-box {
-    -fx-background-color: #cacaca;
+    -fx-background-color: -secondary;
     -fx-border-radius: 0px;
 }
 
