@@ -4,11 +4,20 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" styleClass="add-folder,item-root" stylesheets="@AddFolder.css"
          type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea"
          onMouseClicked="#showNewFolderPane">
-    <ImageView layoutX="32" layoutY="32">
-        <Image requestedHeight="32" requestedWidth="32" url="@../../../assets/img/plus.png"/>
+<VBox alignment="CENTER" prefWidth="96" prefHeight="96">
+    <Region VBox.vgrow="SOMETIMES" />
+    <ImageView>
+        <Image requestedHeight="32" requestedWidth="32" url="@../../../assets/img/plus.png" />
     </ImageView>
-    <Label fx:id="fileName" layoutX="13.0" layoutY="74.0" styleClass="text" text="Add Folder">Add Folder</Label>
+    <Region VBox.vgrow="SOMETIMES" />
+    <HBox alignment="CENTER">
+        <Label fx:id="fileName" styleClass="text" text="Add Folder">Add Folder</Label>
+    </HBox>
+</VBox>
 </fx:root>
