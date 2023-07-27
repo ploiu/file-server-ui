@@ -30,14 +30,6 @@ public class AddFile extends AnchorPane {
         }
     }
 
-    @Override
-    public void resize(double width, double height) {
-        //if (height != this.getPrefHeight()) {
-        //    return;
-        //}
-        super.resize(width, height);
-    }
-
     @FXML
     @SuppressWarnings("unused")
     private void openFileBrowser(MouseEvent event) {

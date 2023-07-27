@@ -43,7 +43,6 @@ public class AddFolder extends AnchorPane {
     @FXML
     @SuppressWarnings("unused")
     private void showNewFolderPane(MouseEvent event) {
-        System.out.println("add file height: " + this.getHeight());
 
         if (event.getButton() == MouseButton.PRIMARY) {
             EventReceiver<String> callback = evt -> {
