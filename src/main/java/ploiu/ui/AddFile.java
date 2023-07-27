@@ -33,6 +33,7 @@ public class AddFile extends AnchorPane {
     @FXML
     @SuppressWarnings("unused")
     private void openFileBrowser(MouseEvent event) {
+
         if (event.getButton() == MouseButton.PRIMARY) {
             var chooser = new FileChooser();
             chooser.setTitle("Upload Files");

@@ -3,16 +3,18 @@
 <?import javafx.scene.layout.*?>
 <?import ploiu.ui.NavBar?>
 <?import ploiu.ui.SearchBar?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="800.0" styleClass="frame"
-         stylesheets="@styles.css" type="javafx.scene.layout.AnchorPane"
+<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1200.0" styleClass="frame"
+         stylesheets="@MainFrame.css" type="javafx.scene.layout.AnchorPane"
          xmlns="http://javafx.com/javafx/17.0.2-ea">
     <children>
         <VBox>
             <SearchBar receiver="$searchEvents"/>
             <NavBar receiver="$folderEvents" fx:id="navigationBar" layoutX="14.0" layoutY="45.0" styleClass="nav-bar"/>
             <VBox>
-                <FlowPane fx:id="folderPane" layoutX="13.0" layoutY="64.0" prefWidth="777.0" styleClass="item-row"/>
-                <FlowPane fx:id="filePane" layoutX="13.0" layoutY="64.0" prefWidth="777.0" styleClass="item-row"/>
+                <FlowPane fx:id="folderPane" layoutX="13.0" layoutY="64.0" prefWidth="777.0"
+                          styleClass="item-row"/>
+                <FlowPane fx:id="filePane" layoutX="13.0" layoutY="64.0" prefWidth="777.0"
+                          styleClass="item-row"/>
             </VBox>
         </VBox>
     </children>

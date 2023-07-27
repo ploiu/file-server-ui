@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -53,6 +54,7 @@ public class FileEntry extends AnchorPane {
             var image = MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
             icon.setImage(image);
             this.fileReceiver = fileReceiver;
+            Tooltip.install(this, new Tooltip(file.name()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

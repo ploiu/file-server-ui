@@ -31,22 +31,24 @@ public class AddFolder extends AnchorPane {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/AddFolder/AddFolder.fxml"));
         loader.setRoot(this);
         loader.setController(this);
+        this.receiver = receiver;
         this.currentFolderId = currentFolderId;
         try {
             loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.receiver = receiver;
     }
 
     @FXML
     @SuppressWarnings("unused")
     private void showNewFolderPane(MouseEvent event) {
+
         if (event.getButton() == MouseButton.PRIMARY) {
             EventReceiver<String> callback = evt -> {
                 var folderName = evt.get();
                 try {
+                    // TODO refactor this, the folderClient should not be in a UI element
                     this.receiver.process(new FolderEvent(folderClient.createFolder(new FolderRequest(Optional.empty(), currentFolderId, folderName)), FolderEvent.Type.CREATE));
                 } catch (BadFolderRequestException | BadFolderResponseException e) {
                     showErrorDialog("Failed to create folder. Message is " + e.getMessage(), "Failed to create folder", null);

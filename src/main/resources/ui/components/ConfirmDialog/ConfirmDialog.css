@@ -3,17 +3,17 @@
 .confirm-dialog-root {
     -fx-pref-width: 400;
     -fx-pref-height: 200;
-    -fx-background-color: -raisin-black;
+    -fx-background-color: -background;
 }
 
 .confirm-button, .cancel-button {
-    -fx-background-color: -liberty;
-    -fx-text-fill: -alice-blue;
+    -fx-background-color: -primary;
+    -fx-text-fill: -text;
     -fx-cursor: hand;
 }
 
 .body-text {
-    -fx-text-fill: -paradise-pink;
+    -fx-text-fill: -error;
     -fx-font-weight: bold;
     -fx-wrap-text: true;
 }

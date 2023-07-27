@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml" type="HBox"
          xmlns="http://javafx.com/javafx" stylesheets="@SearchBar.css">
-    <TextField fx:id="searchField"
-               prefHeight="24.0" prefWidth="333.0" styleClass="search-bar" onKeyPressed="#searchBarKeyPressed"/>
+    <TextField fx:id="searchField" styleClass="search-bar" onKeyPressed="#searchBarKeyPressed"/>
     <Button fx:id="searchButton" mnemonicParsing="false"
-            styleClass="search-button" text="Search" onAction="#searchButtonClicked"/>
+            styleClass="btn,btn-primary" text="Search" onAction="#searchButtonClicked"/>
 </fx:root>

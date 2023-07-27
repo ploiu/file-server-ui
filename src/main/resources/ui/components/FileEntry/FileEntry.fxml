@@ -5,11 +5,13 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="101.25" prefWidth="100.25"
          type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" stylesheets="@FileEntry.css">
-    <ImageView fx:id="icon" styleClass="image">
-    </ImageView>
-    <Label fx:id="fileName" layoutY="87.0" styleClass="text,file-name"/>
+    <VBox>
+        <ImageView fx:id="icon" styleClass="image"/>
+        <Label fx:id="fileName" styleClass="text,file-name"/>
+    </VBox>
     <fx:define>
         <ContextMenu fx:id="fileMenu">
             <items>

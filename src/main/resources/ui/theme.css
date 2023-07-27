@@ -1,12 +1,47 @@
 * {
-    -liberty: #5B64B5;
-    -paradise-pink: #EF476F;
-    -orange-yellow-crayola: #FFD166;
-    -caribbean-green: #06D6A0;
-    -raisin-black: #201A23;
-    -alice-blue: #E9F1F7;
+    -primary: #5B64B5;
+    -primary-1: #495091;
+    -primary-2: #373C6D;
+    -secondary: #CACACA;
+    -secondary-1: #A2A2A2;
+    -secondary-2: #797979;
+    -success: #06D6A0;
+    -success-1: #05AB80;
+    -success-2: #048060;
+    -warning: #FFD166;
+    -warning-1: #CCA752;
+    -warning-2: #997D3D;
+    -error: #EF476F;
+    -error-1: #BF3959;
+    -error-2: #8F2B43;
+    -background: #201A23;
+    -text: #E9F1F7;
 }
 
 .text {
-    -fx-text-fill: -alice-blue;
+    -fx-text-fill: -text;
+}
+
+.bounds-test-red {
+    -fx-border-color: red;
+}
+
+.bounds-test-orange {
+    -fx-border-color: orange;
+}
+
+.bounds-test-yellow {
+    -fx-border-color: yellow;
+}
+
+.bounds-test-green {
+    -fx-border-color: green;
+}
+
+.bounds-test-blue {
+    -fx-border-color: blue;
+}
+
+.bounds-test-violet {
+    -fx-border-color: violet;
 }

@@ -12,7 +12,8 @@
 .text {
     -fx-alignment: center;
     -fx-text-overrun: center-ellipsis;
-    -fx-max-width: 75px;
-    -fx-wrap-text: true;
+    -fx-max-width: 90px;
+    -fx-wrap-text: false;
     -fx-content-display: center;
+    /* no padding needed because of folder graphic space on the bottom to be centered in the image */
 }

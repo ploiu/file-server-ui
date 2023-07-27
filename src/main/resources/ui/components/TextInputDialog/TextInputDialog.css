@@ -3,22 +3,16 @@
 .text-input-dialog-root {
     -fx-pref-width: 400;
     -fx-pref-height: 200;
-    -fx-background-color: -raisin-black;
-}
-
-.submit-button {
-    -fx-background-color: -liberty;
-    -fx-text-fill: -alice-blue;
-    -fx-cursor: hand;
+    -fx-background-color: -background;
 }
 
 .text-box {
-    -fx-background-color: #cacaca;
+    -fx-background-color: -secondary;
     -fx-border-radius: 0px;
 }
 
 .body-text {
-    -fx-text-fill: -paradise-pink;
+    -fx-text-fill: -error;
     -fx-font-weight: bold;
     -fx-wrap-text: true;
 }

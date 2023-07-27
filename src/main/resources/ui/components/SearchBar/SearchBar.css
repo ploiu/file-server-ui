@@ -1,12 +1,16 @@
-@import "../../theme.css";
-
-.search-button {
-    -fx-background-color: -liberty;
-    -fx-text-fill: -alice-blue;
-    -fx-cursor: hand;
-}
+@import "../../styles.css";
 
 .search-bar {
-    -fx-background-color: #cacaca;
+    -fx-background-color: -secondary;
     -fx-border-radius: 0px;
+    -fx-pref-width: 620;
+    -fx-border-insets: 10px;
+    -fx-background-insets: 10px;
+    -fx-padding: 15px;
+}
+
+#searchButton {
+    -fx-border-insets: 10px;
+    -fx-background-insets: 10px;
+    -fx-padding: 15px;
 }
