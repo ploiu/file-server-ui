@@ -79,4 +79,8 @@ jlink {
     launcher {
         name = 'Ploiu File Server'
     }
+    mergedModule {
+        additive = true
+        requires("org.slf4j")
+    }
 }
