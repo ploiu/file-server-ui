@@ -1,6 +1,5 @@
 package ploiu.event;
 
-import lombok.Data;
 import lombok.Getter;
 import ploiu.model.FileApi;
 
@@ -13,7 +12,7 @@ public class FileSaveEvent extends Event<FileApi> {
 
     public FileSaveEvent(FileApi value, File directory) {
         super(value);
-        if (!directory.isDirectory()) {
+        if (directory == null || !directory.isDirectory()) {
             throw new UnsupportedOperationException("directory must be a directory");
         }
         this.directory = directory;

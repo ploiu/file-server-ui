@@ -8,11 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/LoadingModalOptions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/LoadingModal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/LoadingModal/LoadingModal.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/LoadingModal/LoadingModal.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,12 +67,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Record" />
         <option value="HTTP Request" />
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -278,7 +281,7 @@
       <workItem from="1690413905874" duration="96000" />
       <workItem from="1690414024356" duration="190000" />
       <workItem from="1690414221708" duration="1173000" />
-      <workItem from="1690415465893" duration="4997000" />
+      <workItem from="1690415465893" duration="7109000" />
     </task>
     <servers />
   </component>

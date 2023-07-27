@@ -20,8 +20,10 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -133,12 +135,23 @@ public class MainFrame extends AnchorPane {
                 throw new RuntimeException(e);
             }
         } else if (event instanceof FileSaveEvent saveEvent) {
-            try {
-                var file = saveAndGetFile(saveEvent.get());
-                var directory = saveEvent.getDirectory();
-                return file.renameTo(new File(directory.getAbsolutePath() + "/" + saveEvent.get().name()));
-            } catch (BadFileRequestException | IOException e) {
-                throw new RuntimeException(e);
+            Supplier<Boolean> saveAction = () -> {
+                var modal = new LoadingModal(new LoadingModalOptions("test", this.getScene().getWindow()));
+                try {
+                    var file = saveAndGetFile(saveEvent.get());
+                    var directory = saveEvent.getDirectory();
+                    var success = file.renameTo(new File(directory.getAbsolutePath() + "/" + saveEvent.get().name()));
+                    modal.close();
+                    return success;
+                } catch (BadFileRequestException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            };
+            var fileExists = Arrays.stream(saveEvent.getDirectory().listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
+            if (fileExists) {
+                var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> res.get() && saveAction.get(), "That file already exists. Do you wish to overwrite?"));
+            } else {
+                return saveAction.get();
             }
         }
         return false;

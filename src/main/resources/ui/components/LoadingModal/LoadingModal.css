@@ -1,0 +1,7 @@
+@import "../../theme.css";
+
+.loading-modal-root {
+    -fx-pref-width: 400;
+    -fx-pref-height: 200;
+    -fx-background-color: -background;
+}

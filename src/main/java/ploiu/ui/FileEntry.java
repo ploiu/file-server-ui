@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import ploiu.event.EventReceiver;
 import ploiu.event.FileDeleteEvent;
 import ploiu.event.FileSaveEvent;
@@ -102,6 +101,8 @@ public class FileEntry extends AnchorPane {
         var chooser = new DirectoryChooser();
         chooser.setTitle("Save " + file.name() + "...");
         var selectedDir = chooser.showDialog(getScene().getWindow());
-        fileReceiver.process(new FileSaveEvent(file, selectedDir));
+        if (selectedDir != null) {
+            fileReceiver.process(new FileSaveEvent(file, selectedDir));
+        }
     }
 }
