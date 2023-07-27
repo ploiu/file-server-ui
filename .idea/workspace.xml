@@ -8,8 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/ConfirmDialog/ConfirmDialog.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/ConfirmDialog/ConfirmDialog.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/ConfirmDialog/ConfirmDialog.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/ConfirmDialog/ConfirmDialog.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/TextInputDialog/TextInputDialog.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/TextInputDialog/TextInputDialog.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/TextInputDialog/TextInputDialog.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/TextInputDialog/TextInputDialog.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,11 +95,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "jlink__issues",
     "last_opened_file_path": "/home/ploiu/git/file_server",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -113,6 +120,9 @@
     ]
   }
 }]]></component>
+  <component name="ReadonlyStatusHandler">
+    <option name="SHOW_DIALOG" value="false" />
+  </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="ploiu.event" />
@@ -130,13 +140,14 @@
       <command value="gradle test" />
       <command value="open untitled" />
       <command value="gradlew build" />
-      <command value="gradlew jlink" />
       <command value="open file_server" />
       <command value="gradlew test" />
+      <command value="gradlew jlink" />
+      <command value="gradlew jpackage" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration name="/home/ploiu/git/file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="file-server-ui [jlink]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -147,7 +158,29 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="test" />
+            <option value="jlink" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="file-server-ui [jpackage]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jpackage" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -186,41 +219,21 @@
     <configuration name="scratch_2 | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.http" index="3" requestIdentifier="#3" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="generate_button_styles" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="file-server-ui" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/extras" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/extras/generate_button_styles.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle./home/ploiu/git/file-server-ui [test]" />
+      <item itemvalue="Gradle.file-server-ui [jlink]" />
+      <item itemvalue="Gradle.file-server-ui [jpackage]" />
       <item itemvalue="Gradle.file-server-ui [test]" />
       <item itemvalue="HTTP Request.scratch_2 | #1" />
       <item itemvalue="HTTP Request.scratch_2 | #3" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.file-server-ui [jpackage]" />
+        <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Gradle.file-server-ui [jlink]" />
         <item itemvalue="HTTP Request.scratch_2 | #3" />
         <item itemvalue="HTTP Request.scratch_2 | #1" />
-        <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle./home/ploiu/git/file-server-ui [test]" />
       </list>
     </recent_temporary>
   </component>
@@ -276,6 +289,8 @@
       <workItem from="1690414024356" duration="190000" />
       <workItem from="1690414221708" duration="1173000" />
       <workItem from="1690415465893" duration="7109000" />
+      <workItem from="1690486857690" duration="3867000" />
+      <workItem from="1690493067992" duration="7811000" />
     </task>
     <servers />
   </component>

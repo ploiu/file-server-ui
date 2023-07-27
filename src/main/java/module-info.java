@@ -1,4 +1,6 @@
-module file.server.ui.main {
+// open is required to let the application access everything in src/main/resources
+open module file.server.ui.main {
+
     requires static lombok;
 
     requires java.net.http;
@@ -14,12 +16,6 @@ module file.server.ui.main {
     requires org.jetbrains.annotations;
     requires org.apache.httpcomponents.client5.httpclient5;
     requires org.apache.httpcomponents.core5.httpcore5;
-
-    opens ploiu.model to com.fasterxml.jackson.databind;
-    opens ploiu.module to com.google.guice;
-    opens ploiu.ui to javafx.fxml;
-    opens ploiu.event to javafx.fxml;
-    opens ploiu to javafx.graphics;
 
     exports ploiu.ui to javafx.fxml, javafx.graphics;
     exports ploiu.event to javafx.fxml, javafx.graphics;
