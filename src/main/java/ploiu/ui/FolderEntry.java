@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
@@ -46,6 +47,7 @@ public class FolderEntry extends AnchorPane {
             var splitPath = folder.path().split("/");
             var name = splitPath[splitPath.length - 1];
             this.folderName.setText(name);
+            Tooltip.install(this, new Tooltip(name));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

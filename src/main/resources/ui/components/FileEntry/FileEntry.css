@@ -7,7 +7,8 @@
 .text {
     -fx-alignment: center;
     -fx-text-overrun: center-ellipsis;
-    -fx-max-width: 75px;
-    -fx-wrap-text: true;
+    -fx-max-width: 90px;
+    -fx-wrap-text: false;
     -fx-content-display: center;
+    -fx-padding: 5px 0 0 0;
 }
