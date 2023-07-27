@@ -3,8 +3,8 @@ package ploiu.event;
 import lombok.Getter;
 import ploiu.model.FolderApi;
 
+@Getter
 public final class FolderEvent extends Event<FolderApi> {
-    @Getter
     private final Type type;
 
     public FolderEvent(FolderApi value, Type type) {

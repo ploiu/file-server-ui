@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Properties;
 
+@Getter
 @Slf4j
 public class AuthenticationConfig {
-    @Getter
     private final String username;
     @Getter
     private final String password;

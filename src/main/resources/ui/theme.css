@@ -21,3 +21,10 @@
 .text {
     -fx-text-fill: -text;
 }
+
+/*.bounds-test-red { -fx-border-color: red; }
+.bounds-test-orange { -fx-border-color: orange; }
+.bounds-test-yellow { -fx-border-color: yellow; }
+.bounds-test-green { -fx-border-color: green; }
+.bounds-test-blue { -fx-border-color: blue; }
+.bounds-test-violet { -fx-border-color: violet; }*/

@@ -5,10 +5,10 @@ import lombok.Getter;
 
 import java.io.File;
 
+@Getter
 @EqualsAndHashCode
 public class FileUploadEvent extends Event<File> {
 
-    @Getter
     private final long folderId;
 
     public FileUploadEvent(File value, long folderId) {

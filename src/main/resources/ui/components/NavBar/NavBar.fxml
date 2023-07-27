@@ -2,5 +2,6 @@
 
 <?import javafx.scene.layout.HBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1"
-         type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17.0.2-ea" stylesheets="@NavBar.css">
+         type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17.0.2-ea" styleClass="nav-bar"
+         stylesheets="@NavBar.css">
 </fx:root>

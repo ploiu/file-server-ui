@@ -19,12 +19,12 @@ import java.io.IOException;
 
 import static ploiu.util.DialogUtils.showErrorDialog;
 
+@Getter
 @SuppressWarnings("unused")
 public class FolderEntry extends AnchorPane {
     /**
      * the folder backing this UI element
      */
-    @Getter
     private final FolderApi folder;
     @FXML
     private ImageView icon;

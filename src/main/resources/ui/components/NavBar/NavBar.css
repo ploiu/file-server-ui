@@ -1,8 +1,13 @@
 @import "../../theme.css";
 
+.nav-bar {
+    -fx-padding: 0 0 0 10px;
+}
+
 .folder-link {
     -fx-underline: true;
     -fx-text-fill: -primary;
     -fx-border-color: transparent;
     -fx-cursor: hand;
+    -fx-padding: 0 2px;
 }
