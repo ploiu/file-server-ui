@@ -113,7 +113,7 @@ public class MainFrame extends AnchorPane {
     };
 
     private final EventReceiver<FileApi> fileCrudEvents = event -> {
-        if (event instanceof FileDeleteEvent deleteEvent) {
+        if (event instanceof FileDeleteEvent) {
             try {
                 fileClient.deleteFile(event.get().id());
                 loadFolder(currentFolder);
@@ -130,6 +130,14 @@ public class MainFrame extends AnchorPane {
                 loadFolder(currentFolder);
                 return true;
             } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if (event instanceof FileSaveEvent saveEvent) {
+            try {
+                var file = saveAndGetFile(saveEvent.get());
+                var directory = saveEvent.getDirectory();
+                return file.renameTo(new File(directory.getAbsolutePath() + "/" + saveEvent.get().name()));
+            } catch (BadFileRequestException | IOException e) {
                 throw new RuntimeException(e);
             }
         }

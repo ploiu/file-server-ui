@@ -15,6 +15,7 @@
     <fx:define>
         <ContextMenu fx:id="fileMenu">
             <items>
+                <MenuItem text="Save As..." onAction="#saveAsClicked" />
                 <MenuItem text="Rename File" onAction="#renameItemClicked"/>
                 <MenuItem text="Delete File" onAction="#deleteItemClicked"/>
             </items>
