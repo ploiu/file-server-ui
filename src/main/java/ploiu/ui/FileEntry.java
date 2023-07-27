@@ -9,8 +9,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
 import ploiu.event.EventReceiver;
 import ploiu.event.FileDeleteEvent;
+import ploiu.event.FileSaveEvent;
 import ploiu.event.FileUpdateEvent;
 import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
@@ -69,6 +71,7 @@ public class FileEntry extends AnchorPane {
     }
 
     @FXML
+    @SuppressWarnings("unused")
     private void renameItemClicked(ActionEvent event) {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
@@ -81,6 +84,7 @@ public class FileEntry extends AnchorPane {
     }
 
     @FXML
+    @SuppressWarnings("unused")
     private void deleteItemClicked(ActionEvent ignored) {
         EventReceiver<Boolean> dialogCallback = res -> {
             if (res.get()) {
@@ -89,5 +93,16 @@ public class FileEntry extends AnchorPane {
             return false;
         };
         new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), dialogCallback, "Are you sure you want to delete this file?"));
+    }
+
+    @FXML
+    @SuppressWarnings("unused")
+    private void saveAsClicked(ActionEvent ignored) {
+        var chooser = new DirectoryChooser();
+        chooser.setTitle("Save " + file.name() + "...");
+        var selectedDir = chooser.showDialog(getScene().getWindow());
+        if (selectedDir != null) {
+            fileReceiver.process(new FileSaveEvent(file, selectedDir));
+        }
     }
 }
