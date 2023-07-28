@@ -93,8 +93,7 @@ jlink {
         if (Os.isFamily(Os.FAMILY_UNIX)) {
             installerType = 'deb'
         } else if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            installerType = 'msi'
-            imageOptions = ['--win-menu']
+            installerType = 'exe'
         }
         installerOutputDir = file("$buildDir/file-server-installer")
     }
@@ -106,6 +105,11 @@ tasks.jpackageImage.doFirst {
     def flags = ['-importcert', '-cacerts', '-file', './file_server_cert.pem', '-noprompt', '-storepass', 'changeit']
     // TODO platform-based command
     exec {
-        commandLine('./build/image/bin/keytool', *flags)
+		if(Os.isFamily(Os.FAMILY_UNIX)) {
+				commandLine('./build/image/bin/keytool', *flags)
+		} else if(Os.isFamily(Os.FAMILY_WINDOWS)) {
+				commandLine('build/image/bin/keytool.exe', *flags)
+		}
+        
     }
 }
