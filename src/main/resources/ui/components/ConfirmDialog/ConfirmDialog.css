@@ -1,15 +1,9 @@
-@import "../../theme.css";
+@import "../../styles.css";
 
 .confirm-dialog-root {
     -fx-pref-width: 400;
     -fx-pref-height: 200;
     -fx-background-color: -background;
-}
-
-.confirm-button, .cancel-button {
-    -fx-background-color: -primary;
-    -fx-text-fill: -text;
-    -fx-cursor: hand;
 }
 
 .body-text {

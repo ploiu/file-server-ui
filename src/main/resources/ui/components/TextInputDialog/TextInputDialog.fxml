@@ -12,7 +12,7 @@
     <TextField fx:id="textBox" layoutX="37.0" layoutY="88.0" prefHeight="24.0" prefWidth="328.0"
                styleClass="text-box"/>
     <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="50" alignment="CENTER">
-        <Button fx:id="actionButton" styleClass="submit-button"
+        <Button fx:id="actionButton" styleClass="btn,btn-primary"
                 text="$confirmText"/>
     </VBox>
 </fx:root>

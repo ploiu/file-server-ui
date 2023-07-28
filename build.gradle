@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 buildscript {
     dependencies {
         classpath 'org.openjfx:javafx-plugin:0.0.13'
@@ -8,15 +10,15 @@ plugins {
     id 'idea'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.beryx.jlink' version '2.26.0'
 }
 
 def versions = [
-        junit   : '5.9.2',
-        mockito : '4.11.0',
-        lombok  : '1.18.24',
-        jackson : '2.14.0',
-        slf4j   : '2.0.5',
+        junit   : '5.10.0',
+        mockito : '5.4.0',
+        lombok  : '1.18.28',
+        jackson : '2.15.2',
+        slf4j   : '2.0.7',
         wiremock: '3.0.0-beta-7'
 ]
 
@@ -28,7 +30,7 @@ sourceCompatibility = 17
 targetCompatibility = 17
 
 group 'ploiu'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -41,7 +43,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:$versions.jackson"
     implementation "com.fasterxml.jackson.core:jackson-databind:$versions.jackson"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$versions.jackson"
-    implementation 'org.jetbrains:annotations:23.1.0'
+    implementation 'org.jetbrains:annotations:24.0.1'
     implementation 'com.google.inject:guice:5.1.0'
     // because apparently I can't properly build a multipart form to save my life
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
@@ -78,5 +80,36 @@ jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'Ploiu File Server'
+    }
+    mergedModule {
+        additive = true
+        requires 'org.slf4j'
+        requires 'jdk.crypto.ec'
+    }
+
+    jpackage {
+        imageName = 'ploiu-file-server'
+        skipInstaller = false
+        if (Os.isFamily(Os.FAMILY_UNIX)) {
+            installerType = 'deb'
+        } else if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            installerType = 'exe'
+        }
+        installerOutputDir = file("$buildDir/file-server-installer")
+    }
+
+}
+
+tasks.jpackageImage.doFirst {
+    println 'Installing cert to custom runtime...'
+    def flags = ['-importcert', '-cacerts', '-file', './file_server_cert.pem', '-noprompt', '-storepass', 'changeit']
+    // TODO platform-based command
+    exec {
+		if(Os.isFamily(Os.FAMILY_UNIX)) {
+				commandLine('./build/image/bin/keytool', *flags)
+		} else if(Os.isFamily(Os.FAMILY_WINDOWS)) {
+				commandLine('build/image/bin/keytool.exe', *flags)
+		}
+        
     }
 }

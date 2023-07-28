@@ -10,9 +10,9 @@
            styleClass="body-text" text="$bodyText"/>
     <HBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="50" alignment="CENTER"
           styleClass="button-wrapper">
-        <Button fx:id="cancelButton" styleClass="cancel-button"
+        <Button fx:id="cancelButton" styleClass="btn,btn-secondary"
                 text="$cancelText"/>
-        <Button fx:id="confirmButton" styleClass="confirm-button"
+        <Button fx:id="confirmButton" styleClass="btn,btn-primary"
                 text="$confirmText"/>
     </HBox>
 </fx:root>
