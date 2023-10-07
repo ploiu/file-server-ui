@@ -10,7 +10,14 @@
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/LoadingModalOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/LoadingModalOptions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/LoadingModal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/LoadingModal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/LoadingModal/LoadingModal.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/LoadingModal/LoadingModal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/LoadingModal/LoadingModal.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/LoadingModal/LoadingModal.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,29 +37,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="testCompileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="testRuntimeClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -95,7 +80,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "rxjava",
     "last_opened_file_path": "/home/ploiu/git/imageLattice",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -106,7 +91,7 @@
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "editing.templates",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -135,15 +120,16 @@
       <command value="gradle test" />
       <command value="open untitled" />
       <command value="gradlew build" />
-      <command value="gradlew test" />
       <command value="gradlew jlink" />
       <command value="gradlew jpackage" />
       <command value="open File Server Ui Android" />
       <command value="open file_server" />
+      <command value="gradlew clean build" />
+      <command value="gradlew test" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration name="file-server-ui [jlink]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FileClientTests.testGetFileContentsNonBlockingUsesGET" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -154,7 +140,32 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="jlink" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FileClientTests.testGetFileContentsNonBlockingUsesGET&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="file-server-ui [clean build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+            <option value="build" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -231,24 +242,21 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="scratch_2 | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.http" index="3" requestIdentifier="#3" runType="Run single request">
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.FileClientTests.testGetFileContentsNonBlockingUsesGET" />
+      <item itemvalue="Gradle.file-server-ui [clean build]" />
       <item itemvalue="Gradle.file-server-ui [jpackageImage]" />
-      <item itemvalue="Gradle.file-server-ui [jlink]" />
       <item itemvalue="Gradle.file-server-ui [jpackage]" />
       <item itemvalue="Gradle.file-server-ui [test]" />
-      <item itemvalue="HTTP Request.scratch_2 | #3" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.FileClientTests.testGetFileContentsNonBlockingUsesGET" />
+        <item itemvalue="Gradle.file-server-ui [clean build]" />
         <item itemvalue="Gradle.file-server-ui [jpackageImage]" />
         <item itemvalue="Gradle.file-server-ui [jpackage]" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.file-server-ui [jlink]" />
-        <item itemvalue="HTTP Request.scratch_2 | #3" />
       </list>
     </recent_temporary>
   </component>
@@ -311,6 +319,7 @@
       <workItem from="1690761635697" duration="10000" />
       <workItem from="1694037263183" duration="36000" />
       <workItem from="1696692956622" duration="332000" />
+      <workItem from="1696716285791" duration="3920000" />
     </task>
     <servers />
   </component>
@@ -325,20 +334,6 @@
     <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>170</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>179</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />

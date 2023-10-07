@@ -123,24 +123,32 @@ public class FileClientTests {
 
     @Test
     void testGetFileContentsThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.getFileContents(-1));
-        assertEquals("Id cannot be negative.", e.getMessage());
+        fileClient.getFileContents(-1)
+                .doOnError(ex -> {
+                    assertInstanceOf(BadFileRequestException.class, ex);
+                    assertEquals("Id cannot be negative.", ex.getMessage());
+                })
+                .subscribe(ignored -> fail("getFileContents with negative id succeeded when it should fail" + ignored))
+                .dispose();
     }
 
     @Test
     void testGetFileContentsUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
-        fileClient.getFileContents(1);
-        verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
+        fileClient.getFileContents(1)
+                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class)))
+                .dispose();
+
     }
 
     @Test
     void testGetFileContentsUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
-        fileClient.getFileContents(1);
-        verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class));
+        fileClient.getFileContents(1)
+                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class)))
+                .dispose();
     }
 
     @ParameterizedTest(name = "Test that [{0}] is rejected for search")

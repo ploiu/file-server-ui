@@ -1,5 +1,7 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.DragEvent;
@@ -15,6 +17,7 @@ import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
 import ploiu.model.*;
+import ploiu.model.LoadingModalOptions.LoadingType;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -23,7 +26,6 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -135,23 +137,25 @@ public class MainFrame extends AnchorPane {
                 throw new RuntimeException(e);
             }
         } else if (event instanceof FileSaveEvent saveEvent) {
-            Supplier<Boolean> saveAction = () -> {
-                var modal = new LoadingModal(new LoadingModalOptions("test", this.getScene().getWindow()));
-                try {
-                    var file = saveAndGetFile(saveEvent.get());
-                    var directory = saveEvent.getDirectory();
-                    var success = file.renameTo(new File(directory.getAbsolutePath() + "/" + saveEvent.get().name()));
-                    modal.close();
-                    return success;
-                } catch (BadFileRequestException | IOException e) {
-                    throw new RuntimeException(e);
-                }
-            };
+            var saveModal = new LoadingModal(new LoadingModalOptions(this.getScene().getWindow(), LoadingType.INDETERMINATE));
+            var saveAction = saveAndGetFile(saveEvent.get())
+                    .observeOn(Schedulers.io())
+                    .map(file -> {
+                        var directory = saveEvent.getDirectory();
+                        return file.renameTo(new File(directory.getAbsolutePath() + "/" + saveEvent.get().name()));
+                    })
+                    .doFinally(saveModal::close);
             var fileExists = Arrays.stream(saveEvent.getDirectory().listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
             if (fileExists) {
-                var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> res.get() && saveAction.get(), "That file already exists. Do you wish to overwrite?"));
+                var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> {
+                    saveModal.open();
+                    saveAction.subscribe();
+                    return res.get();
+                }, "That file already exists. Do you wish to overwrite?"));
             } else {
-                return saveAction.get();
+                saveModal.open();
+                saveAction.subscribe();
+                return true;
             }
         }
         return false;
@@ -216,9 +220,10 @@ public class MainFrame extends AnchorPane {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     runInThread(() -> {
                         try {
-                            var file = saveAndGetFile(fileApi);
-                            desktop.open(file);
-                        } catch (BadFileRequestException | BadFileResponseException | IOException e) {
+                            saveAndGetFile(fileApi)
+                                    .firstElement()
+                                    .subscribe(desktop::open);
+                        } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
                     });
@@ -229,18 +234,22 @@ public class MainFrame extends AnchorPane {
         drawAddFile();
     }
 
-    private File saveAndGetFile(FileApi fileApi) throws BadFileRequestException, BadFileResponseException, IOException {
+    private Observable<File> saveAndGetFile(FileApi fileApi) {
         // ensure the cache directory exists
         //noinspection ResultOfMethodCallIgnored
         new File(CACHE_DIR).mkdir();
         var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
-        if (!cacheFile.exists()) {
-            var contents = fileClient.getFileContents(fileApi.id());
-            //noinspection ResultOfMethodCallIgnored
-            cacheFile.createNewFile();
-            Files.copy(contents, cacheFile.toPath(), REPLACE_EXISTING);
-        }
-        return cacheFile;
+        var req = fileClient.getFileContents(fileApi.id())
+                .firstElement()
+                .observeOn(Schedulers.io())
+                .map(contents -> {
+                    //noinspection ResultOfMethodCallIgnored
+                    cacheFile.createNewFile();
+                    Files.copy(contents, cacheFile.toPath(), REPLACE_EXISTING);
+                    return cacheFile;
+                });
+        return Observable.just(cacheFile)
+                .flatMap(file -> file.exists() ? Observable.just(file) : req.toObservable());
     }
 
     private void handleSearch(String text) {

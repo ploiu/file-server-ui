@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.inject.Inject;
+import io.reactivex.rxjava3.core.Observable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.classic.HttpClient;
@@ -87,25 +88,27 @@ public class FileClient {
         }
     }
 
-    public InputStream getFileContents(long id) throws BadFileRequestException, BadFileResponseException {
+    public Observable<InputStream> getFileContents(long id) {
         if (id < 0) {
-            throw new BadFileRequestException("Id cannot be negative.");
+            return Observable.error(new BadFileRequestException("Id cannot be negative."));
         }
-        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
-        try {
-            return httpClient.execute(req, res -> {
-                var status = new StatusLine(res);
-                if (!status.isSuccessful()) {
-                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                    throw new BadFileResponseException(message);
-                }
-                // we can't read it as a string because that messes up the encoding
-                return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
-            });
-        } catch (IOException e) {
-            log.error("Unforeseen error getting file contents", e);
-            throw new RuntimeException(e);
-        }
+        return Observable.fromCallable(() -> {
+            var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
+            try {
+                return httpClient.execute(req, res -> {
+                    var status = new StatusLine(res);
+                    if (!status.isSuccessful()) {
+                        var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                        throw new BadFileResponseException(message);
+                    }
+                    // we can't read it as a string because that messes up the encoding
+                    return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
+                });
+            } catch (IOException e) {
+                log.error("Unforeseen error getting file contents", e);
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public FileApi updateFile(UpdateFileRequest request) throws BadFileRequestException, BadFileResponseException {

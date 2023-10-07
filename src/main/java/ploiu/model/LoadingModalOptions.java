@@ -1,9 +1,17 @@
 package ploiu.model;
 
 import javafx.stage.Window;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-public record LoadingModalOptions(
-        String bodyText,
-        Window parentWindow
-) {
+@Data
+@RequiredArgsConstructor
+public class LoadingModalOptions {
+    private final Window parentWindow;
+    private final LoadingType type;
+
+    public enum LoadingType {
+        DETERMINATE,
+        INDETERMINATE
+    }
 }
