@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.io.File;
 
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class FileUploadEvent extends Event<File> {
 
     private final long folderId;
