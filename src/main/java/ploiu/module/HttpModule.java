@@ -1,7 +1,5 @@
 package ploiu.module;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -10,7 +8,6 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.message.BasicHeader;
 import ploiu.config.AuthenticationConfig;
 
-import java.net.Authenticator;
 import java.util.List;
 
 import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;

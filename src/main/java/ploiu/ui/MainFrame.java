@@ -1,6 +1,5 @@
 package ploiu.ui;
 
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -101,6 +100,7 @@ public class MainFrame extends AnchorPane {
     };
 
     // for files that don't exist yet (no file api object)
+    @Deprecated
     private final EventReceiver<File> fileUploadEvent = event -> {
         var file = event.get();
         if (!file.exists()) {
@@ -122,11 +122,11 @@ public class MainFrame extends AnchorPane {
     };
 
     private final AsyncEventReceiver<File> asyncFileUploadEvent = event -> {
-            var file = event.get();
-            if (!file.exists()) {
-                showErrorDialog("Failed to upload file [" + file.getName() + "] because it doesn't exist. Not sure how you did that but quit!", "Failed to upload file", null);
-                return Single.just(false);
-            }
+        var file = event.get();
+        if (!file.exists()) {
+            showErrorDialog("Failed to upload file [" + file.getName() + "] because it doesn't exist. Not sure how you did that but quit!", "Failed to upload file", null);
+            return Single.just(false);
+        }
         if (event instanceof FileUploadEvent uploadEvent) {
             return fileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
                     .doAfterSuccess(result -> {
@@ -134,24 +134,53 @@ public class MainFrame extends AnchorPane {
                             Platform.runLater(() -> loadFolder(currentFolder));
                         }
                     })
-                    .doOnError(e -> showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null))
                     .map(it -> it.id() > -1);
         } else {
             return Single.just(false);
         }
     };
 
-    private final EventReceiver<FileApi> fileCrudEvents = event -> {
+    private final AsyncEventReceiver<FileApi> asyncFileDeleteEvent = event -> {
         if (event instanceof FileDeleteEvent) {
-            try {
-                deprecatedFileClient.deleteFile(event.get().id());
-                loadFolder(currentFolder);
-                return true;
-            } catch (BadFileRequestException e) {
-                showErrorDialog("Failed to delete file [" + event.get().name() + "] Please check server logs for details", "Failed to delete file", null);
-                return false;
-            }
-        } else if (event instanceof FileUpdateEvent updateEvent) {
+            return fileClient.deleteFile(event.get().id())
+                    .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
+                    .andThen(Single.fromCallable(() -> {
+                        loadFolder(currentFolder);
+                        return true;
+                    }));
+        } else {
+            return Single.just(false);
+        }
+    };
+
+    private final AsyncEventReceiver<FileApi> asyncFileUpdateEvent = event -> {
+        if (event instanceof FileUpdateEvent updateEvent) {
+            var file = updateEvent.get();
+            var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
+            return fileClient.updateFile(req)
+                    .doOnSuccess(ignored -> Platform.runLater(() -> loadFolder(currentFolder)))
+                    .doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null))
+                    .map(ignored -> true);
+        } else {
+            return Single.error(new UnsupportedOperationException("asyncFileUpdateEvent only supports FileUpdateEvent"));
+        }
+    };
+
+    private final AsyncEventReceiver<FileApi> asyncFileCrudEvents = event -> {
+        if (event instanceof FileDeleteEvent) {
+            return asyncFileDeleteEvent.process(event);
+        } else if (event instanceof FileUpdateEvent) {
+            return asyncFileUpdateEvent.process(event);
+        } else if (event instanceof FileSaveEvent) {
+            return Single.error(new UnsupportedOperationException("File Download unsupported"));
+        }
+
+        return Single.just(false);
+    };
+
+    @Deprecated(forRemoval = true)
+    private final EventReceiver<FileApi> fileCrudEvents = event -> {
+        if (event instanceof FileUpdateEvent updateEvent) {
             var file = updateEvent.get();
             var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
             try {
@@ -240,7 +269,7 @@ public class MainFrame extends AnchorPane {
 
     private void loadFiles(Collection<FileApi> files) {
         for (FileApi fileApi : files) {
-            FileEntry entry = new FileEntry(fileApi, fileCrudEvents);
+            FileEntry entry = new FileEntry(fileApi, asyncFileCrudEvents);
             entry.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     runInThread(() -> {
@@ -259,6 +288,7 @@ public class MainFrame extends AnchorPane {
         drawAddFile();
     }
 
+    @Deprecated // rewrite to be properly reactive, probably want to completely move this out
     private Observable<File> saveAndGetFile(FileApi fileApi) {
         // ensure the cache directory exists
         //noinspection ResultOfMethodCallIgnored

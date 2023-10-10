@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static ploiu.util.DialogUtils.showErrorDialog;
+
 public class AddFile extends AnchorPane {
     private final AsyncEventReceiver<File> receiver;
     private final Long currentFolderId;
@@ -53,7 +55,7 @@ public class AddFile extends AnchorPane {
         var modal = new LoadingModal(new LoadingModalOptions(this.getScene().getWindow(), LoadingModalOptions.LoadingType.DETERMINATE));
         var modalProgress = new AtomicInteger(0);
         // 0.01 because we need to divide the int by 10, and 1/10 for the progress
-        var progressAmount = 100f / files.size() * 0.01f;
+        var progressAmount = 1f / files.size();
         List<Observable<Boolean>> uploadList = new ArrayList<>();
         for (File selectedFile : files) {
             uploadList.add(receiver.process(new FileUploadEvent(selectedFile, currentFolderId)).toObservable());
@@ -65,6 +67,6 @@ public class AddFile extends AnchorPane {
                 // this is important because the observer subscribes on whatever thread it was created on...I might want to move this somewhere else
                 .doFinally(modal::close)
                 .subscribeOn(Schedulers.io())
-                .subscribe(res -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount));
+                .subscribe(res -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount), e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null));
     }
 }

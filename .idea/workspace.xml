@@ -11,11 +11,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/AsyncEventReceiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClientV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClientV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/TextInputDialogOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/TextInputDialogOptions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/DialogUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/DialogUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,9 +124,9 @@
       <command value="gradlew jlink" />
       <command value="gradlew jpackage" />
       <command value="open File Server Ui Android" />
-      <command value="open file_server" />
       <command value="gradlew clean build" />
       <command value="gradlew test" />
+      <command value="open file_server" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -325,7 +327,11 @@
       <workItem from="1696898599616" duration="98000" />
       <workItem from="1696898777955" duration="50000" />
       <workItem from="1696899546043" duration="1746000" />
-      <workItem from="1696901300061" duration="3677000" />
+      <workItem from="1696901300061" duration="4536000" />
+      <workItem from="1696967712239" duration="1687000" />
+      <workItem from="1696976822133" duration="2401000" />
+      <workItem from="1696979497757" duration="1730000" />
+      <workItem from="1696981253195" duration="686000" />
     </task>
     <servers />
   </component>

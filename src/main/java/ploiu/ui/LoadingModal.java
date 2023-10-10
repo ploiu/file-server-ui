@@ -8,7 +8,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import ploiu.model.LoadingModalOptions;
 import ploiu.model.LoadingModalOptions.LoadingType;
 

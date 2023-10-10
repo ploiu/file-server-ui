@@ -49,15 +49,17 @@ public class FileClientV2 {
         }
         var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata/" + id);
         return Single.fromCallable(() -> httpClient.execute(req, res -> {
-            var status = new StatusLine(res);
-            var body = res.getEntity().getContent();
-            if (status.isSuccessful()) {
-                return mapper.readValue(body, FileApi.class);
-            } else {
-                var message = mapper.readValue(body, ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-        })).observeOn(Schedulers.io());
+                    var status = new StatusLine(res);
+                    var body = res.getEntity().getContent();
+                    if (status.isSuccessful()) {
+                        return mapper.readValue(body, FileApi.class);
+                    } else {
+                        var message = mapper.readValue(body, ApiMessage.class).message();
+                        throw new BadFileResponseException(message);
+                    }
+                }))
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
     }
 
     public Completable deleteFile(long id) {
@@ -66,15 +68,17 @@ public class FileClientV2 {
         }
         var req = new HttpDelete(serverConfig.getBaseUrl() + "/files/" + id);
         return Completable.fromCallable(() -> httpClient.execute(req, res -> {
-            var status = new StatusLine(res);
-            if (!status.isSuccessful()) {
-                var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            } else {
-                EntityUtils.consume(res.getEntity());
-            }
-            return true;
-        })).observeOn(Schedulers.io());
+                    var status = new StatusLine(res);
+                    if (!status.isSuccessful()) {
+                        var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                        throw new BadFileResponseException(message);
+                    } else {
+                        EntityUtils.consume(res.getEntity());
+                    }
+                    return true;
+                }))
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<? extends InputStream> getFileContents(long id) {
@@ -82,22 +86,24 @@ public class FileClientV2 {
             return Observable.error(new BadFileRequestException("Id cannot be negative."));
         }
         return Observable.fromCallable(() -> {
-            var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
-            try {
-                return httpClient.execute(req, res -> {
-                    var status = new StatusLine(res);
-                    if (!status.isSuccessful()) {
-                        var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                        throw new BadFileResponseException(message);
+                    var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
+                    try {
+                        return httpClient.execute(req, res -> {
+                            var status = new StatusLine(res);
+                            if (!status.isSuccessful()) {
+                                var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                                throw new BadFileResponseException(message);
+                            }
+                            // we can't read it as a string because that messes up the encoding
+                            return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
+                        });
+                    } catch (IOException e) {
+                        log.error("Unforeseen error getting file contents", e);
+                        throw new RuntimeException(e);
                     }
-                    // we can't read it as a string because that messes up the encoding
-                    return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
-                });
-            } catch (IOException e) {
-                log.error("Unforeseen error getting file contents", e);
-                throw new RuntimeException(e);
-            }
-        }).observeOn(Schedulers.io());
+                })
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
     }
 
     public Single<FileApi> updateFile(UpdateFileRequest request) {
@@ -109,20 +115,22 @@ public class FileClientV2 {
         }
         var req = new HttpPut(serverConfig.getBaseUrl() + "/files");
         return Single.fromCallable(() -> {
-            req.setEntity(new StringEntity(mapper.writeValueAsString(request)));
-            req.setHeader("Content-Type", "application/json");
-            return httpClient.execute(req, res -> {
-                var status = new StatusLine(res);
-                var body = res.getEntity().getContent();
-                if (status.getStatusCode() == 200) {
-                    return mapper.readValue(body, FileApi.class);
-                } else {
-                    var message = mapper.readValue(body, ApiMessage.class);
-                    log.error("Failed to update file, message is {}", message.message());
-                    throw new BadFileResponseException(message.message());
-                }
-            });
-        }).observeOn(Schedulers.io());
+                    req.setEntity(new StringEntity(mapper.writeValueAsString(request)));
+                    req.setHeader("Content-Type", "application/json");
+                    return httpClient.execute(req, res -> {
+                        var status = new StatusLine(res);
+                        var body = res.getEntity().getContent();
+                        if (status.getStatusCode() == 200) {
+                            return mapper.readValue(body, FileApi.class);
+                        } else {
+                            var message = mapper.readValue(body, ApiMessage.class);
+                            log.error("Failed to update file, message is {}", message.message());
+                            throw new BadFileResponseException(message.message());
+                        }
+                    });
+                })
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<Collection<FileApi>> search(String query) {
@@ -139,7 +147,9 @@ public class FileClientV2 {
                     return mapper.readValue(res.getEntity().getContent(), new TypeReference<Collection<FileApi>>() {
                     });
                 }))
-                .observeOn(Schedulers.io());
+
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
     }
 
     public Single<FileApi> createFile(CreateFileRequest request) {
@@ -159,19 +169,21 @@ public class FileClientV2 {
             multipart.addTextBody("extension", splitName[splitName.length - 1]);
         }
         return Single.fromCallable(() -> {
-            try (var built = multipart.build()) {
-                var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
-                req.setEntity(built);
-                return httpClient.execute(req, res -> {
-                    var status = new StatusLine(res);
-                    if (status.getStatusCode() != 201) {
-                        var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                        throw new BadFileResponseException(message);
-                    }
-                    return mapper.readValue(res.getEntity().getContent(), FileApi.class);
-                });
+                    try (var built = multipart.build()) {
+                        var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
+                        req.setEntity(built);
+                        return httpClient.execute(req, res -> {
+                            var status = new StatusLine(res);
+                            if (status.getStatusCode() != 201) {
+                                var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                                throw new BadFileResponseException(message);
+                            }
+                            return mapper.readValue(res.getEntity().getContent(), FileApi.class);
+                        });
 
-            }
-        }).observeOn(Schedulers.io());
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
     }
 }
