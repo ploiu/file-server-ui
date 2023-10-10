@@ -57,7 +57,7 @@ public class FileClientV2 {
                 var message = mapper.readValue(body, ApiMessage.class).message();
                 throw new BadFileResponseException(message);
             }
-        })).observeOn(Schedulers.newThread());
+        })).observeOn(Schedulers.io());
     }
 
     public Completable deleteFile(long id) {
@@ -74,7 +74,7 @@ public class FileClientV2 {
                 EntityUtils.consume(res.getEntity());
             }
             return true;
-        })).observeOn(Schedulers.newThread());
+        })).observeOn(Schedulers.io());
     }
 
     public Observable<? extends InputStream> getFileContents(long id) {
@@ -97,7 +97,7 @@ public class FileClientV2 {
                 log.error("Unforeseen error getting file contents", e);
                 throw new RuntimeException(e);
             }
-        }).observeOn(Schedulers.newThread());
+        }).observeOn(Schedulers.io());
     }
 
     public Single<FileApi> updateFile(UpdateFileRequest request) {
@@ -122,7 +122,7 @@ public class FileClientV2 {
                     throw new BadFileResponseException(message.message());
                 }
             });
-        }).observeOn(Schedulers.newThread());
+        }).observeOn(Schedulers.io());
     }
 
     public Observable<Collection<FileApi>> search(String query) {
@@ -139,7 +139,7 @@ public class FileClientV2 {
                     return mapper.readValue(res.getEntity().getContent(), new TypeReference<Collection<FileApi>>() {
                     });
                 }))
-                .observeOn(Schedulers.newThread());
+                .observeOn(Schedulers.io());
     }
 
     public Single<FileApi> createFile(CreateFileRequest request) {
@@ -172,6 +172,6 @@ public class FileClientV2 {
                 });
 
             }
-        }).observeOn(Schedulers.newThread());
+        }).observeOn(Schedulers.io());
     }
 }

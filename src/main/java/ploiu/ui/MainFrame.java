@@ -1,7 +1,10 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.DragEvent;
@@ -10,6 +13,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import ploiu.client.FileClient;
+import ploiu.client.FileClientV2;
 import ploiu.client.FolderClient;
 import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
@@ -35,7 +39,8 @@ import static ploiu.util.ThreadUtils.runInThread;
 @SuppressWarnings("unused")
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
-    private final FileClient fileClient = App.INJECTOR.getInstance(FileClient.class);
+    private final FileClient deprecatedFileClient = App.INJECTOR.getInstance(FileClient.class);
+    private final FileClientV2 fileClient = App.INJECTOR.getInstance(FileClientV2.class);
     private final Desktop desktop = Desktop.getDesktop();
     @FXML
     private FlowPane folderPane;
@@ -103,7 +108,7 @@ public class MainFrame extends AnchorPane {
         }
         if (event instanceof FileUploadEvent uploadEvent) {
             try {
-                fileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file));
+                deprecatedFileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file));
                 if (uploadEvent.getFolderId() == currentFolder.id()) {
                     loadFolder(currentFolder);
                 }
@@ -116,10 +121,30 @@ public class MainFrame extends AnchorPane {
         return false;
     };
 
+    private final AsyncEventReceiver<File> asyncFileUploadEvent = event -> {
+            var file = event.get();
+            if (!file.exists()) {
+                showErrorDialog("Failed to upload file [" + file.getName() + "] because it doesn't exist. Not sure how you did that but quit!", "Failed to upload file", null);
+                return Single.just(false);
+            }
+        if (event instanceof FileUploadEvent uploadEvent) {
+            return fileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
+                    .doAfterSuccess(result -> {
+                        if (uploadEvent.getFolderId() == currentFolder.id()) {
+                            Platform.runLater(() -> loadFolder(currentFolder));
+                        }
+                    })
+                    .doOnError(e -> showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null))
+                    .map(it -> it.id() > -1);
+        } else {
+            return Single.just(false);
+        }
+    };
+
     private final EventReceiver<FileApi> fileCrudEvents = event -> {
         if (event instanceof FileDeleteEvent) {
             try {
-                fileClient.deleteFile(event.get().id());
+                deprecatedFileClient.deleteFile(event.get().id());
                 loadFolder(currentFolder);
                 return true;
             } catch (BadFileRequestException e) {
@@ -130,7 +155,7 @@ public class MainFrame extends AnchorPane {
             var file = updateEvent.get();
             var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
             try {
-                fileClient.updateFile(req);
+                deprecatedFileClient.updateFile(req);
                 loadFolder(currentFolder);
                 return true;
             } catch (Exception e) {
@@ -239,7 +264,7 @@ public class MainFrame extends AnchorPane {
         //noinspection ResultOfMethodCallIgnored
         new File(CACHE_DIR).mkdir();
         var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
-        var req = fileClient.getFileContents(fileApi.id())
+        var req = deprecatedFileClient.getFileContents(fileApi.id())
                 .firstElement()
                 .observeOn(Schedulers.io())
                 .map(contents -> {
@@ -254,7 +279,7 @@ public class MainFrame extends AnchorPane {
 
     private void handleSearch(String text) {
         try {
-            var files = fileClient.search(text);
+            var files = deprecatedFileClient.search(text);
             this.folderPane.getChildren().clear();
             this.filePane.getChildren().clear();
             loadFiles(files);
@@ -271,7 +296,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void drawAddFile() {
-        var addFile = new AddFile(fileUploadEvent, currentFolder.id());
+        var addFile = new AddFile(asyncFileUploadEvent, currentFolder.id());
         this.filePane.getChildren().add(addFile);
     }
 

@@ -3,16 +3,19 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BookmarksViewState">
+    <option name="rewriteBookmarkType" value="true" />
+  </component>
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/../file_server/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClientV2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientV2Tests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/AsyncEventReceiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClientV2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClientV2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +127,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="FileClientTests.testGetFileContentsNonBlockingUsesGET" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -318,7 +321,11 @@
       <workItem from="1694037263183" duration="36000" />
       <workItem from="1696692956622" duration="332000" />
       <workItem from="1696716285791" duration="3920000" />
-      <workItem from="1696807287352" duration="4870000" />
+      <workItem from="1696807287352" duration="5191000" />
+      <workItem from="1696898599616" duration="98000" />
+      <workItem from="1696898777955" duration="50000" />
+      <workItem from="1696899546043" duration="1746000" />
+      <workItem from="1696901300061" duration="3677000" />
     </task>
     <servers />
   </component>
