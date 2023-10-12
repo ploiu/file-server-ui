@@ -54,8 +54,9 @@ public class AddFile extends AnchorPane {
     private void uploadFiles(Collection<File> files) {
         var modal = new LoadingModal(new LoadingModalOptions(this.getScene().getWindow(), LoadingModalOptions.LoadingType.DETERMINATE));
         var modalProgress = new AtomicInteger(0);
-        // 0.01 because we need to divide the int by 10, and 1/10 for the progress
+        // percentage; no multiplying by 100 at the end because the max changes and we calc that later
         var progressAmount = 1f / files.size();
+        // it looks like completable would work here, but then we wouldn't be able to get per-file progress reporting on the loading modal
         List<Observable<Boolean>> uploadList = new ArrayList<>();
         for (File selectedFile : files) {
             uploadList.add(receiver.process(new FileUploadEvent(selectedFile, currentFolderId)).toObservable());
@@ -67,6 +68,9 @@ public class AddFile extends AnchorPane {
                 // this is important because the observer subscribes on whatever thread it was created on...I might want to move this somewhere else
                 .doFinally(modal::close)
                 .subscribeOn(Schedulers.io())
-                .subscribe(res -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount), e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null));
+                .subscribe(
+                        ignored -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount),
+                        e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null)
+                );
     }
 }

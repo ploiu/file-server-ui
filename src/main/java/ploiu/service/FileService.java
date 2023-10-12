@@ -31,7 +31,7 @@ public class FileService {
                     }
                     //noinspection ResultOfMethodCallIgnored
                     new File(CACHE_DIR).mkdirs();
-                    // the file to write to. If it already exists, we'll skip the next step
+                    // file name differs here because the cache dir could have a ton of files with the same name if we don't include the file id
                     return new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
                 })
                 .flatMap(fsFile -> {
