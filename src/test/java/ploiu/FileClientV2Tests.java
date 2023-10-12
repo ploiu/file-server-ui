@@ -21,7 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ploiu.client.FileClientV2;
+import ploiu.client.FileClient;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
@@ -49,7 +49,7 @@ public class FileClientV2Tests {
     ServerConfig serverConfig;
 
     @InjectMocks
-    FileClientV2 fileClient;
+    FileClient fileClient;
 
     MockWebServer backend;
 
@@ -142,8 +142,7 @@ public class FileClientV2Tests {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
         fileClient.getFileContents(1)
-                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class)))
-                .dispose();
+                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class)));
 
     }
 
@@ -152,8 +151,7 @@ public class FileClientV2Tests {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
         fileClient.getFileContents(1)
-                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class)))
-                .dispose();
+                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class)));
     }
 
     @ParameterizedTest(name = "Test that [{0}] is rejected for search")
@@ -172,7 +170,7 @@ public class FileClientV2Tests {
     void testSearchContentsUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search("whatever").blockingFirst();
+        fileClient.search("whatever").blockingGet();
         verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
     }
 
@@ -180,7 +178,7 @@ public class FileClientV2Tests {
     void testSearchContentsUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search("whatever").blockingFirst();
+        fileClient.search("whatever").blockingGet();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/metadata?search=whatever")), any(HttpClientResponseHandler.class));
     }
 

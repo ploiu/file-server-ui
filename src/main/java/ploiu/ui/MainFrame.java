@@ -1,8 +1,6 @@
 package ploiu.ui;
 
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +9,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import ploiu.client.FileClient;
-import ploiu.client.FileClientV2;
 import ploiu.client.FolderClient;
 import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
@@ -20,26 +16,22 @@ import ploiu.exception.BadFileResponseException;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
 import ploiu.model.*;
-import ploiu.model.LoadingModalOptions.LoadingType;
+import ploiu.service.FileService;
 
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static ploiu.Constants.CACHE_DIR;
 import static ploiu.util.DialogUtils.showErrorDialog;
 import static ploiu.util.ThreadUtils.runInThread;
 
 @SuppressWarnings("unused")
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
-    private final FileClient deprecatedFileClient = App.INJECTOR.getInstance(FileClient.class);
-    private final FileClientV2 fileClient = App.INJECTOR.getInstance(FileClientV2.class);
+    private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final Desktop desktop = Desktop.getDesktop();
     @FXML
     private FlowPane folderPane;
@@ -55,9 +47,23 @@ public class MainFrame extends AnchorPane {
     /// EVENT HANDLERS
     // search bar
     private final EventReceiver<String> searchEvents = event -> {
-        handleSearch(event.get());
-        return true;
+        throw new UnsupportedOperationException("blocking search no longer supported");
     };
+
+    private final AsyncEventReceiver<String> asyncSearchEvents = event -> {
+        fileService
+                .search(event.get())
+                .doOnError(e -> {
+                    if (e instanceof BadFileRequestException) {
+                        showErrorDialog(e.getMessage(), "Bad Search Text", null);
+                    } else if (e instanceof BadFileResponseException) {
+                        showErrorDialog(e.getMessage(), "Server Error", null);
+                    }
+                })
+                .subscribe();
+        return Single.just(true);
+    };
+
     // nav bar
     private final EventReceiver<FolderApi> navigateFolderEvents = event -> {
         loadFolder(event.get());
@@ -99,28 +105,6 @@ public class MainFrame extends AnchorPane {
         return false;
     };
 
-    // for files that don't exist yet (no file api object)
-    @Deprecated
-    private final EventReceiver<File> fileUploadEvent = event -> {
-        var file = event.get();
-        if (!file.exists()) {
-            return false;
-        }
-        if (event instanceof FileUploadEvent uploadEvent) {
-            try {
-                deprecatedFileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file));
-                if (uploadEvent.getFolderId() == currentFolder.id()) {
-                    loadFolder(currentFolder);
-                }
-                return true;
-            } catch (BadFileRequestException e) {
-                showErrorDialog("Failed to upload file [" + file.getName() + "] Please check server logs for details", "Failed to upload file", null);
-                return false;
-            }
-        }
-        return false;
-    };
-
     private final AsyncEventReceiver<File> asyncFileUploadEvent = event -> {
         var file = event.get();
         if (!file.exists()) {
@@ -128,7 +112,7 @@ public class MainFrame extends AnchorPane {
             return Single.just(false);
         }
         if (event instanceof FileUploadEvent uploadEvent) {
-            return fileClient.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
+            return fileService.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
                     .doAfterSuccess(result -> {
                         if (uploadEvent.getFolderId() == currentFolder.id()) {
                             Platform.runLater(() -> loadFolder(currentFolder));
@@ -136,20 +120,20 @@ public class MainFrame extends AnchorPane {
                     })
                     .map(it -> it.id() > -1);
         } else {
-            return Single.just(false);
+            return Single.error(new UnsupportedOperationException("asyncFileUploadEvent only supports FileUploadEvent"));
         }
     };
 
     private final AsyncEventReceiver<FileApi> asyncFileDeleteEvent = event -> {
         if (event instanceof FileDeleteEvent) {
-            return fileClient.deleteFile(event.get().id())
+            return fileService.deleteFile(event.get().id())
                     .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
                     .andThen(Single.fromCallable(() -> {
-                        loadFolder(currentFolder);
+                        Platform.runLater(() -> loadFolder(currentFolder));
                         return true;
                     }));
         } else {
-            return Single.just(false);
+            return Single.error(new UnsupportedOperationException("asyncFileDeleteEvent only supports FileDeleteEvent"));
         }
     };
 
@@ -157,7 +141,7 @@ public class MainFrame extends AnchorPane {
         if (event instanceof FileUpdateEvent updateEvent) {
             var file = updateEvent.get();
             var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
-            return fileClient.updateFile(req)
+            return fileService.updateFile(req)
                     .doOnSuccess(ignored -> Platform.runLater(() -> loadFolder(currentFolder)))
                     .doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null))
                     .map(ignored -> true);
@@ -166,53 +150,47 @@ public class MainFrame extends AnchorPane {
         }
     };
 
+    private final AsyncEventReceiver<FileApi> asyncFileSaveEvent = event -> {
+        if (event instanceof FileSaveEvent saveEvent) {
+            var dir = saveEvent.getDirectory();
+            if (!dir.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                dir.mkdirs();
+            }
+            var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
+            var loadingModal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+            var saveAction = fileService
+                    .saveAndGetFile(saveEvent.get(), saveEvent.getDirectory())
+                    .doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null))
+                    .doFinally(loadingModal::close);
+            if (fileExists) {
+                var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> {
+                    if (res.get()) {
+                        loadingModal.open();
+                        saveAction.subscribe();
+                    }
+                    return true;
+                }, "That file already exists. Do you wish to overwrite?"));
+            } else {
+                loadingModal.open();
+                saveAction.subscribe();
+            }
+        } else {
+            return Single.error(new UnsupportedOperationException("asyncFileSaveEvent only supports FileSaveEvent"));
+        }
+        return Single.just(true);
+    };
+
     private final AsyncEventReceiver<FileApi> asyncFileCrudEvents = event -> {
         if (event instanceof FileDeleteEvent) {
             return asyncFileDeleteEvent.process(event);
         } else if (event instanceof FileUpdateEvent) {
             return asyncFileUpdateEvent.process(event);
         } else if (event instanceof FileSaveEvent) {
-            return Single.error(new UnsupportedOperationException("File Download unsupported"));
+            return asyncFileSaveEvent.process(event);
         }
 
         return Single.just(false);
-    };
-
-    @Deprecated(forRemoval = true)
-    private final EventReceiver<FileApi> fileCrudEvents = event -> {
-        if (event instanceof FileUpdateEvent updateEvent) {
-            var file = updateEvent.get();
-            var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
-            try {
-                deprecatedFileClient.updateFile(req);
-                loadFolder(currentFolder);
-                return true;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else if (event instanceof FileSaveEvent saveEvent) {
-            var saveModal = new LoadingModal(new LoadingModalOptions(this.getScene().getWindow(), LoadingType.INDETERMINATE));
-            var saveAction = saveAndGetFile(saveEvent.get())
-                    .observeOn(Schedulers.io())
-                    .map(file -> {
-                        var directory = saveEvent.getDirectory();
-                        return file.renameTo(new File(directory.getAbsolutePath() + "/" + saveEvent.get().name()));
-                    })
-                    .doFinally(saveModal::close);
-            var fileExists = Arrays.stream(saveEvent.getDirectory().listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
-            if (fileExists) {
-                var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> {
-                    saveModal.open();
-                    saveAction.subscribe();
-                    return res.get();
-                }, "That file already exists. Do you wish to overwrite?"));
-            } else {
-                saveModal.open();
-                saveAction.subscribe();
-                return true;
-            }
-        }
-        return false;
     };
 
     public MainFrame() {
@@ -274,9 +252,11 @@ public class MainFrame extends AnchorPane {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     runInThread(() -> {
                         try {
-                            saveAndGetFile(fileApi)
-                                    .firstElement()
-                                    .subscribe(desktop::open);
+                            var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+                            modal.open();
+                            fileService.saveAndGetFile(fileApi, null)
+                                    .doFinally(modal::close)
+                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -286,38 +266,6 @@ public class MainFrame extends AnchorPane {
             filePane.getChildren().add(entry);
         }
         drawAddFile();
-    }
-
-    @Deprecated // rewrite to be properly reactive, probably want to completely move this out
-    private Observable<File> saveAndGetFile(FileApi fileApi) {
-        // ensure the cache directory exists
-        //noinspection ResultOfMethodCallIgnored
-        new File(CACHE_DIR).mkdir();
-        var cacheFile = new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
-        var req = deprecatedFileClient.getFileContents(fileApi.id())
-                .firstElement()
-                .observeOn(Schedulers.io())
-                .map(contents -> {
-                    //noinspection ResultOfMethodCallIgnored
-                    cacheFile.createNewFile();
-                    Files.copy(contents, cacheFile.toPath(), REPLACE_EXISTING);
-                    return cacheFile;
-                });
-        return Observable.just(cacheFile)
-                .flatMap(file -> file.exists() ? Observable.just(file) : req.toObservable());
-    }
-
-    private void handleSearch(String text) {
-        try {
-            var files = deprecatedFileClient.search(text);
-            this.folderPane.getChildren().clear();
-            this.filePane.getChildren().clear();
-            loadFiles(files);
-        } catch (BadFileRequestException e) {
-            showErrorDialog(e.getMessage(), "Bad Search Text", null);
-        } catch (BadFileResponseException e) {
-            showErrorDialog(e.getMessage(), "Server Error", null);
-        }
     }
 
     private void drawAddFolder() {
