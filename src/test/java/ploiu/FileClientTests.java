@@ -42,7 +42,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class FileClientV2Tests {
+public class FileClientTests {
     @Spy
     HttpClient httpClient = HttpClients.createDefault();
     @Mock

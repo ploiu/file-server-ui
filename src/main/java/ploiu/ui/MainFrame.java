@@ -9,7 +9,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.client.FolderClient;
+import ploiu.client.FolderClientV2;
 import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
@@ -25,12 +27,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
+import static ploiu.event.FolderEvent.Type.UPDATE;
 import static ploiu.util.DialogUtils.showErrorDialog;
-import static ploiu.util.ThreadUtils.runInThread;
 
 @SuppressWarnings("unused")
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
+    private final FolderClientV2 asyncFolderClient = App.INJECTOR.getInstance(FolderClientV2.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final Desktop desktop = Desktop.getDesktop();
     @FXML
@@ -69,6 +72,23 @@ public class MainFrame extends AnchorPane {
         loadFolder(event.get());
         return true;
     };
+
+    private final AsyncEventReceiver<FolderApi> updateFolderEvent = event -> {
+        if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
+            var folder = fe.get();
+            return asyncFolderClient
+                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()))
+                    .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
+                    .map(ignored -> true);
+        } else {
+            return Single.error(new UnsupportedOperationException("Only type UPDATE is supported for updateFolderEvent"));
+        }
+    };
+
+    private final AsyncEventReceiver<FolderApi> asyncFolderCrudEvents = event -> {
+        return Single.error(new UnsupportedOperationException("async crud events not implemented"));
+    };
+
     private final EventReceiver<FolderApi> folderCrudEvents = event -> {
         var folder = event.get();
         if (event instanceof FolderEvent fe) {
@@ -142,7 +162,7 @@ public class MainFrame extends AnchorPane {
             var file = updateEvent.get();
             var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
             return fileService.updateFile(req)
-                    .doOnSuccess(ignored -> Platform.runLater(() -> loadFolder(currentFolder)))
+                    .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null))
                     .map(ignored -> true);
         } else {
@@ -215,12 +235,73 @@ public class MainFrame extends AnchorPane {
         loadFolder(folder);
     }
 
+    private void asyncLoadFolder(FolderApi folder) {
+        var folderReq = asyncFolderClient
+                .getFolder(folder.id())
+                .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null))
+                .observeOn(JavaFxScheduler.platform())
+                .toObservable()
+                .cache();
+
+        // handle child folders
+        folderReq
+                .doOnNext(ignored -> {
+                    folderPane.getChildren().clear();
+                    filePane.getChildren().clear();
+                })
+                .flatMapIterable(FolderApi::folders)
+                .map(it -> new FolderEntry(it, folderCrudEvents))
+                .doOnNext(folderEntry -> {
+                    // when clicking any of the folder entries, clear the page and populate it with the new folder contents
+                    folderEntry.setOnMouseClicked(mouseEvent -> {
+                        // left click is used for entry, right click is used for modifying properties
+                        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                            asyncFolderClient
+                                    .getFolder(folderEntry.getFolder().id())
+                                    .doOnError(e -> showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> loadFolder(currentFolder)))
+                                    .subscribeOn(JavaFxScheduler.platform())
+                                    .subscribe(it -> {
+                                        folderPane.getChildren().clear();
+                                        navigationBar.push(it);
+                                        loadFolder(it);
+                                    });
+                        }
+                    });
+                    this.folderPane.getChildren().add(folderEntry);
+                })
+                .toList()
+                .subscribeOn(JavaFxScheduler.platform())
+                .subscribe(ignored -> drawAddFolder());
+
+        // handle child files
+        folderReq
+                .flatMapIterable(FolderApi::files)
+                .map(it -> new FileEntry(it, asyncFileCrudEvents))
+                .doOnNext(fileEntry -> {
+                    fileEntry.setOnMouseClicked(event -> {
+                        if (event.getButton() == MouseButton.PRIMARY) {
+                            var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+                            modal.open();
+                            fileService.saveAndGetFile(fileEntry.getFile(), null)
+                                    .doFinally(modal::close)
+                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                        }
+                    });
+                })
+                .doOnNext(filePane.getChildren()::add)
+                .toList()
+                .subscribeOn(JavaFxScheduler.platform())
+                .subscribe(ignored -> drawAddFile());
+
+    }
+
+    @Deprecated(forRemoval = true)
     private void loadFolder(FolderApi folder) {
         folderPane.getChildren().clear();
         filePane.getChildren().clear();
         // need to get fresh copy of the folder, as the object may be stale if other folders were added to it
         currentFolder = folderClient.getFolder(folder.id()).orElseThrow();
-        var folderEntries = currentFolder.folders()
+        /*var folderEntries = currentFolder.folders()
                 .stream()
                 .map(folderApi -> new FolderEntry(folderApi, folderCrudEvents))
                 .toList();
@@ -241,22 +322,18 @@ public class MainFrame extends AnchorPane {
             });
             this.folderPane.getChildren().add(folderEntry);
         }
-        drawAddFolder();
+        drawAddFolder();*/
         loadFiles(currentFolder.files());
     }
 
     private void loadFiles(Collection<FileApi> files) {
-        for (FileApi fileApi : files) {
+       /* for (FileApi fileApi : files) {
             FileEntry entry = new FileEntry(fileApi, asyncFileCrudEvents);
             entry.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     runInThread(() -> {
                         try {
-                            var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
-                            modal.open();
-                            fileService.saveAndGetFile(fileApi, null)
-                                    .doFinally(modal::close)
-                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -265,7 +342,7 @@ public class MainFrame extends AnchorPane {
             });
             filePane.getChildren().add(entry);
         }
-        drawAddFile();
+        drawAddFile();*/
     }
 
     private void drawAddFolder() {

@@ -17,6 +17,7 @@ open module file.server.ui.main {
     requires org.apache.httpcomponents.client5.httpclient5;
     requires org.apache.httpcomponents.core5.httpcore5;
     requires io.reactivex.rxjava3;
+    requires org.pdfsam.rxjavafx;
 
     exports ploiu.ui to javafx.fxml, javafx.graphics;
     exports ploiu.event to javafx.fxml, javafx.graphics;

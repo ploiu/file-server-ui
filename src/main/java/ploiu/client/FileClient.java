@@ -29,7 +29,6 @@ import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.URLConnection;
 import java.util.Collection;
 import java.util.Objects;
@@ -85,20 +84,15 @@ public class FileClient {
         }
         return Single.fromCallable(() -> {
                     var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
-                    try {
-                        return httpClient.execute(req, res -> {
-                            var status = new StatusLine(res);
-                            if (!status.isSuccessful()) {
-                                var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                                throw new BadFileResponseException(message);
-                            }
-                            // we can't read it as a string because that messes up the encoding
-                            return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
-                        });
-                    } catch (IOException e) {
-                        log.error("Unforeseen error getting file contents", e);
-                        throw new RuntimeException(e);
-                    }
+                    return httpClient.execute(req, res -> {
+                        var status = new StatusLine(res);
+                        if (!status.isSuccessful()) {
+                            var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                            throw new BadFileResponseException(message);
+                        }
+                        // we can't read it as a string because that messes up the encoding
+                        return new ByteArrayInputStream(res.getEntity().getContent().readAllBytes());
+                    });
                 })
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io());

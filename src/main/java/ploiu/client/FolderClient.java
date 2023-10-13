@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
+@Deprecated(forRemoval = true)
 @RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
 public class FolderClient {
     private final HttpClient client;

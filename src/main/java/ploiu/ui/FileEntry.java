@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
+import lombok.Getter;
 import ploiu.event.*;
 import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
@@ -34,6 +35,7 @@ public class FileEntry extends AnchorPane {
         }
     }
 
+    @Getter
     private final FileApi file;
     private final AsyncEventReceiver<FileApi> fileReceiver;
     @FXML
