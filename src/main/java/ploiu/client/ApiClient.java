@@ -18,7 +18,7 @@ import ploiu.model.CreatePasswordRequest;
 import java.io.IOException;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ApiClient {
     private final ServerConfig serverConfig;
     private final org.apache.hc.client5.http.classic.HttpClient httpClient;

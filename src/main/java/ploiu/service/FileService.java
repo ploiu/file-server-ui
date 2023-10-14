@@ -18,7 +18,7 @@ import java.util.Collection;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
 
-@RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FileService {
     private final FileClient fileClient;
 

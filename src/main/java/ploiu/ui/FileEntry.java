@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ploiu.util.DialogUtils.showErrorDialog;
-
 public class FileEntry extends AnchorPane {
     // cache because creating an image takes a lot of time
     private static final Map<String, Image> MIME_IMAGE_MAPPING = new HashMap<>();
@@ -45,7 +43,7 @@ public class FileEntry extends AnchorPane {
     @FXML
     private ContextMenu fileMenu;
 
-    public FileEntry(FileApi file, AsyncEventReceiver<FileApi> fileReceiver) {
+    public FileEntry(FileApi file, AsyncEventReceiver<FileApi> eventHandler) {
         super();
         this.file = file;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
@@ -56,7 +54,7 @@ public class FileEntry extends AnchorPane {
             this.fileName.setText(file.name());
             var image = MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
             icon.setImage(image);
-            this.fileReceiver = fileReceiver;
+            this.fileReceiver = eventHandler;
             Tooltip.install(this, new Tooltip(file.name()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -78,7 +76,6 @@ public class FileEntry extends AnchorPane {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
                 fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName)))
-                        .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to rename file", null))
                         .subscribe();
                 return true;
             }

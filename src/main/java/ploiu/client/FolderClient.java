@@ -23,7 +23,7 @@ import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FolderClient {
     private final HttpClient client;
     private final ServerConfig serverConfig;

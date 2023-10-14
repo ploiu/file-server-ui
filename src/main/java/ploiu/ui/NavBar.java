@@ -35,7 +35,7 @@ public class NavBar extends HBox {
 
     public void push(FolderApi folder) {
         if (folders.contains(folder)) {
-            throw new RuntimeException("Cannot push folder already on the stack");
+            throw new UnsupportedOperationException("Cannot push folder already on the stack");
         }
         folders.add(folder);
         render();

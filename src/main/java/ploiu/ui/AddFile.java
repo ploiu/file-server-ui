@@ -19,8 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static ploiu.util.DialogUtils.showErrorDialog;
-
 public class AddFile extends AnchorPane {
     private final AsyncEventReceiver<File> receiver;
     private final Long currentFolderId;
@@ -68,9 +66,6 @@ public class AddFile extends AnchorPane {
                 // this is important because the observer subscribes on whatever thread it was created on...I might want to move this somewhere else
                 .doFinally(modal::close)
                 .subscribeOn(Schedulers.io())
-                .subscribe(
-                        ignored -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount),
-                        e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null)
-                );
+                .subscribe(ignored -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount));
     }
 }

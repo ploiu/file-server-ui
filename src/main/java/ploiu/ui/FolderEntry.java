@@ -80,6 +80,7 @@ public class FolderEntry extends AnchorPane {
     @SuppressWarnings("unused")
     private void deleteItemClicked(ActionEvent event) {
         EventReceiver<String> dialogCallback = res -> {
+            // make the user type the folder name they're deleting to confirm
             if (res.get().equals(folderName.getText())) {
                 folderReceiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE))
                         .subscribe();

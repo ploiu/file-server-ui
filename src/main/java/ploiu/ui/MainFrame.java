@@ -133,10 +133,10 @@ public class MainFrame extends AnchorPane {
             return fileService.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
                     .doAfterSuccess(result -> {
                         if (uploadEvent.getFolderId() == currentFolder.id()) {
-                            //Platform.runLater(() -> loadFolder(currentFolder));
                             asyncLoadFolder(currentFolder);
                         }
                     })
+                    .doOnError(e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null))
                     .map(it -> it.id() > -1);
         } else {
             return Single.error(new UnsupportedOperationException("asyncFileUploadEvent only supports FileUploadEvent"));
@@ -148,7 +148,6 @@ public class MainFrame extends AnchorPane {
             return fileService.deleteFile(event.get().id())
                     .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
                     .andThen(Single.fromCallable(() -> {
-                        //Platform.runLater(() -> loadFolder(currentFolder));
                         asyncLoadFolder(currentFolder);
                         return true;
                     }));
@@ -174,7 +173,6 @@ public class MainFrame extends AnchorPane {
         if (event instanceof FileSaveEvent saveEvent) {
             var dir = saveEvent.getDirectory();
             if (!dir.exists()) {
-                //noinspection ResultOfMethodCallIgnored
                 dir.mkdirs();
             }
             var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
@@ -208,9 +206,9 @@ public class MainFrame extends AnchorPane {
             return asyncFileUpdateEvent.process(event);
         } else if (event instanceof FileSaveEvent) {
             return asyncFileSaveEvent.process(event);
+        } else {
+            return Single.just(false);
         }
-
-        return Single.just(false);
     };
 
     public MainFrame() {
@@ -235,6 +233,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void asyncLoadFolder(FolderApi folder) {
+        // pull the folder
         var folderReq = folderClient
                 .getFolder(folder.id())
                 .doOnSuccess(this::setCurrentFolder)
@@ -250,7 +249,6 @@ public class MainFrame extends AnchorPane {
                 .map(this::createFolderEntry)
                 .doOnNext(this.folderPane.getChildren()::add)
                 .toList()
-                .subscribeOn(JavaFxScheduler.platform())
                 .subscribe(ignored -> drawAddFolder());
 
         // handle child files
@@ -260,7 +258,6 @@ public class MainFrame extends AnchorPane {
                 .map(this::createFileEntry)
                 .doOnNext(filePane.getChildren()::add)
                 .toList()
-                .subscribeOn(JavaFxScheduler.platform())
                 .subscribe(ignored -> drawAddFile());
 
     }
@@ -285,10 +282,7 @@ public class MainFrame extends AnchorPane {
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                folderClient
-                        .getFolder(folderEntry.getFolder().id())
-                        .doOnError(e -> showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> asyncLoadFolder(currentFolder)))
-                        .subscribeOn(JavaFxScheduler.platform())
+                Single.just(folder)
                         .observeOn(JavaFxScheduler.platform())
                         .subscribe(it -> {
                             folderPane.getChildren().clear();
@@ -335,6 +329,11 @@ public class MainFrame extends AnchorPane {
         event.consume();
     }
 
+    /**
+     * used to update {@code currentFolder} in lambda expressions / method references
+     *
+     * @param folder
+     */
     private void setCurrentFolder(FolderApi folder) {
         this.currentFolder = folder;
     }

@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FileClient {
     private final HttpClient httpClient;
     private final ServerConfig serverConfig;
