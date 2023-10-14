@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import ploiu.event.AsyncEventReceiver;
 import ploiu.event.Event;
 import ploiu.event.EventReceiver;
 
@@ -20,9 +21,9 @@ public class SearchBar extends HBox {
     private TextField searchField;
     @FXML
     private Button searchButton;
-    private final EventReceiver<String> receiver;
+    private final AsyncEventReceiver<String> receiver;
 
-    public SearchBar(@NamedArg("receiver") EventReceiver<String> receiver) {
+    public SearchBar(@NamedArg("receiver") AsyncEventReceiver<String> receiver) {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/SearchBar/SearchBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -36,13 +37,15 @@ public class SearchBar extends HBox {
 
     @FXML
     private void searchButtonClicked(ActionEvent event) {
-        receiver.process(new Event<>(searchButton.getText()));
+        receiver.process(new Event<>(searchButton.getText()))
+                .subscribe();
     }
 
     @FXML
     private void searchBarKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            receiver.process(new Event<>(searchField.getText()));
+            receiver.process(new Event<>(searchField.getText()))
+                    .subscribe();
         }
     }
 }

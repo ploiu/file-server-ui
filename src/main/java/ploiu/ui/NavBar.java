@@ -6,8 +6,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
+import ploiu.event.AsyncEventReceiver;
 import ploiu.event.Event;
-import ploiu.event.EventReceiver;
 import ploiu.model.FolderApi;
 
 import java.io.IOException;
@@ -18,9 +19,9 @@ import java.util.List;
 public class NavBar extends HBox {
     // the "stack" of folders that represents our journey to the current folder
     private final List<FolderApi> folders = new LinkedList<>();
-    private final EventReceiver<FolderApi> receiver;
+    private final AsyncEventReceiver<FolderApi> receiver;
 
-    public NavBar(@NamedArg("receiver") EventReceiver<FolderApi> receiver) {
+    public NavBar(@NamedArg("receiver") AsyncEventReceiver<FolderApi> receiver) {
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/NavBar/NavBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -44,12 +45,19 @@ public class NavBar extends HBox {
         // pop all the folders after the current one
         var folderIndex = folders.indexOf(folder);
         // if it's the last index, don't do anything because we're already there; index 0 means we're going to root, so always heed that
-        if ((folderIndex == 0 || folderIndex != folders.size() - 1) && receiver.process(new Event<>(folder))) {
-            var subList = new ArrayList<>(folders.subList(0, folderIndex + 1));
-            folders.clear();
-            folders.addAll(subList);
-            // tell the receiver that we've selected a folder
-            render();
+        if (folderIndex == 0 || folderIndex != folders.size() - 1) {
+            receiver.process(new Event<>(folder))
+                    .observeOn(JavaFxScheduler.platform())
+                    .doOnSuccess(success -> {
+                        if (success) {
+                            var subList = new ArrayList<>(folders.subList(0, folderIndex + 1));
+                            folders.clear();
+                            folders.addAll(subList);
+                            // tell the receiver that we've selected a folder
+                            render();
+                        }
+                    })
+                    .subscribe();
         }
     }
 

@@ -11,6 +11,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
+import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
 import ploiu.event.FolderEvent;
 import ploiu.model.FolderApi;
@@ -34,9 +35,9 @@ public class FolderEntry extends AnchorPane {
     @FXML
     private ContextMenu folderMenu;
 
-    private final EventReceiver<FolderApi> folderReceiver;
+    private final AsyncEventReceiver<FolderApi> folderReceiver;
 
-    public FolderEntry(FolderApi folder, EventReceiver<FolderApi> folderReceiver) {
+    public FolderEntry(FolderApi folder, AsyncEventReceiver<FolderApi> folderReceiver) {
         this.folder = folder;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FolderEntry/FolderEntry.fxml"));
         loader.setRoot(this);
@@ -68,7 +69,8 @@ public class FolderEntry extends AnchorPane {
         EventReceiver<String> dialogCallback = evt -> {
             var newName = evt.get();
             var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, folder.folders(), folder.files());
-            folderReceiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE));
+            folderReceiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE))
+                    .subscribe();
             return true;
         };
         var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Rename Folder"));
@@ -79,7 +81,9 @@ public class FolderEntry extends AnchorPane {
     private void deleteItemClicked(ActionEvent event) {
         EventReceiver<String> dialogCallback = res -> {
             if (res.get().equals(folderName.getText())) {
-                return folderReceiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE));
+                folderReceiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE))
+                        .subscribe();
+                return true;
             }
             showErrorDialog("[" + res.get() + "] does not match the folder name [" + folderName.getText() + "]", "Failed to delete folder", null);
             return false;

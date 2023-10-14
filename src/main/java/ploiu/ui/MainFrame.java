@@ -1,7 +1,6 @@
 package ploiu.ui;
 
 import io.reactivex.rxjava3.core.Single;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.DragEvent;
@@ -24,7 +23,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static ploiu.event.FolderEvent.Type.UPDATE;
@@ -49,10 +48,6 @@ public class MainFrame extends AnchorPane {
 
     /// EVENT HANDLERS
     // search bar
-    private final EventReceiver<String> searchEvents = event -> {
-        throw new UnsupportedOperationException("blocking search no longer supported");
-    };
-
     private final AsyncEventReceiver<String> asyncSearchEvents = event -> {
         fileService
                 .search(event.get())
@@ -63,17 +58,25 @@ public class MainFrame extends AnchorPane {
                         showErrorDialog(e.getMessage(), "Server Error", null);
                     }
                 })
+                .observeOn(JavaFxScheduler.platform())
+                .doOnSuccess(files -> {
+                    this.folderPane.getChildren().clear();
+                    this.filePane.getChildren().clear();
+                    for (FileApi file : files) {
+                        this.filePane.getChildren().add(createFileEntry(file));
+                    }
+                })
                 .subscribe();
         return Single.just(true);
     };
 
     // nav bar
-    private final EventReceiver<FolderApi> navigateFolderEvents = event -> {
-        loadFolder(event.get());
-        return true;
+    private final AsyncEventReceiver<FolderApi> navigateFolderEvents = event -> {
+        asyncLoadFolder(event.get());
+        return Single.just(true);
     };
 
-    private final AsyncEventReceiver<FolderApi> updateFolderEvent = event -> {
+    private final AsyncEventReceiver<FolderApi> asyncUpdateFolderEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
             return asyncFolderClient
@@ -85,10 +88,22 @@ public class MainFrame extends AnchorPane {
         }
     };
 
+    private final AsyncEventReceiver<FolderApi> asyncCreateFolderEvent = event -> Single.error(new UnsupportedOperationException("async create folder event"));
+
+    private final AsyncEventReceiver<FolderApi> asyncDeleteFolderEvent = event -> Single.error(new UnsupportedOperationException("async delete folder event"));
+
     private final AsyncEventReceiver<FolderApi> asyncFolderCrudEvents = event -> {
-        return Single.error(new UnsupportedOperationException("async crud events not implemented"));
+        if (event instanceof FolderEvent fe) {
+            return switch (fe.getType()) {
+                case UPDATE -> asyncUpdateFolderEvent.process(fe);
+                case CREATE -> asyncCreateFolderEvent.process(fe);
+                case DELETE -> asyncDeleteFolderEvent.process(fe);
+            };
+        }
+        return Single.error(new UnsupportedOperationException("FolderEvent required for asyncFolderCrudEvents"));
     };
 
+    @Deprecated(forRemoval = true)
     private final EventReceiver<FolderApi> folderCrudEvents = event -> {
         var folder = event.get();
         if (event instanceof FolderEvent fe) {
@@ -98,7 +113,7 @@ public class MainFrame extends AnchorPane {
                         // I really need to make the api return 0 instead of null for the root folder...
                         var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()));
                         // need to redraw the current folder
-                        loadFolder(currentFolder);
+                        asyncLoadFolder(currentFolder);
                         yield true;
                     } catch (BadFolderRequestException | BadFolderResponseException e) {
                         yield false;
@@ -107,7 +122,7 @@ public class MainFrame extends AnchorPane {
                 case DELETE -> {
                     try {
                         if (folderClient.deleteFolder(folder.id())) {
-                            loadFolder(currentFolder);
+                            asyncLoadFolder(currentFolder);
                             yield true;
                         }
                     } catch (BadFolderRequestException | BadFolderResponseException e) {
@@ -117,7 +132,7 @@ public class MainFrame extends AnchorPane {
                 }
                 case CREATE -> {
                     var id = this.currentFolder.id();
-                    folderClient.getFolder(id).ifPresent(this::loadFolder);
+                    folderClient.getFolder(id).ifPresent(this::asyncLoadFolder);
                     yield true;
                 }
             };
@@ -135,7 +150,8 @@ public class MainFrame extends AnchorPane {
             return fileService.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
                     .doAfterSuccess(result -> {
                         if (uploadEvent.getFolderId() == currentFolder.id()) {
-                            Platform.runLater(() -> loadFolder(currentFolder));
+                            //Platform.runLater(() -> loadFolder(currentFolder));
+                            asyncLoadFolder(currentFolder);
                         }
                     })
                     .map(it -> it.id() > -1);
@@ -149,7 +165,8 @@ public class MainFrame extends AnchorPane {
             return fileService.deleteFile(event.get().id())
                     .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
                     .andThen(Single.fromCallable(() -> {
-                        Platform.runLater(() -> loadFolder(currentFolder));
+                        //Platform.runLater(() -> loadFolder(currentFolder));
+                        asyncLoadFolder(currentFolder);
                         return true;
                     }));
         } else {
@@ -219,7 +236,7 @@ public class MainFrame extends AnchorPane {
         loader.setController(this);
         // add event handlers to the namespace
         loader.getNamespace().put("folderEvents", navigateFolderEvents);
-        loader.getNamespace().put("searchEvents", searchEvents);
+        loader.getNamespace().put("searchEvents", asyncSearchEvents);
         try {
             loader.load();
             loadInitialFolder();
@@ -229,15 +246,15 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
-        var folder = folderClient.getFolder(0).orElseThrow();
-        navigationBar.push(folder);
-        // null folder is the root folder, so this will always exist
-        loadFolder(folder);
+        var defaultFolder = new FolderApi(0, 0, "root", List.of(), List.of());
+        navigationBar.push(defaultFolder);
+        asyncLoadFolder(defaultFolder);
     }
 
     private void asyncLoadFolder(FolderApi folder) {
         var folderReq = asyncFolderClient
                 .getFolder(folder.id())
+                .doOnSuccess(this::setCurrentFolder)
                 .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null))
                 .observeOn(JavaFxScheduler.platform())
                 .toObservable()
@@ -245,49 +262,19 @@ public class MainFrame extends AnchorPane {
 
         // handle child folders
         folderReq
-                .doOnNext(ignored -> {
-                    folderPane.getChildren().clear();
-                    filePane.getChildren().clear();
-                })
+                .doOnNext(ignored -> folderPane.getChildren().clear())
                 .flatMapIterable(FolderApi::folders)
-                .map(it -> new FolderEntry(it, folderCrudEvents))
-                .doOnNext(folderEntry -> {
-                    // when clicking any of the folder entries, clear the page and populate it with the new folder contents
-                    folderEntry.setOnMouseClicked(mouseEvent -> {
-                        // left click is used for entry, right click is used for modifying properties
-                        if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                            asyncFolderClient
-                                    .getFolder(folderEntry.getFolder().id())
-                                    .doOnError(e -> showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> loadFolder(currentFolder)))
-                                    .subscribeOn(JavaFxScheduler.platform())
-                                    .subscribe(it -> {
-                                        folderPane.getChildren().clear();
-                                        navigationBar.push(it);
-                                        loadFolder(it);
-                                    });
-                        }
-                    });
-                    this.folderPane.getChildren().add(folderEntry);
-                })
+                .map(this::createFolderEntry)
+                .doOnNext(this.folderPane.getChildren()::add)
                 .toList()
                 .subscribeOn(JavaFxScheduler.platform())
                 .subscribe(ignored -> drawAddFolder());
 
         // handle child files
         folderReq
+                .doOnNext(ignored -> filePane.getChildren().clear())
                 .flatMapIterable(FolderApi::files)
-                .map(it -> new FileEntry(it, asyncFileCrudEvents))
-                .doOnNext(fileEntry -> {
-                    fileEntry.setOnMouseClicked(event -> {
-                        if (event.getButton() == MouseButton.PRIMARY) {
-                            var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
-                            modal.open();
-                            fileService.saveAndGetFile(fileEntry.getFile(), null)
-                                    .doFinally(modal::close)
-                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
-                        }
-                    });
-                })
+                .map(this::createFileEntry)
                 .doOnNext(filePane.getChildren()::add)
                 .toList()
                 .subscribeOn(JavaFxScheduler.platform())
@@ -295,58 +282,43 @@ public class MainFrame extends AnchorPane {
 
     }
 
-    @Deprecated(forRemoval = true)
-    private void loadFolder(FolderApi folder) {
-        folderPane.getChildren().clear();
-        filePane.getChildren().clear();
-        // need to get fresh copy of the folder, as the object may be stale if other folders were added to it
-        currentFolder = folderClient.getFolder(folder.id()).orElseThrow();
-        /*var folderEntries = currentFolder.folders()
-                .stream()
-                .map(folderApi -> new FolderEntry(folderApi, folderCrudEvents))
-                .toList();
-        for (FolderEntry folderEntry : folderEntries) {
-            // when clicking any of the folder entries, clear the page and populate it with the new folder contents
-            folderEntry.setOnMouseClicked(mouseEvent -> {
-                // left click is used for entry, right click is used for modifying properties
-                if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                    folderPane.getChildren().clear();
-                    var retrievedFolder = folderClient.getFolder(folderEntry.getFolder().id());
-                    if (retrievedFolder.isEmpty()) {
-                        showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> loadFolder(currentFolder));
-                    } else {
-                        navigationBar.push(retrievedFolder.get());
-                        loadFolder(retrievedFolder.get());
-                    }
-                }
-            });
-            this.folderPane.getChildren().add(folderEntry);
-        }
-        drawAddFolder();*/
-        loadFiles(currentFolder.files());
+    private FileEntry createFileEntry(FileApi file) {
+        var fileEntry = new FileEntry(file, asyncFileCrudEvents);
+        fileEntry.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+                modal.open();
+                fileService.saveAndGetFile(fileEntry.getFile(), null)
+                        .doFinally(modal::close)
+                        .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+            }
+        });
+        return fileEntry;
     }
 
-    private void loadFiles(Collection<FileApi> files) {
-       /* for (FileApi fileApi : files) {
-            FileEntry entry = new FileEntry(fileApi, asyncFileCrudEvents);
-            entry.setOnMouseClicked(event -> {
-                if (event.getButton() == MouseButton.PRIMARY) {
-                    runInThread(() -> {
-                        try {
-
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                }
-            });
-            filePane.getChildren().add(entry);
-        }
-        drawAddFile();*/
+    private FolderEntry createFolderEntry(FolderApi folder) {
+        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents);
+        // when clicking any of the folder entries, clear the page and populate it with the new folder contents
+        folderEntry.setOnMouseClicked(mouseEvent -> {
+            // left click is used for entry, right click is used for modifying properties
+            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                asyncFolderClient
+                        .getFolder(folderEntry.getFolder().id())
+                        .doOnError(e -> showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> asyncLoadFolder(currentFolder)))
+                        .subscribeOn(JavaFxScheduler.platform())
+                        .observeOn(JavaFxScheduler.platform())
+                        .subscribe(it -> {
+                            folderPane.getChildren().clear();
+                            navigationBar.push(it);
+                            asyncLoadFolder(it);
+                        });
+            }
+        });
+        return folderEntry;
     }
 
     private void drawAddFolder() {
-        var addFolder = new AddFolder(folderCrudEvents, currentFolder.id());
+        var addFolder = new AddFolder(asyncFolderCrudEvents, currentFolder.id());
         this.folderPane.getChildren().add(addFolder);
     }
 
@@ -378,5 +350,9 @@ public class MainFrame extends AnchorPane {
             }
         }
         event.consume();
+    }
+
+    private void setCurrentFolder(FolderApi folder) {
+        this.currentFolder = folder;
     }
 }

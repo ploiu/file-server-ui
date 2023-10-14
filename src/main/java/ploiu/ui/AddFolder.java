@@ -6,6 +6,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import ploiu.client.FolderClient;
+import ploiu.client.FolderClientV2;
+import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
 import ploiu.event.FolderEvent;
 import ploiu.exception.BadFolderRequestException;
@@ -22,11 +24,12 @@ import static ploiu.util.DialogUtils.showErrorDialog;
 public class AddFolder extends AnchorPane {
 
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
+    private final FolderClientV2 asyncFolderClient = App.INJECTOR.getInstance(FolderClientV2.class);
     private final long currentFolderId;
 
-    private final EventReceiver<FolderApi> receiver;
+    private final AsyncEventReceiver<FolderApi> receiver;
 
-    public AddFolder(EventReceiver<FolderApi> receiver, long currentFolderId) {
+    public AddFolder(AsyncEventReceiver<FolderApi> receiver, long currentFolderId) {
         super();
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/AddFolder/AddFolder.fxml"));
         loader.setRoot(this);
