@@ -48,6 +48,9 @@ dependencies {
     // because apparently I can't properly build a multipart form to save my life
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
     implementation 'org.apache.httpcomponents:httpmime:4.5.14'
+    // reactive stack
+    implementation "io.reactivex.rxjava3:rxjava:3.1.8"
+    implementation "org.pdfsam.rxjava3:rxjavafx:3.0.2"
 
 
     compileOnly "org.projectlombok:lombok:$versions.lombok"

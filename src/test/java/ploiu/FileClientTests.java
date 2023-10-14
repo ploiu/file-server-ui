@@ -22,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ploiu.client.FileClient;
-import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
@@ -43,14 +42,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings({"rawtypes", "unchecked"})
 public class FileClientTests {
     @Spy
     HttpClient httpClient = HttpClients.createDefault();
     @Mock
     ServerConfig serverConfig;
-    @Mock
-    AuthenticationConfig authConfig;
 
     @InjectMocks
     FileClient fileClient;
@@ -70,15 +66,19 @@ public class FileClientTests {
 
     @Test
     void testGetMetadataThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.getMetadata(-1));
-        assertEquals("Id cannot be negative.", e.getMessage());
+        fileClient.getMetadata(-1)
+                .doOnError(e -> {
+                    assertInstanceOf(BadFileRequestException.class, e);
+                    assertEquals("Id cannot be negative.", e.getMessage());
+                })
+                .subscribe();
     }
 
     @Test
     void testGetMetadataUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        fileClient.getMetadata(1);
+        fileClient.getMetadata(1).blockingGet();
         verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
 
     }
@@ -87,7 +87,7 @@ public class FileClientTests {
     void testGetMetadataUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        fileClient.getMetadata(1);
+        fileClient.getMetadata(1).blockingGet();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/metadata/1")), any(HttpClientResponseHandler.class));
     }
 
@@ -95,21 +95,26 @@ public class FileClientTests {
     void testGetMetadataThrowsExceptionIfFileIsNotFound() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(404).setBody("{\"message\":\"The file with the passed id could not be found.\"}"));
-        var e = assertThrows(BadFileResponseException.class, () -> fileClient.getMetadata(1));
+        var e = assertThrows(BadFileResponseException.class, () -> fileClient.getMetadata(1).blockingGet());
         assertEquals("The file with the passed id could not be found.", e.getMessage());
     }
 
     @Test
     void testDeleteFileThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.deleteFile(-1));
-        assertEquals("Id cannot be negative.", e.getMessage());
+        fileClient
+                .deleteFile(-1)
+                .doOnError(e -> {
+                    assertInstanceOf(BadFileRequestException.class, e);
+                    assertEquals("Id cannot be negative.", e.getMessage());
+                })
+                .subscribe();
     }
 
     @Test
     void testDeleteFileUsesDELETE() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(204));
-        fileClient.deleteFile(1);
+        fileClient.deleteFile(1).blockingAwait();
         verify(httpClient).execute(argThat(req -> req instanceof HttpDelete), any(HttpClientResponseHandler.class));
     }
 
@@ -117,45 +122,55 @@ public class FileClientTests {
     void testDeleteFileUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(204));
-        fileClient.deleteFile(1);
+        fileClient.deleteFile(1).blockingAwait();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class));
     }
 
     @Test
     void testGetFileContentsThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.getFileContents(-1));
-        assertEquals("Id cannot be negative.", e.getMessage());
+        fileClient.getFileContents(-1)
+                .doOnError(ex -> {
+                    assertInstanceOf(BadFileRequestException.class, ex);
+                    assertEquals("Id cannot be negative.", ex.getMessage());
+                })
+                .subscribe(ignored -> fail("getFileContents with negative id succeeded when it should fail" + ignored))
+                .dispose();
     }
 
     @Test
     void testGetFileContentsUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
-        fileClient.getFileContents(1);
-        verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
+        fileClient.getFileContents(1)
+                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class)));
+
     }
 
     @Test
     void testGetFileContentsUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
-        fileClient.getFileContents(1);
-        verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class));
+        fileClient.getFileContents(1)
+                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class)));
     }
 
     @ParameterizedTest(name = "Test that [{0}] is rejected for search")
     @NullAndEmptySource
     @ValueSource(strings = {" ", "\n", "\r", "\t"})
     void testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty(String query) {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.search(query));
-        assertEquals("Query cannot be null or empty.", e.getMessage());
+        fileClient.search(query)
+                .doOnError(e -> {
+                    assertInstanceOf(BadFileRequestException.class, e);
+                    assertEquals("Query cannot be null or empty.", e.getMessage());
+                })
+                .subscribe();
     }
 
     @Test
     void testSearchContentsUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search("whatever");
+        fileClient.search("whatever").blockingGet();
         verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
     }
 
@@ -163,27 +178,30 @@ public class FileClientTests {
     void testSearchContentsUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search("whatever");
+        fileClient.search("whatever").blockingGet();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/metadata?search=whatever")), any(HttpClientResponseHandler.class));
     }
 
     @Test
     void testCreateFileRequiresNonNullFile() {
-        var e = assertThrows(NullPointerException.class, () -> fileClient.createFile(new CreateFileRequest(0, null)));
+        var e = assertThrows(NullPointerException.class, () -> fileClient.createFile(new CreateFileRequest(0, null)).blockingGet());
         assertEquals("File cannot be null.", e.getMessage());
     }
 
     @Test
     void testCreateFileRequiresFileToExist() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis()))));
-        assertEquals("The selected file does not exist.", e.getMessage());
+        fileClient.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis())))
+                .doOnError(e -> {
+                    assertInstanceOf(BadFileRequestException.class, e);
+                    assertEquals("The selected file does not exist.", e.getMessage());
+                }).subscribe();
     }
 
     @Test
     void testCreateFileUsesPOST() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath()))).blockingGet();
         verify(httpClient).execute(argThat(req -> req instanceof HttpPost), any(HttpClientResponseHandler.class));
     }
 
@@ -191,7 +209,7 @@ public class FileClientTests {
     void testCreateFileUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath()))).blockingGet();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files")), any(HttpClientResponseHandler.class));
     }
 
@@ -199,7 +217,7 @@ public class FileClientTests {
     void testCreateFilePassesMultipart() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("test.txt").getPath()))).blockingGet();
         var req = backend.takeRequest();
         assertTrue(req.getHeader("Content-Type").contains("multipart/form-data"));
         try (var reader = new BufferedReader(new InputStreamReader(req.getBody().inputStream()))) {
@@ -213,7 +231,7 @@ public class FileClientTests {
     void testCreateFileWithoutExtensionDoesNotIncludeTrailingDot() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("testNoExtension").getPath())));
+        fileClient.createFile(new CreateFileRequest(0, new File(getClass().getClassLoader().getResource("testNoExtension").getPath()))).blockingGet();
         var req = backend.takeRequest();
         try (var reader = new BufferedReader(new InputStreamReader(req.getBody().inputStream()))) {
             var body = reader.lines().collect(Collectors.joining("\n"));
@@ -225,7 +243,7 @@ public class FileClientTests {
     void testUpdateFileUsesPUT() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
-        fileClient.updateFile(new UpdateFileRequest(0, 0, "test"));
+        fileClient.updateFile(new UpdateFileRequest(0, 0, "test")).blockingGet();
         var req = backend.takeRequest();
         assertEquals("PUT", req.getMethod());
     }
@@ -234,7 +252,7 @@ public class FileClientTests {
     void testUpdateFileUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
-        fileClient.updateFile(new UpdateFileRequest(0, 0, "test"));
+        fileClient.updateFile(new UpdateFileRequest(0, 0, "test")).blockingGet();
         var req = backend.takeRequest();
         assertEquals("/files", req.getPath());
     }
@@ -244,7 +262,7 @@ public class FileClientTests {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
         var reqBody = new UpdateFileRequest(0, 0, "test");
-        fileClient.updateFile(reqBody);
+        fileClient.updateFile(reqBody).blockingGet();
         var req = backend.takeRequest();
         var receivedBody = new ObjectMapper().readValue(req.getBody().inputStream(), UpdateFileRequest.class);
         assertEquals(reqBody, receivedBody);
@@ -254,14 +272,22 @@ public class FileClientTests {
     @EmptySource
     @ValueSource(strings = {" "})
     void testUpdateFileRequiresFileName(String name) {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.updateFile(new UpdateFileRequest(0, 0, name)));
-        assertEquals("Name cannot be blank.", e.getMessage());
+        fileClient.updateFile(new UpdateFileRequest(0, 0, name))
+                .doOnError(e -> {
+                    assertInstanceOf(BadFileRequestException.class, e);
+                    assertEquals("Name cannot be blank.", e.getMessage());
+                })
+                .subscribe();
     }
 
     @Test
     void testUpdateFileRequiresPositiveId() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileClient.updateFile(new UpdateFileRequest(-1, 0, "name")));
-        assertEquals("Id cannot be negative.", e.getMessage());
+        fileClient.updateFile(new UpdateFileRequest(-1, 0, "name"))
+                .doOnError(e -> {
+                    assertInstanceOf(BadFileRequestException.class, e);
+                    assertEquals("Id cannot be negative.", e.getMessage());
+                })
+                .subscribe();
     }
 
 }

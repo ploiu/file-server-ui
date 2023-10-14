@@ -43,3 +43,4 @@ bin/
 
 app.properties
 file_server_cert.pem
+file_server_ui_test_temp_dir

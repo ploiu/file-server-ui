@@ -10,10 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
-import ploiu.event.EventReceiver;
-import ploiu.event.FileDeleteEvent;
-import ploiu.event.FileSaveEvent;
-import ploiu.event.FileUpdateEvent;
+import lombok.Getter;
+import ploiu.event.*;
 import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
 import ploiu.model.TextInputDialogOptions;
@@ -35,8 +33,9 @@ public class FileEntry extends AnchorPane {
         }
     }
 
+    @Getter
     private final FileApi file;
-    private final EventReceiver<FileApi> fileReceiver;
+    private final AsyncEventReceiver<FileApi> fileReceiver;
     @FXML
     private ImageView icon;
     @FXML
@@ -44,7 +43,7 @@ public class FileEntry extends AnchorPane {
     @FXML
     private ContextMenu fileMenu;
 
-    public FileEntry(FileApi file, EventReceiver<FileApi> fileReceiver) {
+    public FileEntry(FileApi file, AsyncEventReceiver<FileApi> eventHandler) {
         super();
         this.file = file;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
@@ -55,7 +54,7 @@ public class FileEntry extends AnchorPane {
             this.fileName.setText(file.name());
             var image = MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
             icon.setImage(image);
-            this.fileReceiver = fileReceiver;
+            this.fileReceiver = eventHandler;
             Tooltip.install(this, new Tooltip(file.name()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -76,7 +75,9 @@ public class FileEntry extends AnchorPane {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
-                return fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName)));
+                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName)))
+                        .subscribe();
+                return true;
             }
             return false;
         };
@@ -88,7 +89,9 @@ public class FileEntry extends AnchorPane {
     private void deleteItemClicked(ActionEvent ignored) {
         EventReceiver<Boolean> dialogCallback = res -> {
             if (res.get()) {
-                return fileReceiver.process(new FileDeleteEvent(file));
+                fileReceiver.process(new FileDeleteEvent(file))
+                        .subscribe();
+                return true;
             }
             return false;
         };
@@ -102,7 +105,8 @@ public class FileEntry extends AnchorPane {
         chooser.setTitle("Save " + file.name() + "...");
         var selectedDir = chooser.showDialog(getScene().getWindow());
         if (selectedDir != null) {
-            fileReceiver.process(new FileSaveEvent(file, selectedDir));
+            fileReceiver.process(new FileSaveEvent(file, selectedDir))
+                    .subscribe();
         }
     }
 }

@@ -28,5 +28,4 @@ public class HttpModule extends AbstractModule {
                 ))
                 .build();
     }
-
 }

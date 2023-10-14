@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.*?>
 <fx:root styleClass="loading-modal-root" stylesheets="@LoadingModal.css" type="javafx.scene.layout.AnchorPane"
-         xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" prefHeight="300"
+         xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" prefHeight="200"
          prefWidth="300">
-    <Label AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" alignment="CENTER"
-           contentDisplay="CENTER"
-           styleClass="body-text" text="$bodyText"/>
+    <VBox AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0"
+          AnchorPane.bottomAnchor="0"
+          AnchorPane.topAnchor="0"
+          alignment="CENTER"
+          spacing="5">
+        <Label styleClass="text" textAlignment="CENTER">Loading</Label>
+        <HBox alignment="CENTER">
+            <ProgressBar fx:id="progressBar"/>
+        </HBox>
+    </VBox>
 </fx:root>

@@ -3,14 +3,26 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BookmarksViewState">
+    <option name="rewriteBookmarkType" value="true" />
+  </component>
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/../file_server/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,29 +42,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="testCompileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="file-server-ui" type="f1a62948:ProjectNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="testRuntimeClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -66,8 +56,8 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -79,6 +69,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -95,18 +88,18 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/ploiu/git/imageLattice",
+    "git-widget-placeholder": "rxjava",
+    "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/test/java/ploiu",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
+    "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "preferences.keymap",
+    "settings.editor.selected.configurable": "editing.templates",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -123,10 +116,13 @@
       <recent name="ploiu.event" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/java/ploiu" />
       <recent name="$PROJECT_DIR$/src/test/resources" />
       <recent name="$PROJECT_DIR$/src/main/resources/ui/components" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ploiu" />
+      <recent name="ploiu.client" />
       <recent name="ploiu.ui" />
     </key>
   </component>
@@ -134,16 +130,17 @@
     <option name="myCommands">
       <command value="gradle test" />
       <command value="open untitled" />
-      <command value="gradlew build" />
-      <command value="gradlew test" />
       <command value="gradlew jlink" />
       <command value="gradlew jpackage" />
       <command value="open File Server Ui Android" />
+      <command value="gradlew clean build" />
+      <command value="gradlew build" />
       <command value="open file_server" />
+      <command value="gradlew test" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
-    <configuration name="file-server-ui [jlink]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FileServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -154,40 +151,20 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="jlink" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FileServiceTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="file-server-ui [jpackageImage]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="jpackageImage" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="file-server-ui [jpackage]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FolderClientV2Tests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -198,7 +175,54 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="jpackage" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FolderClientV2Tests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="file-server-ui [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="file-server-ui [clean build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+            <option value="build" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -231,24 +255,21 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="scratch_2 | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.http" index="3" requestIdentifier="#3" runType="Run single request">
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.file-server-ui [jpackageImage]" />
-      <item itemvalue="Gradle.file-server-ui [jlink]" />
-      <item itemvalue="Gradle.file-server-ui [jpackage]" />
+      <item itemvalue="Gradle.FolderClientV2Tests" />
+      <item itemvalue="Gradle.file-server-ui [build]" />
+      <item itemvalue="Gradle.FileServiceTests" />
+      <item itemvalue="Gradle.file-server-ui [clean build]" />
       <item itemvalue="Gradle.file-server-ui [test]" />
-      <item itemvalue="HTTP Request.scratch_2 | #3" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.file-server-ui [jpackageImage]" />
-        <item itemvalue="Gradle.file-server-ui [jpackage]" />
+        <item itemvalue="Gradle.file-server-ui [build]" />
+        <item itemvalue="Gradle.FolderClientV2Tests" />
+        <item itemvalue="Gradle.FileServiceTests" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.file-server-ui [jlink]" />
-        <item itemvalue="HTTP Request.scratch_2 | #3" />
+        <item itemvalue="Gradle.file-server-ui [clean build]" />
       </list>
     </recent_temporary>
   </component>
@@ -311,6 +332,26 @@
       <workItem from="1690761635697" duration="10000" />
       <workItem from="1694037263183" duration="36000" />
       <workItem from="1696692956622" duration="332000" />
+      <workItem from="1696716285791" duration="3920000" />
+      <workItem from="1696807287352" duration="5191000" />
+      <workItem from="1696898599616" duration="98000" />
+      <workItem from="1696898777955" duration="50000" />
+      <workItem from="1696899546043" duration="1746000" />
+      <workItem from="1696901300061" duration="4536000" />
+      <workItem from="1696967712239" duration="1687000" />
+      <workItem from="1696976822133" duration="2401000" />
+      <workItem from="1696979497757" duration="1730000" />
+      <workItem from="1696981253195" duration="1173000" />
+      <workItem from="1697064675730" duration="889000" />
+      <workItem from="1697065573107" duration="6952000" />
+      <workItem from="1697142162424" duration="678000" />
+      <workItem from="1697143841055" duration="316000" />
+      <workItem from="1697151773496" duration="5351000" />
+      <workItem from="1697157246301" duration="2453000" />
+      <workItem from="1697301604618" duration="1750000" />
+      <workItem from="1697303906635" duration="700000" />
+      <workItem from="1697304623462" duration="3675000" />
+      <workItem from="1697315077477" duration="2928000" />
     </task>
     <servers />
   </component>
@@ -324,29 +365,34 @@
     <option featureType="com.intellij.configurationType" implementationName="PythonConfigurationType" />
     <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>170</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java</url>
-          <line>179</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="GradleRunConfiguration">
+        <watch expression="Platform.isFxApplicationThread()" language="JAVA" custom="javafx.application.Platform" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/file_server_ui$FileServiceTests.ic" NAME="FileServiceTests Coverage Results" MODIFIED="1697069069423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
