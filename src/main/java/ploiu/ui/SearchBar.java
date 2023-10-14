@@ -11,7 +11,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import ploiu.event.AsyncEventReceiver;
 import ploiu.event.Event;
-import ploiu.event.EventReceiver;
 
 import java.io.IOException;
 

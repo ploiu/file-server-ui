@@ -10,12 +10,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.client.FolderClient;
-import ploiu.client.FolderClientV2;
 import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
-import ploiu.exception.BadFolderRequestException;
-import ploiu.exception.BadFolderResponseException;
 import ploiu.model.*;
 import ploiu.service.FileService;
 
@@ -26,13 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static ploiu.event.FolderEvent.Type.UPDATE;
+import static ploiu.event.FolderEvent.Type.*;
 import static ploiu.util.DialogUtils.showErrorDialog;
 
 @SuppressWarnings("unused")
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
-    private final FolderClientV2 asyncFolderClient = App.INJECTOR.getInstance(FolderClientV2.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final Desktop desktop = Desktop.getDesktop();
     @FXML
@@ -48,6 +44,7 @@ public class MainFrame extends AnchorPane {
 
     /// EVENT HANDLERS
     // search bar
+    @SuppressWarnings("FieldCanBeLocal")
     private final AsyncEventReceiver<String> asyncSearchEvents = event -> {
         fileService
                 .search(event.get())
@@ -71,6 +68,7 @@ public class MainFrame extends AnchorPane {
     };
 
     // nav bar
+    @SuppressWarnings("FieldCanBeLocal")
     private final AsyncEventReceiver<FolderApi> navigateFolderEvents = event -> {
         asyncLoadFolder(event.get());
         return Single.just(true);
@@ -79,7 +77,7 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncUpdateFolderEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
-            return asyncFolderClient
+            return folderClient
                     .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()))
                     .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .map(ignored -> true);
@@ -88,9 +86,31 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FolderApi> asyncCreateFolderEvent = event -> Single.error(new UnsupportedOperationException("async create folder event"));
+    private final AsyncEventReceiver<FolderApi> asyncCreateFolderEvent = event -> {
+        if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
+            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().path());
+            return folderClient
+                    .createFolder(req)
+                    .observeOn(JavaFxScheduler.platform())
+                    .doFinally(() -> asyncLoadFolder(currentFolder))
+                    .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to create folder", null))
+                    .map(ignored -> true);
+        }
 
-    private final AsyncEventReceiver<FolderApi> asyncDeleteFolderEvent = event -> Single.error(new UnsupportedOperationException("async delete folder event"));
+        return Single.error(new UnsupportedOperationException("asyncCreateFolderEvent requires FolderEvent of type CREATE"));
+    };
+
+    private final AsyncEventReceiver<FolderApi> asyncDeleteFolderEvent = event -> {
+        if (event instanceof FolderEvent fe && fe.getType() == DELETE) {
+            return folderClient
+                    .deleteFolder(fe.get().id())
+                    .observeOn(JavaFxScheduler.platform())
+                    .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to delete folder", null))
+                    .doOnComplete(() -> asyncLoadFolder(currentFolder))
+                    .toSingle(() -> true);
+        }
+        return Single.error(new UnsupportedOperationException("asyncDeleteFolderEvent requires FolderEvent of type DELETE"));
+    };
 
     private final AsyncEventReceiver<FolderApi> asyncFolderCrudEvents = event -> {
         if (event instanceof FolderEvent fe) {
@@ -101,43 +121,6 @@ public class MainFrame extends AnchorPane {
             };
         }
         return Single.error(new UnsupportedOperationException("FolderEvent required for asyncFolderCrudEvents"));
-    };
-
-    @Deprecated(forRemoval = true)
-    private final EventReceiver<FolderApi> folderCrudEvents = event -> {
-        var folder = event.get();
-        if (event instanceof FolderEvent fe) {
-            return switch (fe.getType()) {
-                case UPDATE -> {
-                    try {
-                        // I really need to make the api return 0 instead of null for the root folder...
-                        var updated = folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()));
-                        // need to redraw the current folder
-                        asyncLoadFolder(currentFolder);
-                        yield true;
-                    } catch (BadFolderRequestException | BadFolderResponseException e) {
-                        yield false;
-                    }
-                }
-                case DELETE -> {
-                    try {
-                        if (folderClient.deleteFolder(folder.id())) {
-                            asyncLoadFolder(currentFolder);
-                            yield true;
-                        }
-                    } catch (BadFolderRequestException | BadFolderResponseException e) {
-                        showErrorDialog(e.getMessage(), "Failed to delete folder", null);
-                    }
-                    yield false;
-                }
-                case CREATE -> {
-                    var id = this.currentFolder.id();
-                    folderClient.getFolder(id).ifPresent(this::asyncLoadFolder);
-                    yield true;
-                }
-            };
-        }
-        return false;
     };
 
     private final AsyncEventReceiver<File> asyncFileUploadEvent = event -> {
@@ -246,13 +229,13 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
-        var defaultFolder = new FolderApi(0, 0, "root", List.of(), List.of());
+        var defaultFolder = new FolderApi(0, -1, "root", List.of(), List.of());
         navigationBar.push(defaultFolder);
         asyncLoadFolder(defaultFolder);
     }
 
     private void asyncLoadFolder(FolderApi folder) {
-        var folderReq = asyncFolderClient
+        var folderReq = folderClient
                 .getFolder(folder.id())
                 .doOnSuccess(this::setCurrentFolder)
                 .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null))
@@ -302,7 +285,7 @@ public class MainFrame extends AnchorPane {
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                asyncFolderClient
+                folderClient
                         .getFolder(folderEntry.getFolder().id())
                         .doOnError(e -> showErrorDialog("That folder does not exist. Did you delete it on a different device?", "Folder not found", () -> asyncLoadFolder(currentFolder)))
                         .subscribeOn(JavaFxScheduler.platform())
