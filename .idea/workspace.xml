@@ -11,7 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApproximation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +47,9 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Record" />
         <option value="Class" />
+        <option value="Record" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -77,6 +80,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "drag-n-drop",
     "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/test/java/ploiu",
     "list.type.of.created.stylesheet": "CSS",
@@ -109,6 +114,12 @@
       <recent name="$PROJECT_DIR$/src/test/resources" />
       <recent name="$PROJECT_DIR$/src/main/resources/ui/components" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.model" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ploiu" />
       <recent name="ploiu.client" />
@@ -128,7 +139,7 @@
       <command value="open file_server" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Gradle.FolderApproximationTests">
     <configuration name="FileServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -143,6 +154,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;ploiu.FileServiceTests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="FolderApproximationTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.model.FolderApproximationTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -199,29 +234,6 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="file-server-ui [clean build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="clean" />
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -246,19 +258,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.FolderApproximationTests" />
       <item itemvalue="Gradle.FolderClientV2Tests" />
       <item itemvalue="Gradle.file-server-ui [build]" />
       <item itemvalue="Gradle.FileServiceTests" />
-      <item itemvalue="Gradle.file-server-ui [clean build]" />
       <item itemvalue="Gradle.file-server-ui [test]" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.FolderApproximationTests" />
         <item itemvalue="Gradle.file-server-ui [build]" />
         <item itemvalue="Gradle.FolderClientV2Tests" />
         <item itemvalue="Gradle.FileServiceTests" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.file-server-ui [clean build]" />
       </list>
     </recent_temporary>
   </component>
@@ -341,7 +353,8 @@
       <workItem from="1697303906635" duration="700000" />
       <workItem from="1697304623462" duration="3675000" />
       <workItem from="1697315077477" duration="2928000" />
-      <workItem from="1697332675607" duration="3483000" />
+      <workItem from="1697332675607" duration="4112000" />
+      <workItem from="1697410091738" duration="2246000" />
     </task>
     <servers />
   </component>
