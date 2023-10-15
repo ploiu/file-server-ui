@@ -3,9 +3,9 @@
 <?import javafx.scene.layout.*?>
 <?import ploiu.ui.NavBar?>
 <?import ploiu.ui.SearchBar?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1200.0" styleClass="frame"
+<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="1200.0" styleClass="frame,bounds-test-red"
          stylesheets="@MainFrame.css" type="javafx.scene.layout.AnchorPane"
-         xmlns="http://javafx.com/javafx/17.0.2-ea">
+         xmlns="http://javafx.com/javafx/17.0.2-ea" onDragOver="#onDragOver" onDragDropped="#onDragDropped">
     <children>
         <VBox>
             <SearchBar receiver="$searchEvents"/>
