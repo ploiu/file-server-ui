@@ -3,6 +3,7 @@ package ploiu.util;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ploiu.TestHelper;
 import ploiu.model.FolderApproximation;
 
 import java.io.File;
@@ -15,24 +16,25 @@ import static ploiu.util.FolderApproximationGenerator.convertDir;
 
 class FolderApproximationGeneratorTests {
     static File root = new File("src/test/resources/FolderApproximationGeneratorTests");
+    static TestHelper helper = new TestHelper(root);
 
     @BeforeEach
     void setup() {
         if (root.exists()) {
-            deleteDirectory(root);
+            helper.deleteDirectory(root);
         }
         root.mkdirs();
     }
 
     @AfterAll
     static void teardown() {
-        deleteDirectory(root);
+        helper.deleteDirectory(root);
     }
 
     @Test
     void testConvertFlatDir() throws Exception {
-        var dir = createDir("dir");
-        var file = createFile("test.txt");
+        var dir = helper.createDir("dir");
+        var file = helper.createFile("test.txt");
         file.createNewFile();
         dir.mkdir();
         var res = convertDir(root);
@@ -47,9 +49,9 @@ class FolderApproximationGeneratorTests {
 
     @Test
     void testConvertRecursiveNoFiles() throws IOException {
-        var top = createDir("top");
-        var middle = createDir("top/middle");
-        var bottom = createDir("top/middle/bottom");
+        var top = helper.createDir("top");
+        var middle = helper.createDir("top/middle");
+        var bottom = helper.createDir("top/middle/bottom");
         var expected = new FolderApproximation(
                 root,
                 List.of(),
@@ -79,9 +81,9 @@ class FolderApproximationGeneratorTests {
 
     @Test
     void testConvertRecursiveWithFiles() throws IOException {
-        var top = createDir("top");
-        var rootFile = createFile("root.txt");
-        var topFile = createFile("top/top.txt");
+        var top = helper.createDir("top");
+        var rootFile = helper.createFile("root.txt");
+        var topFile = helper.createFile("top/top.txt");
         var expected = new FolderApproximation(
                 root,
                 List.of(rootFile),
@@ -104,31 +106,8 @@ class FolderApproximationGeneratorTests {
         for (int i = 1; i < 51; i++) {
             builder.append("/").append(i);
         }
-        createDir(builder.toString());
+        helper.createDir(builder.toString());
         var exception = assertThrows(UnsupportedOperationException.class, () -> convertDir(root));
         assertEquals("Possible recursive symlinks: cannot go past depth of 50.", exception.getMessage());
-    }
-
-    // I didn't want to deal with writing this for a test. Thanks baeldung (https://www.baeldung.com/java-delete-directory)
-    private static boolean deleteDirectory(File directoryToBeDeleted) {
-        File[] allContents = directoryToBeDeleted.listFiles();
-        if (allContents != null) {
-            for (File file : allContents) {
-                deleteDirectory(file);
-            }
-        }
-        return directoryToBeDeleted.delete();
-    }
-
-    static File createDir(String path) throws IOException {
-        var f = new File(root.getPath() + "/" + path);
-        f.mkdirs();
-        return f;
-    }
-
-    static File createFile(String path) throws IOException {
-        var f = new File(root.getPath() + "/" + path);
-        f.createNewFile();
-        return f;
     }
 }

@@ -11,11 +11,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximationGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/TestHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +120,7 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.service" />
       <recent name="ploiu.util" />
       <recent name="ploiu.model" />
     </key>
@@ -142,8 +143,8 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.FolderClientTests.testDeleteFolderRequiresPositiveId">
-    <configuration name="ApiClientTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="DragNDropServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -156,7 +157,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.ApiClientTests&quot;" />
+            <option value="&quot;ploiu.service.DragNDropServiceTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -167,7 +168,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderApproximationGeneratorTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="DragNDropServiceTests.testUploadFoldersFlatWithFiles" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -180,7 +181,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.util.FolderApproximationGeneratorTests&quot;" />
+            <option value="&quot;ploiu.service.DragNDropServiceTests.testUploadFoldersFlatWithFiles&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -191,7 +192,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderApproximationGeneratorTests.testConvertRecursivePastLimit" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -204,7 +205,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.util.FolderApproximationGeneratorTests.testConvertRecursivePastLimit&quot;" />
+            <option value="&quot;ploiu.service.DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -215,7 +216,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderClientTests.testDeleteFolderRequiresPositiveId" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="DragNDropServiceTests.testUploadFoldersNestedFolders" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -228,7 +229,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FolderClientTests.testDeleteFolderRequiresPositiveId&quot;" />
+            <option value="&quot;ploiu.service.DragNDropServiceTests.testUploadFoldersNestedFolders&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -263,19 +264,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.ApiClientTests" />
-      <item itemvalue="Gradle.FolderApproximationGeneratorTests" />
-      <item itemvalue="Gradle.FolderApproximationGeneratorTests.testConvertRecursivePastLimit" />
-      <item itemvalue="Gradle.FolderClientTests.testDeleteFolderRequiresPositiveId" />
       <item itemvalue="Gradle.file-server-ui [test]" />
+      <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersFlatWithFiles" />
+      <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles" />
+      <item itemvalue="Gradle.DragNDropServiceTests" />
+      <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersNestedFolders" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.FolderClientTests.testDeleteFolderRequiresPositiveId" />
-        <item itemvalue="Gradle.ApiClientTests" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.FolderApproximationGeneratorTests.testConvertRecursivePastLimit" />
-        <item itemvalue="Gradle.FolderApproximationGeneratorTests" />
+        <item itemvalue="Gradle.DragNDropServiceTests" />
+        <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles" />
+        <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersFlatWithFiles" />
+        <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersNestedFolders" />
       </list>
     </recent_temporary>
   </component>
@@ -361,6 +362,10 @@
       <workItem from="1697332675607" duration="4112000" />
       <workItem from="1697410091738" duration="2289000" />
       <workItem from="1697497473260" duration="7260000" />
+      <workItem from="1697572610116" duration="600000" />
+      <workItem from="1697573394305" duration="4257000" />
+      <workItem from="1697577661892" duration="6174000" />
+      <workItem from="1697583850160" duration="756000" />
     </task>
     <servers />
   </component>
@@ -386,23 +391,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximationGenerator.java</url>
-          <line>21</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java</url>
-          <line>109</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
@@ -411,6 +399,10 @@
     <watches-manager>
       <configuration name="GradleRunConfiguration">
         <watch expression="Platform.isFxApplicationThread()" language="JAVA" custom="javafx.application.Platform" />
+        <watch expression="approximation.self" language="JAVA" />
+        <watch expression="approximation.childFiles" language="JAVA" />
+        <watch expression="approximation.childFolders" language="JAVA" />
+        <watch expression="f.self" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
