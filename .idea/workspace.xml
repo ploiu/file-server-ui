@@ -11,9 +11,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApproximation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximationGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,8 +49,8 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
         <option value="JUnit5 Test Class" />
       </list>
     </option>
@@ -73,35 +75,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "drag-n-drop",
-    "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/test/java/ploiu",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "editing.templates",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;drag-n-drop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/test/java/ploiu&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.22936763&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "HTTP Request"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;HTTP Request&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReadonlyStatusHandler">
     <option name="SHOW_DIALOG" value="false" />
   </component>
@@ -118,6 +120,7 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.util" />
       <recent name="ploiu.model" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -135,12 +138,12 @@
       <command value="open File Server Ui Android" />
       <command value="gradlew clean build" />
       <command value="gradlew build" />
-      <command value="gradlew test" />
       <command value="open file_server" />
+      <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.FolderApproximationTests">
-    <configuration name="FileServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.FolderClientTests.testDeleteFolderRequiresPositiveId">
+    <configuration name="ApiClientTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -153,7 +156,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FileServiceTests&quot;" />
+            <option value="&quot;ploiu.ApiClientTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -164,7 +167,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderApproximationTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FolderApproximationGeneratorTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -177,7 +180,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.model.FolderApproximationTests&quot;" />
+            <option value="&quot;ploiu.util.FolderApproximationGeneratorTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -188,7 +191,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderClientV2Tests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FolderApproximationGeneratorTests.testConvertRecursivePastLimit" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -201,7 +204,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FolderClientV2Tests&quot;" />
+            <option value="&quot;ploiu.util.FolderApproximationGeneratorTests.testConvertRecursivePastLimit&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -212,7 +215,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="file-server-ui [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FolderClientTests.testDeleteFolderRequiresPositiveId" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -223,15 +226,17 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.FolderClientTests.testDeleteFolderRequiresPositiveId&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -258,19 +263,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.FolderApproximationTests" />
-      <item itemvalue="Gradle.FolderClientV2Tests" />
-      <item itemvalue="Gradle.file-server-ui [build]" />
-      <item itemvalue="Gradle.FileServiceTests" />
+      <item itemvalue="Gradle.ApiClientTests" />
+      <item itemvalue="Gradle.FolderApproximationGeneratorTests" />
+      <item itemvalue="Gradle.FolderApproximationGeneratorTests.testConvertRecursivePastLimit" />
+      <item itemvalue="Gradle.FolderClientTests.testDeleteFolderRequiresPositiveId" />
       <item itemvalue="Gradle.file-server-ui [test]" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.FolderApproximationTests" />
-        <item itemvalue="Gradle.file-server-ui [build]" />
-        <item itemvalue="Gradle.FolderClientV2Tests" />
-        <item itemvalue="Gradle.FileServiceTests" />
+        <item itemvalue="Gradle.FolderClientTests.testDeleteFolderRequiresPositiveId" />
+        <item itemvalue="Gradle.ApiClientTests" />
         <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Gradle.FolderApproximationGeneratorTests.testConvertRecursivePastLimit" />
+        <item itemvalue="Gradle.FolderApproximationGeneratorTests" />
       </list>
     </recent_temporary>
   </component>
@@ -354,7 +359,8 @@
       <workItem from="1697304623462" duration="3675000" />
       <workItem from="1697315077477" duration="2928000" />
       <workItem from="1697332675607" duration="4112000" />
-      <workItem from="1697410091738" duration="2246000" />
+      <workItem from="1697410091738" duration="2289000" />
+      <workItem from="1697497473260" duration="7260000" />
     </task>
     <servers />
   </component>
@@ -380,6 +386,23 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximationGenerator.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java</url>
+          <line>109</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />

@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,8 +48,12 @@ class FolderApproximationTests {
     }
 
     @Test
-    void testDetectSymLinks() {
-        fail("unimplemented");
+    void testDetectSymLinks() throws IOException {
+        var first = new File(root.getAbsolutePath() + "/base");
+        first.createNewFile();
+        var link = Files.createSymbolicLink(Path.of(root.getAbsolutePath() + "/link"), first.toPath());
+        var e = assertThrows(UnsupportedOperationException.class, () -> new FolderApproximation(root, List.of(first, link.toFile()), List.of()));
+        assertEquals("Cannot upload symbolic links. Fix these file paths: \n\t" + link.toAbsolutePath(), e.getMessage());
     }
 
     // I didn't want to deal with writing this for a test. Thanks baeldung (https://www.baeldung.com/java-delete-directory)
