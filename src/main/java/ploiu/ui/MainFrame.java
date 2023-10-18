@@ -14,6 +14,7 @@ import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.*;
+import ploiu.service.DragNDropService;
 import ploiu.service.FileService;
 
 import java.awt.Desktop;
@@ -30,6 +31,7 @@ import static ploiu.util.DialogUtils.showErrorDialog;
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
+    private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
     private final Desktop desktop = Desktop.getDesktop();
     @FXML
     private FlowPane folderPane;
@@ -74,7 +76,7 @@ public class MainFrame extends AnchorPane {
         return Single.just(true);
     };
 
-    private final AsyncEventReceiver<FolderApi> asyncUpdateFolderEvent = event -> {
+    private final AsyncEventReceiver<FolderApi> asyncFolderUpdateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
             return folderClient
@@ -86,7 +88,7 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FolderApi> asyncCreateFolderEvent = event -> {
+    private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
             var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().path());
             return folderClient
@@ -100,7 +102,7 @@ public class MainFrame extends AnchorPane {
         return Single.error(new UnsupportedOperationException("asyncCreateFolderEvent requires FolderEvent of type CREATE"));
     };
 
-    private final AsyncEventReceiver<FolderApi> asyncDeleteFolderEvent = event -> {
+    private final AsyncEventReceiver<FolderApi> asyncFolderDeleteEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == DELETE) {
             return folderClient
                     .deleteFolder(fe.get().id())
@@ -115,9 +117,9 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncFolderCrudEvents = event -> {
         if (event instanceof FolderEvent fe) {
             return switch (fe.getType()) {
-                case UPDATE -> asyncUpdateFolderEvent.process(fe);
-                case CREATE -> asyncCreateFolderEvent.process(fe);
-                case DELETE -> asyncDeleteFolderEvent.process(fe);
+                case UPDATE -> asyncFolderUpdateEvent.process(fe);
+                case CREATE -> asyncFolderCreateEvent.process(fe);
+                case DELETE -> asyncFolderDeleteEvent.process(fe);
             };
         }
         return Single.error(new UnsupportedOperationException("FolderEvent required for asyncFolderCrudEvents"));
@@ -304,29 +306,25 @@ public class MainFrame extends AnchorPane {
         this.filePane.getChildren().add(addFile);
     }
 
-    //@FXML
-    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    @FXML
     private void onDragOver(DragEvent e) {
         var board = e.getDragboard();
         if (board.hasFiles()) {
-            System.out.println(e.getTarget());
             e.acceptTransferModes(TransferMode.COPY);
-            System.out.println(e.getEventType());
         }
         e.consume();
     }
 
-    //@FXML
-    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    @FXML
     private void onDragDropped(DragEvent event) {
         var board = event.getDragboard();
-        if (board.hasFiles()) {
+        if (board.hasFiles() && !event.isConsumed()) {
+            event.consume();
             event.acceptTransferModes(TransferMode.COPY);
-            for (File file : board.getFiles()) {
-
-            }
+            dragNDropService.dropFiles(board.getFiles(), currentFolder, getScene().getWindow())
+                    .doOnComplete(() -> asyncLoadFolder(currentFolder))
+                    .subscribe();
         }
-        event.consume();
     }
 
     /**

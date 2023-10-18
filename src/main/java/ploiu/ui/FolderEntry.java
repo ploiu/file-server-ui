@@ -16,6 +16,7 @@ import ploiu.event.EventReceiver;
 import ploiu.event.FolderEvent;
 import ploiu.model.FolderApi;
 import ploiu.model.TextInputDialogOptions;
+import ploiu.service.DragNDropService;
 
 import java.io.IOException;
 
@@ -36,6 +37,7 @@ public class FolderEntry extends AnchorPane {
     private ContextMenu folderMenu;
 
     private final AsyncEventReceiver<FolderApi> folderReceiver;
+    private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
 
     public FolderEntry(FolderApi folder, AsyncEventReceiver<FolderApi> folderReceiver) {
         this.folder = folder;
@@ -94,8 +96,7 @@ public class FolderEntry extends AnchorPane {
                 .windowTitle("Confirm Delete?"));
     }
 
-    //@FXML
-    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    @FXML
     private void onDragOver(DragEvent e) {
         var board = e.getDragboard();
         if (board.hasFiles()) {
@@ -104,16 +105,13 @@ public class FolderEntry extends AnchorPane {
         e.consume();
     }
 
-    //@FXML
-    // TODO https://bugs.openjdk.org/browse/JDK-8275033 update to openjfx 21 when it's released
+    @FXML
     private void onDragDropped(DragEvent event) {
         var board = event.getDragboard();
-        if (board.hasFiles()) {
+        if (board.hasFiles() && !event.isConsumed()) {
             event.consume();
-            var files = board.getFiles();
-            for (var file : files) {
-                //fileUploadReceiver.process()
-            }
+            dragNDropService.dropFiles(board.getFiles(), folder, getScene().getWindow())
+                    .subscribe();
         }
     }
 }
