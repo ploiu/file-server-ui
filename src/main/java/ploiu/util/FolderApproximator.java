@@ -13,7 +13,7 @@ import java.util.Objects;
  * Used to handle transforming File system files and directories into a "middle ground" between the file system and the api.
  * This allows us an easier way to upload entire directories to the server
  */
-public class FolderApproximationGenerator {
+public class FolderApproximator {
 
     public static FolderApproximation convertDir(@NotNull File root) {
         if (!root.isDirectory()) {

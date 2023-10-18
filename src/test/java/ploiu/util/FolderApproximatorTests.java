@@ -12,9 +12,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static ploiu.util.FolderApproximationGenerator.convertDir;
+import static ploiu.util.FolderApproximator.convertDir;
 
-class FolderApproximationGeneratorTests {
+class FolderApproximatorTests {
     static File root = new File("src/test/resources/FolderApproximationGeneratorTests");
     static TestHelper helper = new TestHelper(root);
 

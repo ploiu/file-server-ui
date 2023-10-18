@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import ploiu.client.FolderClient;
 import ploiu.model.*;
 import ploiu.ui.LoadingModal;
-import ploiu.util.FolderApproximationGenerator;
+import ploiu.util.FolderApproximator;
 
 import java.io.File;
 import java.util.Collection;
@@ -24,15 +24,17 @@ public class DragNDropService {
     public Completable dropFiles(Collection<File> files, FolderApi targetFolder, Window currentWindow) {
         var normalFiles = files.stream().filter(File::isFile).toList();
         var directories = files.stream().filter(File::isDirectory).toList();
-        // TODO account for # of folders and files recursively in directories
-        var percentIncrease = 1f / normalFiles.size();
+        var nestedSize = directories.stream().map(FolderApproximator::convertDir).map(FolderApproximation::size).reduce(Integer::sum).orElse(0);
+        var percentIncrease = 1f / (normalFiles.size() + nestedSize);
         var progressAmount = new AtomicInteger(0);
         var modal = new LoadingModal(new LoadingModalOptions(currentWindow, LoadingModalOptions.LoadingType.DETERMINATE));
         var uploads = Observable.merge(uploadFiles(normalFiles, targetFolder), uploadFolders(directories, targetFolder));
         modal.open();
-        return Completable.fromObservable(uploads
-                .doOnNext(ignored -> modal.updateProgress(progressAmount.addAndGet(1) * percentIncrease))
-                .doFinally(modal::close));
+        return Completable.fromObservable(
+                uploads
+                        .doOnNext(ignored -> modal.updateProgress(progressAmount.addAndGet(1) * percentIncrease))
+                        .doFinally(modal::close)
+        );
     }
 
     Observable<FileApi> uploadFiles(Collection<File> files, FolderApi targetFolder) {
@@ -45,15 +47,15 @@ public class DragNDropService {
                 .flatMap(req -> fileService.createFile(req).toObservable());
     }
 
-    Observable<FolderApi> uploadFolders(Collection<File> directories, FolderApi targetFolder) {
+    Observable<ServerObject> uploadFolders(Collection<File> directories, FolderApi targetFolder) {
         if (directories.stream().anyMatch(File::isFile)) {
             return Observable.error(new UnsupportedOperationException("cannot upload a normal file as a directory"));
         }
-        return Observable.fromStream(directories.stream().map(FolderApproximationGenerator::convertDir))
+        return Observable.fromStream(directories.stream().map(FolderApproximator::convertDir))
                 .flatMap(approximation -> uploadFolders(approximation, targetFolder));
     }
 
-    private Observable<FolderApi> uploadFolders(FolderApproximation approximation, FolderApi targetFolder) {
+    private Observable<ServerObject> uploadFolders(FolderApproximation approximation, FolderApi targetFolder) {
         return uploadFolder(approximation, targetFolder)
                 .toObservable()
                 .flatMap(folderApi -> {
@@ -61,17 +63,13 @@ public class DragNDropService {
                             .flatMap(f -> uploadFile(f, folderApi).toObservable());
 
                     if (approximation.childFolders().isEmpty()) {
-                        return Observable.merge(Observable.just(folderApi), uploadedFiles)
-                                .map(ignored -> folderApi)
-                                .distinct();
+                        return Observable.merge(Observable.just(folderApi), uploadedFiles);
                     } else {
                         return Observable.merge(approximation.childFolders()
                                 .stream()
                                 .map(f -> uploadFolders(f, folderApi))
                                 .reduce(Observable::concatWith)
-                                .get(), uploadedFiles)
-                                .map(ignored -> folderApi)
-                                .distinct();
+                                .get(), uploadedFiles);
                     }
                 });
     }

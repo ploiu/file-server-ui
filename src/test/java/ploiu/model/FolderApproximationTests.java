@@ -3,6 +3,7 @@ package ploiu.model;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ploiu.TestHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FolderApproximationTests {
     static File root = new File("src/test/resources/FolderApproximationTests");
+    static TestHelper helper = new TestHelper(root);
 
     @BeforeEach
     void setup() {
         if (root.exists()) {
-            deleteDirectory(root);
         }
         root.mkdirs();
     }
 
     @AfterAll
     static void teardown() {
-        deleteDirectory(root);
+        helper.deleteDirectory(root);
     }
 
     @Test
@@ -56,15 +57,20 @@ class FolderApproximationTests {
         assertEquals("Cannot upload symbolic links. Fix these file paths: \n\t" + link.toAbsolutePath(), e.getMessage());
     }
 
-    // I didn't want to deal with writing this for a test. Thanks baeldung (https://www.baeldung.com/java-delete-directory)
-    private static boolean deleteDirectory(File directoryToBeDeleted) {
-        File[] allContents = directoryToBeDeleted.listFiles();
-        if (allContents != null) {
-            for (File file : allContents) {
-                deleteDirectory(file);
-            }
-        }
-        return directoryToBeDeleted.delete();
-    }
+    @Test
+    void testSize() throws IOException {
+        var top = helper.createDir("top");
+        var middle = helper.createDir("top/middle");
+        var bottom = helper.createDir("top/middle/bottom");
+        var middleFile = helper.createFile("top/middle/test");
 
+        var approximation = new FolderApproximation(root, List.of(), List.of(
+                new FolderApproximation(top, List.of(), List.of(
+                        new FolderApproximation(middle, List.of(middleFile), List.of(
+                                new FolderApproximation(bottom, List.of(), List.of())
+                        ))
+                ))
+        ));
+        assertEquals(5, approximation.size());
+    }
 }

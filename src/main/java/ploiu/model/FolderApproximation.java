@@ -1,5 +1,7 @@
 package ploiu.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -11,14 +13,14 @@ import java.util.stream.Collectors;
 
 /**
  * represents a "middle ground" between a file system {@link File} and a {@link FolderApi}
- *
- * @param self the directory that this folder approximation is
  */
-public record FolderApproximation(
-        File self,
-        Collection<File> childFiles,
-        Collection<FolderApproximation> childFolders
-) {
+@Data
+@Accessors(fluent = true)
+public final class FolderApproximation {
+    private final File self;
+    private final Collection<File> childFiles;
+    private final Collection<FolderApproximation> childFolders;
+
     public FolderApproximation(@NotNull File self, @NotNull Collection<File> childFiles, @NotNull Collection<FolderApproximation> childFolders) {
         Objects.requireNonNull(childFiles, "ChildFiles cannot be null.");
         Objects.requireNonNull(childFolders, "ChildFolders cannot be null.");
@@ -68,5 +70,13 @@ public record FolderApproximation(
         if (!childDirs.isBlank()) {
             throw new UnsupportedOperationException("Your code is broken: directories are in the list of child files: \n\t" + childDirs);
         }
+    }
+
+    public int size() {
+        int size = 1 + childFiles.size();
+        for (FolderApproximation childFolder : childFolders) {
+            size += childFolder.size();
+        }
+        return size;
     }
 }

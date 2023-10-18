@@ -11,11 +11,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/TestHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/ServerObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApproximation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApproximation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximationGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximatorTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +57,7 @@
         <option value="Record" />
         <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -216,7 +222,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="DragNDropServiceTests.testUploadFoldersNestedFolders" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FolderApproximationTests.testSize" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -229,7 +235,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.service.DragNDropServiceTests.testUploadFoldersNestedFolders&quot;" />
+            <option value="&quot;ploiu.model.FolderApproximationTests.testSize&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -264,19 +270,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.FolderApproximationTests.testSize" />
       <item itemvalue="Gradle.file-server-ui [test]" />
       <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersFlatWithFiles" />
       <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles" />
       <item itemvalue="Gradle.DragNDropServiceTests" />
-      <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersNestedFolders" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.DragNDropServiceTests" />
+        <item itemvalue="Gradle.FolderApproximationTests.testSize" />
+        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles" />
         <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersFlatWithFiles" />
-        <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersNestedFolders" />
       </list>
     </recent_temporary>
   </component>
@@ -365,7 +371,9 @@
       <workItem from="1697572610116" duration="600000" />
       <workItem from="1697573394305" duration="4257000" />
       <workItem from="1697577661892" duration="6174000" />
-      <workItem from="1697583850160" duration="756000" />
+      <workItem from="1697583850160" duration="2693000" />
+      <workItem from="1697665749090" duration="55000" />
+      <workItem from="1697665922765" duration="2823000" />
     </task>
     <servers />
   </component>

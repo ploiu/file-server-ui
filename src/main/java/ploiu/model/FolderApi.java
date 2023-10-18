@@ -13,5 +13,5 @@ public record FolderApi(
         Collection<FolderApi> folders,
         @NotNull
         Collection<FileApi> files
-) {
+) implements ServerObject {
 }
