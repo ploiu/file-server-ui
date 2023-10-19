@@ -1,9 +1,9 @@
 package ploiu.event;
 
-import ploiu.model.FileApi;
+import ploiu.model.FileObject;
 
-public class FileDeleteEvent extends Event<FileApi> {
-    public FileDeleteEvent(FileApi file) {
+public class FileDeleteEvent extends Event<FileObject> {
+    public FileDeleteEvent(FileObject file) {
         super(file);
     }
 }

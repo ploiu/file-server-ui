@@ -8,17 +8,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
+import ploiu.event.FileUpdateEvent;
 import ploiu.event.FolderEvent;
-import ploiu.model.FolderApi;
-import ploiu.model.TextInputDialogOptions;
+import ploiu.model.*;
 import ploiu.service.DragNDropService;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
 
 import static ploiu.util.DialogUtils.showErrorDialog;
 
@@ -35,11 +38,12 @@ public class FolderEntry extends AnchorPane {
     private Label folderName;
     @FXML
     private ContextMenu folderMenu;
-
     private final AsyncEventReceiver<FolderApi> folderReceiver;
+    private final AsyncEventReceiver<FileObject> fileReceiver;
+
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
 
-    public FolderEntry(FolderApi folder, AsyncEventReceiver<FolderApi> folderReceiver) {
+    public FolderEntry(FolderApi folder, AsyncEventReceiver<FolderApi> folderReceiver, AsyncEventReceiver<FileObject> fileReceiver) {
         this.folder = folder;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FolderEntry/FolderEntry.fxml"));
         loader.setRoot(this);
@@ -55,6 +59,7 @@ public class FolderEntry extends AnchorPane {
             throw new RuntimeException(e);
         }
         this.folderReceiver = folderReceiver;
+        this.fileReceiver = fileReceiver;
     }
 
     @FXML
@@ -97,21 +102,37 @@ public class FolderEntry extends AnchorPane {
     }
 
     @FXML
+    private void onDragDetected(MouseEvent e) {
+        var board = startDragAndDrop(TransferMode.MOVE);
+        board.setContent(Map.of(DataTypes.FOLDER, this.folder));
+        e.consume();
+    }
+
+    @FXML
     private void onDragOver(DragEvent e) {
-        var board = e.getDragboard();
-        if (board.hasFiles()) {
-            e.acceptTransferModes(TransferMode.COPY);
-        }
+        e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
         e.consume();
     }
 
     @FXML
     private void onDragDropped(DragEvent event) {
         var board = event.getDragboard();
-        if (board.hasFiles() && !event.isConsumed()) {
-            event.consume();
-            dragNDropService.dropFiles(board.getFiles(), folder, getScene().getWindow())
-                    .subscribe();
+        if (!event.isConsumed()) {
+            if (board.hasFiles()) {
+                event.consume();
+                dragNDropService.dropFiles(board.getFiles(), folder, getScene().getWindow())
+                        .subscribe();
+            } else if (board.getContent(DataTypes.FOLDER) instanceof FolderApi droppedFolder) {
+                event.consume();
+                var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files());
+                folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
+                        .subscribe();
+            } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {
+                event.consume();
+                var newApi = new FileApiWithFolder(droppedFile.id(), droppedFile.name(), Optional.of(folder.id()));
+                fileReceiver.process(new FileUpdateEvent(newApi))
+                        .subscribe();
+            }
         }
     }
 }

@@ -145,7 +145,7 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileDeleteEvent = event -> {
+    private final AsyncEventReceiver<FileObject> asyncFileDeleteEvent = event -> {
         if (event instanceof FileDeleteEvent) {
             return fileService.deleteFile(event.get().id())
                     .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
@@ -158,10 +158,17 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileUpdateEvent = event -> {
+    private final AsyncEventReceiver<FileObject> asyncFileUpdateEvent = event -> {
         if (event instanceof FileUpdateEvent updateEvent) {
             var file = updateEvent.get();
-            var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
+            UpdateFileRequest req;
+            if (updateEvent.get() instanceof FileApi fileApi) {
+                req = new UpdateFileRequest(fileApi.id(), currentFolder.id(), fileApi.name());
+            } else if (updateEvent.get() instanceof FileApiWithFolder fileApiWithFolder) {
+                req = new UpdateFileRequest(fileApiWithFolder.id(), fileApiWithFolder.folderId().orElse(currentFolder.id()), fileApiWithFolder.name());
+            } else {
+                throw new UnsupportedOperationException("Unknown subclass of FileObject");
+            }
             return fileService.updateFile(req)
                     .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null))
@@ -171,16 +178,16 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileSaveEvent = event -> {
-        if (event instanceof FileSaveEvent saveEvent) {
+    private final AsyncEventReceiver<FileObject> asyncFileSaveEvent = event -> {
+        if (event instanceof FileSaveEvent saveEvent && saveEvent.get() instanceof FileApi file) {
             var dir = saveEvent.getDirectory();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
+            var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(file.name()::equalsIgnoreCase);
             var loadingModal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
             var saveAction = fileService
-                    .saveAndGetFile(saveEvent.get(), saveEvent.getDirectory())
+                    .saveAndGetFile(file, saveEvent.getDirectory())
                     .doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null))
                     .doFinally(loadingModal::close);
             if (fileExists) {
@@ -201,7 +208,7 @@ public class MainFrame extends AnchorPane {
         return Single.just(true);
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileCrudEvents = event -> {
+    private final AsyncEventReceiver<FileObject> asyncFileCrudEvents = event -> {
         if (event instanceof FileDeleteEvent) {
             return asyncFileDeleteEvent.process(event);
         } else if (event instanceof FileUpdateEvent) {
@@ -279,7 +286,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private FolderEntry createFolderEntry(FolderApi folder) {
-        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents);
+        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents, asyncFileCrudEvents);
         // when clicking any of the folder entries, clear the page and populate it with the new folder contents
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
@@ -308,10 +315,7 @@ public class MainFrame extends AnchorPane {
 
     @FXML
     private void onDragOver(DragEvent e) {
-        var board = e.getDragboard();
-        if (board.hasFiles()) {
-            e.acceptTransferModes(TransferMode.COPY);
-        }
+        e.acceptTransferModes(TransferMode.ANY);
         e.consume();
     }
 

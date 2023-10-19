@@ -11,16 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/ServerObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApiWithFolder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/DataTypes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileDeleteEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileDeleteEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUpdateEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApproximation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApproximation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximationGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/FolderApproximator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FolderApproximationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximationGeneratorTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/util/FolderApproximatorTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,9 +58,9 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Record" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
+        <option value="Record" />
         <option value="Interface" />
       </list>
     </option>
@@ -90,7 +94,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;drag-n-drop&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/test/java/ploiu&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -124,6 +128,9 @@
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="ploiu.ui.DataTypes" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="ploiu.service" />
@@ -373,7 +380,9 @@
       <workItem from="1697577661892" duration="6174000" />
       <workItem from="1697583850160" duration="2693000" />
       <workItem from="1697665749090" duration="55000" />
-      <workItem from="1697665922765" duration="2823000" />
+      <workItem from="1697665922765" duration="3485000" />
+      <workItem from="1697669747571" duration="305000" />
+      <workItem from="1697671695648" duration="3470000" />
     </task>
     <servers />
   </component>
@@ -399,6 +408,25 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />

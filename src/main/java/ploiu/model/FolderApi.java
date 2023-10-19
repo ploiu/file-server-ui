@@ -2,6 +2,7 @@ package ploiu.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 public record FolderApi(
@@ -13,5 +14,5 @@ public record FolderApi(
         Collection<FolderApi> folders,
         @NotNull
         Collection<FileApi> files
-) implements ServerObject {
+) implements ServerObject, Serializable {
 }
