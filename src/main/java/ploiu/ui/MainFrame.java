@@ -327,7 +327,8 @@ public class MainFrame extends AnchorPane {
             event.acceptTransferModes(TransferMode.COPY);
             dragNDropService.dropFiles(board.getFiles(), currentFolder, getScene().getWindow())
                     .doOnComplete(() -> asyncLoadFolder(currentFolder))
-                    .subscribe();
+                    .subscribe(() -> {
+                    }, e -> showErrorDialog(e.getMessage(), "Failed to upload files", null));
         }
     }
 

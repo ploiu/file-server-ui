@@ -11,20 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApiWithFolder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileObject.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/DataTypes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileDeleteEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileDeleteEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUpdateEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,8 +49,8 @@
         <option value="CSS File" />
         <option value="JUnit5 Test Class" />
         <option value="Class" />
-        <option value="Record" />
         <option value="Interface" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -94,7 +83,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ui-element-drag-n-drop&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/test/java/ploiu&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -156,7 +145,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="DragNDropServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -382,7 +371,9 @@
       <workItem from="1697665749090" duration="55000" />
       <workItem from="1697665922765" duration="3485000" />
       <workItem from="1697669747571" duration="305000" />
-      <workItem from="1697671695648" duration="3470000" />
+      <workItem from="1697671695648" duration="3887000" />
+      <workItem from="1697746429917" duration="409000" />
+      <workItem from="1697747121445" duration="12619000" />
     </task>
     <servers />
   </component>
