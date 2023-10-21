@@ -51,10 +51,8 @@ public class FolderEntry extends AnchorPane {
         try {
             loader.load();
             // currently api doesn't have a field for name, just full path
-            var splitPath = folder.path().split("/");
-            var name = splitPath[splitPath.length - 1];
-            this.folderName.setText(name);
-            Tooltip.install(this, new Tooltip(name));
+            this.folderName.setText(folder.name());
+            Tooltip.install(this, new Tooltip(folder.name()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +73,7 @@ public class FolderEntry extends AnchorPane {
     private void renameItemClicked(ActionEvent event) {
         EventReceiver<String> dialogCallback = evt -> {
             var newName = evt.get();
-            var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, folder.folders(), folder.files());
+            var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, null, folder.folders(), folder.files());
             folderReceiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE))
                     .subscribe();
             return true;
@@ -124,7 +122,7 @@ public class FolderEntry extends AnchorPane {
                         .subscribe();
             } else if (board.getContent(DataTypes.FOLDER) instanceof FolderApi droppedFolder) {
                 event.consume();
-                var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files());
+                var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.name(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files());
                 folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
                         .subscribe();
             } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {

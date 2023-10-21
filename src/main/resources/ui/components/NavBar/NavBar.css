@@ -11,3 +11,8 @@
     -fx-cursor: hand;
     -fx-padding: 0 2px;
 }
+
+.selected {
+    -fx-text-fill: -secondary;
+    -fx-underline: true;
+}

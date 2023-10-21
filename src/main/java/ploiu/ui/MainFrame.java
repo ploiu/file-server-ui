@@ -80,7 +80,7 @@ public class MainFrame extends AnchorPane {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
             return folderClient
-                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()))
+                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name()))
                     .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .map(ignored -> true);
         } else {
@@ -90,7 +90,7 @@ public class MainFrame extends AnchorPane {
 
     private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
-            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().path());
+            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name());
             return folderClient
                     .createFolder(req)
                     .observeOn(JavaFxScheduler.platform())
@@ -225,7 +225,9 @@ public class MainFrame extends AnchorPane {
         loader.setRoot(this);
         loader.setController(this);
         // add event handlers to the namespace
-        loader.getNamespace().put("folderEvents", navigateFolderEvents);
+        loader.getNamespace().put("folderNavigationEvents", navigateFolderEvents);
+        loader.getNamespace().put("folderCrudEvents", asyncFolderCrudEvents);
+        loader.getNamespace().put("fileCrudEvents", asyncFileCrudEvents);
         loader.getNamespace().put("searchEvents", asyncSearchEvents);
         try {
             loader.load();
@@ -236,7 +238,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
-        var defaultFolder = new FolderApi(0, -1, "root", List.of(), List.of());
+        var defaultFolder = new FolderApi(0, -1, "root", null, List.of(), List.of());
         navigationBar.push(defaultFolder);
         asyncLoadFolder(defaultFolder);
     }

@@ -41,7 +41,7 @@ public class AddFolder extends AnchorPane {
         if (event.getButton() == MouseButton.PRIMARY) {
             EventReceiver<String> callback = evt -> {
                 var folderName = evt.get();
-                var dummyFolder = new FolderApi(-1, currentFolderId, folderName, List.of(), List.of());
+                var dummyFolder = new FolderApi(-1, currentFolderId, folderName, null, List.of(), List.of());
                 this.receiver.process(new FolderEvent(dummyFolder, FolderEvent.Type.CREATE))
                         .subscribe();
                 return true;
