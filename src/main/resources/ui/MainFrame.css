@@ -13,3 +13,11 @@
     -fx-min-height: 128px;
     -fx-padding: 20;
 }
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}

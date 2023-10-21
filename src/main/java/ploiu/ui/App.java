@@ -18,6 +18,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         var client = INJECTOR.getInstance(ApiClient.class);
+        stage.setMinHeight(600);
+        stage.setMinWidth(750);
         if (!client.isCompatibleWithServer()) {
             // show a "good enough" message dialogue telling the user the server version is ahead of the client
             JOptionPane.showMessageDialog(new JFrame(), "Client is incompatible with the server!", "Outdated Client", JOptionPane.ERROR_MESSAGE);

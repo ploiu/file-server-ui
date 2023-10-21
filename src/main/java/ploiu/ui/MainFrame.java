@@ -3,6 +3,7 @@ package ploiu.ui;
 import io.reactivex.rxjava3.core.Single;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
@@ -33,6 +34,8 @@ public class MainFrame extends AnchorPane {
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
     private final Desktop desktop = Desktop.getDesktop();
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private FlowPane folderPane;
     @FXML
@@ -238,6 +241,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
+        this.folderPane.setPrefWidth(this.widthProperty().doubleValue());
         var defaultFolder = new FolderApi(0, -1, "root", null, List.of(), List.of());
         navigationBar.push(defaultFolder);
         asyncLoadFolder(defaultFolder);
@@ -341,5 +345,16 @@ public class MainFrame extends AnchorPane {
      */
     private void setCurrentFolder(FolderApi folder) {
         this.currentFolder = folder;
+    }
+
+    @FXML
+    private void initialize() {
+        widthProperty().addListener((obs, oldVal, newVal) -> {
+            folderPane.setPrefWidth(newVal.doubleValue());
+        });
+
+        heightProperty().addListener((obs, oldVal, newVal) -> {
+            scrollPane.setPrefHeight(newVal.doubleValue() - 50);
+        });
     }
 }
