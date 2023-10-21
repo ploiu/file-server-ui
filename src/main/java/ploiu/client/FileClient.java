@@ -156,7 +156,7 @@ public class FileClient {
         var mimeType = URLConnection.guessContentTypeFromName(file.getName());
         var multipart = MultipartEntityBuilder.create()
                 .setMode(HttpMultipartMode.STRICT)
-                .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName())
+                .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName().replace("(", "leftParenthese").replace(")", "rightParenthese"))
                 .addTextBody("folder_id", String.valueOf(request.folderId()));
         if (splitName.length > 1) {
             // file has extension, add it
