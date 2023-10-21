@@ -9,7 +9,15 @@
     <children>
         <VBox>
             <SearchBar receiver="$searchEvents"/>
-            <NavBar receiver="$folderEvents" fx:id="navigationBar" layoutX="14.0" layoutY="45.0" styleClass="nav-bar"/>
+            <NavBar
+                    navigationReceiver="$folderNavigationEvents"
+                    folderReceiver="$folderCrudEvents"
+                    fileReceiver="$fileCrudEvents"
+                    fx:id="navigationBar"
+                    layoutX="14.0"
+                    layoutY="45.0"
+                    styleClass="nav-bar"
+            />
             <VBox>
                 <FlowPane fx:id="folderPane" layoutX="13.0" layoutY="64.0" prefWidth="777.0"
                           styleClass="item-row"/>

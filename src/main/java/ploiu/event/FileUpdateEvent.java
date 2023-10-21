@@ -1,9 +1,9 @@
 package ploiu.event;
 
-import ploiu.model.FileApi;
+import ploiu.model.FileObject;
 
-public class FileUpdateEvent extends Event<FileApi> {
-    public FileUpdateEvent(FileApi value) {
+public class FileUpdateEvent extends Event<FileObject> {
+    public FileUpdateEvent(FileObject value) {
         super(value);
     }
 }

@@ -29,6 +29,7 @@ import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URLConnection;
 import java.util.Collection;
 import java.util.Objects;
@@ -161,22 +162,26 @@ public class FileClient {
             // file has extension, add it
             multipart.addTextBody("extension", splitName[splitName.length - 1]);
         }
-        return Single.fromCallable(() -> {
-                    try (var built = multipart.build()) {
-                        var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
-                        req.setEntity(built);
-                        return httpClient.execute(req, res -> {
-                            var status = new StatusLine(res);
-                            if (status.getStatusCode() != 201) {
-                                var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                                throw new BadFileResponseException(message);
-                            }
-                            return mapper.readValue(res.getEntity().getContent(), FileApi.class);
-                        });
+        try (var built = multipart.build()) {
+            var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
+            req.setEntity(built);
+            return Single.just(
+                            httpClient.execute(req, res -> {
+                                var status = new StatusLine(res);
+                                if (status.getStatusCode() != 201) {
+                                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
+                                    throw new BadFileResponseException(message);
+                                }
+                                // by returning the Single here, we prevent us from spamming the backend server all at once
+                                return Single.just(mapper.readValue(res.getEntity().getContent(), FileApi.class));
+                            })
+                    )
+                    .flatMap(it -> it)
+                    .observeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.io());
 
-                    }
-                })
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io());
+        } catch (IOException e) {
+            return Single.error(e);
+        }
     }
 }

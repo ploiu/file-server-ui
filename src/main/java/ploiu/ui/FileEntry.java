@@ -8,18 +8,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import lombok.Getter;
 import ploiu.event.*;
-import ploiu.model.ConfirmDialogOptions;
-import ploiu.model.FileApi;
-import ploiu.model.TextInputDialogOptions;
+import ploiu.model.*;
 import ploiu.util.MimeUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class FileEntry extends AnchorPane {
     // cache because creating an image takes a lot of time
@@ -35,7 +36,7 @@ public class FileEntry extends AnchorPane {
 
     @Getter
     private final FileApi file;
-    private final AsyncEventReceiver<FileApi> fileReceiver;
+    private final AsyncEventReceiver<FileObject> fileReceiver;
     @FXML
     private ImageView icon;
     @FXML
@@ -43,7 +44,7 @@ public class FileEntry extends AnchorPane {
     @FXML
     private ContextMenu fileMenu;
 
-    public FileEntry(FileApi file, AsyncEventReceiver<FileApi> eventHandler) {
+    public FileEntry(FileApi file, AsyncEventReceiver<FileObject> eventHandler) {
         super();
         this.file = file;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
@@ -75,7 +76,7 @@ public class FileEntry extends AnchorPane {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
-                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName)))
+                fileReceiver.process(new FileUpdateEvent(new FileApiWithFolder(file.id(), newName, Optional.empty())))
                         .subscribe();
                 return true;
             }
@@ -108,5 +109,12 @@ public class FileEntry extends AnchorPane {
             fileReceiver.process(new FileSaveEvent(file, selectedDir))
                     .subscribe();
         }
+    }
+
+    @FXML
+    private void onDragDetected(MouseEvent e) {
+        var board = startDragAndDrop(TransferMode.MOVE);
+        board.setContent(Map.of(DataTypes.FILE, this.file));
+        e.consume();
     }
 }

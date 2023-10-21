@@ -80,7 +80,7 @@ public class MainFrame extends AnchorPane {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
             return folderClient
-                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.path()))
+                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name()))
                     .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .map(ignored -> true);
         } else {
@@ -90,7 +90,7 @@ public class MainFrame extends AnchorPane {
 
     private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
-            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().path());
+            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name());
             return folderClient
                     .createFolder(req)
                     .observeOn(JavaFxScheduler.platform())
@@ -145,7 +145,7 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileDeleteEvent = event -> {
+    private final AsyncEventReceiver<FileObject> asyncFileDeleteEvent = event -> {
         if (event instanceof FileDeleteEvent) {
             return fileService.deleteFile(event.get().id())
                     .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
@@ -158,10 +158,17 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileUpdateEvent = event -> {
+    private final AsyncEventReceiver<FileObject> asyncFileUpdateEvent = event -> {
         if (event instanceof FileUpdateEvent updateEvent) {
             var file = updateEvent.get();
-            var req = new UpdateFileRequest(file.id(), currentFolder.id(), file.name());
+            UpdateFileRequest req;
+            if (updateEvent.get() instanceof FileApi fileApi) {
+                req = new UpdateFileRequest(fileApi.id(), currentFolder.id(), fileApi.name());
+            } else if (updateEvent.get() instanceof FileApiWithFolder fileApiWithFolder) {
+                req = new UpdateFileRequest(fileApiWithFolder.id(), fileApiWithFolder.folderId().orElse(currentFolder.id()), fileApiWithFolder.name());
+            } else {
+                throw new UnsupportedOperationException("Unknown subclass of FileObject");
+            }
             return fileService.updateFile(req)
                     .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null))
@@ -171,16 +178,16 @@ public class MainFrame extends AnchorPane {
         }
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileSaveEvent = event -> {
-        if (event instanceof FileSaveEvent saveEvent) {
+    private final AsyncEventReceiver<FileObject> asyncFileSaveEvent = event -> {
+        if (event instanceof FileSaveEvent saveEvent && saveEvent.get() instanceof FileApi file) {
             var dir = saveEvent.getDirectory();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(saveEvent.get().name()::equalsIgnoreCase);
+            var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(file.name()::equalsIgnoreCase);
             var loadingModal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
             var saveAction = fileService
-                    .saveAndGetFile(saveEvent.get(), saveEvent.getDirectory())
+                    .saveAndGetFile(file, saveEvent.getDirectory())
                     .doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null))
                     .doFinally(loadingModal::close);
             if (fileExists) {
@@ -201,7 +208,7 @@ public class MainFrame extends AnchorPane {
         return Single.just(true);
     };
 
-    private final AsyncEventReceiver<FileApi> asyncFileCrudEvents = event -> {
+    private final AsyncEventReceiver<FileObject> asyncFileCrudEvents = event -> {
         if (event instanceof FileDeleteEvent) {
             return asyncFileDeleteEvent.process(event);
         } else if (event instanceof FileUpdateEvent) {
@@ -218,7 +225,9 @@ public class MainFrame extends AnchorPane {
         loader.setRoot(this);
         loader.setController(this);
         // add event handlers to the namespace
-        loader.getNamespace().put("folderEvents", navigateFolderEvents);
+        loader.getNamespace().put("folderNavigationEvents", navigateFolderEvents);
+        loader.getNamespace().put("folderCrudEvents", asyncFolderCrudEvents);
+        loader.getNamespace().put("fileCrudEvents", asyncFileCrudEvents);
         loader.getNamespace().put("searchEvents", asyncSearchEvents);
         try {
             loader.load();
@@ -229,7 +238,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private void loadInitialFolder() {
-        var defaultFolder = new FolderApi(0, -1, "root", List.of(), List.of());
+        var defaultFolder = new FolderApi(0, -1, "root", null, List.of(), List.of());
         navigationBar.push(defaultFolder);
         asyncLoadFolder(defaultFolder);
     }
@@ -279,7 +288,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private FolderEntry createFolderEntry(FolderApi folder) {
-        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents);
+        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents, asyncFileCrudEvents);
         // when clicking any of the folder entries, clear the page and populate it with the new folder contents
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
@@ -308,10 +317,7 @@ public class MainFrame extends AnchorPane {
 
     @FXML
     private void onDragOver(DragEvent e) {
-        var board = e.getDragboard();
-        if (board.hasFiles()) {
-            e.acceptTransferModes(TransferMode.COPY);
-        }
+        e.acceptTransferModes(TransferMode.ANY);
         e.consume();
     }
 
@@ -323,7 +329,8 @@ public class MainFrame extends AnchorPane {
             event.acceptTransferModes(TransferMode.COPY);
             dragNDropService.dropFiles(board.getFiles(), currentFolder, getScene().getWindow())
                     .doOnComplete(() -> asyncLoadFolder(currentFolder))
-                    .subscribe();
+                    .subscribe(() -> {
+                    }, e -> showErrorDialog(e.getMessage(), "Failed to upload files", null));
         }
     }
 
