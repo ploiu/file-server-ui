@@ -11,8 +11,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/AsyncConfirmDialogOptions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AsyncConfirmDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/CreateFileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/CreateFileRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +91,8 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;view-size-and-scroll&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last.edited.regexp&quot;: &quot;test.a.txt&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/test/java/ploiu&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -126,9 +136,10 @@
       <recent name="ploiu.model" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ploiu.model" />
+      <recent name="ploiu.ui" />
       <recent name="ploiu" />
       <recent name="ploiu.client" />
-      <recent name="ploiu.ui" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -140,10 +151,10 @@
       <command value="open File Server Ui Android" />
       <command value="gradlew clean build" />
       <command value="gradlew build" />
-      <command value="open file_server" />
       <command value="gradlew test" />
       <command value="gradlew help --scan" />
       <command value="gradle help --warning-mode=all" />
+      <command value="open file_server" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -273,8 +284,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.file-server-ui [help]" />
         <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Gradle.file-server-ui [help]" />
         <item itemvalue="Gradle.DragNDropServiceTests" />
         <item itemvalue="Gradle.FolderApproximationTests.testSize" />
         <item itemvalue="Gradle.DragNDropServiceTests.testUploadFoldersMultipleNestedFoldersWithFiles" />
@@ -376,6 +387,8 @@
       <workItem from="1697842189550" duration="3358000" />
       <workItem from="1697847510912" duration="4967000" />
       <workItem from="1697931165948" duration="453000" />
+      <workItem from="1698015909739" duration="2171000" />
+      <workItem from="1698018224318" duration="792000" />
     </task>
     <servers />
   </component>
@@ -407,6 +420,35 @@
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java</url>
           <line>75</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>140</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>142</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>149</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
+          <line>147</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

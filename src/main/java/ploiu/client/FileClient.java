@@ -157,13 +157,13 @@ public class FileClient {
         var multipart = MultipartEntityBuilder.create()
                 .setMode(HttpMultipartMode.STRICT)
                 .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName().replace("(", "leftParenthese").replace(")", "rightParenthese"))
-                .addTextBody("folder_id", String.valueOf(request.folderId()));
+                .addTextBody("folderId", String.valueOf(request.folderId()));
         if (splitName.length > 1) {
             // file has extension, add it
             multipart.addTextBody("extension", splitName[splitName.length - 1]);
         }
         try (var built = multipart.build()) {
-            var req = new HttpPost(serverConfig.getBaseUrl() + "/files");
+            var req = new HttpPost(serverConfig.getBaseUrl() + "/files" + (request.force() ? "?force" : ""));
             req.setEntity(built);
             return Single.just(
                             httpClient.execute(req, res -> {
