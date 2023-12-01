@@ -14,10 +14,17 @@ open module file.server.ui.main {
     requires javafx.controls;
     requires javafx.media;
     requires org.jetbrains.annotations;
+    // TODO remove these next 2 once we're off of apache http client
     requires org.apache.httpcomponents.client5.httpclient5;
     requires org.apache.httpcomponents.core5.httpcore5;
     requires io.reactivex.rxjava3;
     requires org.pdfsam.rxjavafx;
+    requires retrofit2;
+    requires retrofit2.adapter.rxjava3;
+    requires retrofit2.converter.jackson;
+    requires okhttp3;
+    // needed for okhttp3 which is needed for retrofit
+    requires kotlin.stdlib;
 
     exports ploiu.ui to javafx.fxml, javafx.graphics;
     exports ploiu.event to javafx.fxml, javafx.graphics;
