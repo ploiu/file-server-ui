@@ -66,12 +66,9 @@ public class FileClientTests {
 
     @Test
     void testGetMetadataThrowsExceptionIfIdIsNegative() {
-        fileClient.getMetadata(-1)
-                .doOnError(e -> {
-                    assertInstanceOf(BadFileRequestException.class, e);
-                    assertEquals("Id cannot be negative.", e.getMessage());
-                })
-                .subscribe();
+        var e = assertThrows(Exception.class, () -> fileClient.getMetadata(-1).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("Id cannot be negative.", e.getMessage());
     }
 
     @Test
@@ -101,13 +98,9 @@ public class FileClientTests {
 
     @Test
     void testDeleteFileThrowsExceptionIfIdIsNegative() {
-        fileClient
-                .deleteFile(-1)
-                .doOnError(e -> {
-                    assertInstanceOf(BadFileRequestException.class, e);
-                    assertEquals("Id cannot be negative.", e.getMessage());
-                })
-                .subscribe();
+        var e = assertThrows(Exception.class, () -> fileClient.deleteFile(-1).blockingAwait()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("Id cannot be negative.", e.getMessage());
     }
 
     @Test
@@ -128,21 +121,17 @@ public class FileClientTests {
 
     @Test
     void testGetFileContentsThrowsExceptionIfIdIsNegative() {
-        fileClient.getFileContents(-1)
-                .doOnError(ex -> {
-                    assertInstanceOf(BadFileRequestException.class, ex);
-                    assertEquals("Id cannot be negative.", ex.getMessage());
-                })
-                .subscribe(ignored -> fail("getFileContents with negative id succeeded when it should fail" + ignored))
-                .dispose();
+        var e = assertThrows(Exception.class, () -> fileClient.getFileContents(-1).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("Id cannot be negative.", e.getMessage());
     }
 
     @Test
     void testGetFileContentsUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
-        fileClient.getFileContents(1)
-                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class)));
+        fileClient.getFileContents(1).blockingGet();
+        verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
 
     }
 
@@ -150,20 +139,18 @@ public class FileClientTests {
     void testGetFileContentsUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse());
-        fileClient.getFileContents(1)
-                .subscribe(ignored -> verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class)));
+        fileClient.getFileContents(1).blockingGet();
+        verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class));
     }
 
     @ParameterizedTest(name = "Test that [{0}] is rejected for search")
     @NullAndEmptySource
     @ValueSource(strings = {" ", "\n", "\r", "\t"})
     void testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty(String query) {
-        fileClient.search(query)
-                .doOnError(e -> {
-                    assertInstanceOf(BadFileRequestException.class, e);
-                    assertEquals("Query cannot be null or empty.", e.getMessage());
-                })
-                .subscribe();
+        var e = assertThrows(Exception.class, () -> fileClient.search(query).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("Query cannot be null or empty.", e.getMessage());
+
     }
 
     @Test
@@ -190,11 +177,9 @@ public class FileClientTests {
 
     @Test
     void testCreateFileRequiresFileToExist() {
-        fileClient.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis())))
-                .doOnError(e -> {
-                    assertInstanceOf(BadFileRequestException.class, e);
-                    assertEquals("The selected file does not exist.", e.getMessage());
-                }).subscribe();
+        var e = assertThrows(Exception.class, () -> fileClient.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis()))).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("The selected file does not exist.", e.getMessage());
     }
 
     @Test
@@ -272,22 +257,16 @@ public class FileClientTests {
     @EmptySource
     @ValueSource(strings = {" "})
     void testUpdateFileRequiresFileName(String name) {
-        fileClient.updateFile(new UpdateFileRequest(0, 0, name))
-                .doOnError(e -> {
-                    assertInstanceOf(BadFileRequestException.class, e);
-                    assertEquals("Name cannot be blank.", e.getMessage());
-                })
-                .subscribe();
+        var e = assertThrows(Exception.class, () -> fileClient.updateFile(new UpdateFileRequest(0, 0, name)).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("Name cannot be blank.", e.getMessage());
     }
 
     @Test
     void testUpdateFileRequiresPositiveId() {
-        fileClient.updateFile(new UpdateFileRequest(-1, 0, "name"))
-                .doOnError(e -> {
-                    assertInstanceOf(BadFileRequestException.class, e);
-                    assertEquals("Id cannot be negative.", e.getMessage());
-                })
-                .subscribe();
+        var e = assertThrows(Exception.class, () -> fileClient.updateFile(new UpdateFileRequest(-1, 0, "name")).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
+        assertEquals("Id cannot be negative.", e.getMessage());
     }
 
 }

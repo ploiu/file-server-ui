@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +49,7 @@ public class FileServiceTests {
     void testSaveAndGetFile_CACHE_DIR() throws Exception {
         when(fileClient.getFileContents(anyLong()))
                 .thenReturn(Single.just(new ByteArrayInputStream("test".getBytes())));
-        var savedFile = fileService.saveAndGetFile(new FileApi(0, "test.txt"), null)
+        var savedFile = fileService.saveAndGetFile(new FileApi(0, "test.txt", List.of()), null)
                 .blockingGet();
         assertEquals(new File(CACHE_DIR), savedFile.getParentFile());
         // cache dir can have a lot of files, so append the file ID to help make it unique
@@ -64,7 +65,7 @@ public class FileServiceTests {
     void testSaveAndGetFile() throws Exception {
         when(fileClient.getFileContents(anyLong()))
                 .thenReturn(Single.just(new ByteArrayInputStream("test".getBytes())));
-        var savedFile = fileService.saveAndGetFile(new FileApi(0, "test.txt"), saveDir)
+        var savedFile = fileService.saveAndGetFile(new FileApi(0, "test.txt", List.of()), saveDir)
                 .blockingGet();
         assertEquals(saveDir, savedFile.getParentFile());
         assertEquals("test.txt", savedFile.getName());

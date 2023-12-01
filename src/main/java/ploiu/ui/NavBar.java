@@ -114,7 +114,7 @@ public class NavBar extends HBox {
                                     .subscribe();
                         } else if (board.getContent(DataTypes.FOLDER) instanceof FolderApi droppedFolder) {
                             event.consume();
-                            var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.name(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files());
+                            var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.name(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files(), droppedFolder.tags());
                             folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
                                     .subscribe();
                         } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {

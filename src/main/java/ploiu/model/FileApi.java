@@ -2,5 +2,7 @@ package ploiu.model;
 
 import org.jetbrains.annotations.NotNull;
 
-public record FileApi(long id, @NotNull String name) implements FileObject {
+import java.util.Collection;
+
+public record FileApi(long id, @NotNull String name, @NotNull Collection<TagApi> tags) implements FileObject {
 }

@@ -242,7 +242,7 @@ public class MainFrame extends AnchorPane {
 
     private void loadInitialFolder() {
         this.folderPane.setPrefWidth(this.widthProperty().doubleValue());
-        var defaultFolder = new FolderApi(0, -1, "root", null, List.of(), List.of());
+        var defaultFolder = new FolderApi(0, -1, "root", null, List.of(), List.of(), List.of());
         navigationBar.push(defaultFolder);
         asyncLoadFolder(defaultFolder);
     }

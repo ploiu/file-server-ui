@@ -73,7 +73,7 @@ public class FolderEntry extends AnchorPane {
     private void renameItemClicked(ActionEvent event) {
         EventReceiver<String> dialogCallback = evt -> {
             var newName = evt.get();
-            var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, null, folder.folders(), folder.files());
+            var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, null, folder.folders(), folder.files(), folder.tags());
             folderReceiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE))
                     .subscribe();
             return true;
@@ -122,7 +122,7 @@ public class FolderEntry extends AnchorPane {
                         .subscribe();
             } else if (board.getContent(DataTypes.FOLDER) instanceof FolderApi droppedFolder) {
                 event.consume();
-                var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.name(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files());
+                var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.name(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files(), droppedFolder.tags());
                 folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
                         .subscribe();
             } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {

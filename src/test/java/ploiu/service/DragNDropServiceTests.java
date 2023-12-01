@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 class DragNDropServiceTests {
     static final File root = new File("src/test/resources/DragNDropService");
     static TestHelper helper = new TestHelper(root);
-    static FolderApi rootApi = new FolderApi(0, 0, "root", null, List.of(), List.of());
+    static FolderApi rootApi = new FolderApi(0, 0, "root", null, List.of(), List.of(), List.of());
 
     @Mock
     FolderClient folderClient;
@@ -53,9 +53,8 @@ class DragNDropServiceTests {
     @Test
     void testUploadFoldersSingleFolder() throws IOException {
         var dir = helper.createDir("top");
-        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of())));
-        service.uploadFolders(List.of(dir), rootApi)
-                .blockingSubscribe();
+        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of(), List.of())));
+        service.uploadFolders(List.of(dir), rootApi).toList().blockingGet();
         verify(folderClient).createFolder(eq(new FolderRequest(Optional.empty(), 0, "top")));
         verifyNoMoreInteractions(folderClient);
         verifyNoInteractions(fileService);
@@ -66,9 +65,8 @@ class DragNDropServiceTests {
         var first = helper.createDir("top");
         var second = helper.createDir("middle");
         var third = helper.createDir("bottom");
-        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of())));
-        service.uploadFolders(List.of(first, second, third), rootApi)
-                .blockingSubscribe();
+        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of(), List.of())));
+        service.uploadFolders(List.of(first, second, third), rootApi).toList().blockingGet();
         verify(folderClient, times(3)).createFolder(argThat(arg -> arg.id().isEmpty() && arg.parentId() == 0));
         verifyNoMoreInteractions(folderClient);
         verifyNoInteractions(fileService);
@@ -78,12 +76,8 @@ class DragNDropServiceTests {
     void testUploadFoldersNestedFolders() throws IOException {
         var top = helper.createDir("top");
         helper.createDir("top/middle/bottom");
-        when(folderClient.createFolder(any()))
-                .thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of())))
-                .thenReturn(Single.just(new FolderApi(2, 1, "middle", null, List.of(), List.of())))
-                .thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of())));
-        service.uploadFolders(List.of(top), rootApi)
-                .blockingSubscribe();
+        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of(), List.of()))).thenReturn(Single.just(new FolderApi(2, 1, "middle", null, List.of(), List.of(), List.of()))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
+        service.uploadFolders(List.of(top), rootApi).toList().blockingGet();
         verify(folderClient).createFolder(argThat(it -> it.parentId() == 0 && it.name().equals("top")));
         verify(folderClient).createFolder(argThat(it -> it.parentId() == 1 && it.name().equals("middle")));
         verify(folderClient).createFolder(argThat(it -> it.parentId() == 2 && it.name().equals("bottom")));
@@ -97,10 +91,9 @@ class DragNDropServiceTests {
         helper.createFile("top/first.txt");
         helper.createFile("top/second.txt");
         helper.createFile("top/third.txt");
-        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of())));
-        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "")));
-        service.uploadFolders(List.of(dir), rootApi)
-                .blockingSubscribe();
+        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of(), List.of())));
+        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of())));
+        service.uploadFolders(List.of(dir), rootApi).toList().blockingGet();
         verify(folderClient).createFolder(any());
         verify(fileService).createFile(argThat(it -> it.file().getName().equals("first.txt") && it.folderId() == 1));
         verify(fileService).createFile(argThat(it -> it.file().getName().equals("second.txt") && it.folderId() == 1));
@@ -143,23 +136,16 @@ class DragNDropServiceTests {
         helper.createFile("top/middle/bottom/bottomFirst.txt");
         helper.createFile("top/middle/bottom/bottomSecond.txt");
 
-        when(folderClient.createFolder(any()))
-                .thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of())))
-                .thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of())));
+        when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of(), List.of()))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
 
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 0, "top"))))
-                .thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of())));
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle"))))
-                .thenReturn(Single.just(new FolderApi(2, 1, "middle", null, List.of(), List.of())));
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle2"))))
-                .thenReturn(Single.just(new FolderApi(4, 1, "middle2", null, List.of(), List.of())));
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 2, "bottom"))))
-                .thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 0, "top")))).thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle")))).thenReturn(Single.just(new FolderApi(2, 1, "middle", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle2")))).thenReturn(Single.just(new FolderApi(4, 1, "middle2", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 2, "bottom")))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
 
-        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "")));
+        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of())));
 
-        service.uploadFolders(List.of(top), rootApi)
-                .blockingSubscribe();
+        service.uploadFolders(List.of(top), rootApi).toList().blockingGet();
 
         /// FOLDERS
         verify(folderClient).createFolder(argThat(it -> it.parentId() == 0 && "top".equals(it.name())));

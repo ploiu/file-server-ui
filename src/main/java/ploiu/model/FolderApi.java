@@ -16,6 +16,8 @@ public record FolderApi(
         @NotNull
         Collection<FolderApi> folders,
         @NotNull
-        Collection<FileApi> files
+        Collection<FileApi> files,
+        @NotNull
+        Collection<TagApi> tags
 ) implements ServerObject, Serializable {
 }
