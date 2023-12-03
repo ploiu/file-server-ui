@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -14,25 +13,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import lombok.Getter;
 import ploiu.event.*;
-import ploiu.model.*;
+import ploiu.model.ConfirmDialogOptions;
+import ploiu.model.FileApi;
+import ploiu.model.FileObject;
+import ploiu.model.TextInputDialogOptions;
 import ploiu.util.MimeUtils;
+import ploiu.util.UIUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class FileEntry extends AnchorPane {
-    // cache because creating an image takes a lot of time
-    private static final Map<String, Image> MIME_IMAGE_MAPPING = new HashMap<>();
-
-    // load all the icons into memory on application start, instead of on the fly
-    static {
-        for (var mimeType : MimeUtils.MIME_TYPES) {
-            var icon = MimeUtils.getFileIconForMimeType(mimeType);
-            MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, 100.25, 76.25, true, true));
-        }
-    }
 
     @Getter
     private final FileApi file;
@@ -53,7 +44,7 @@ public class FileEntry extends AnchorPane {
         try {
             loader.load();
             this.fileName.setText(file.name());
-            var image = MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
+            var image = UIUtils.MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
             icon.setImage(image);
             this.fileReceiver = eventHandler;
             Tooltip.install(this, new Tooltip(file.name()));
@@ -76,7 +67,7 @@ public class FileEntry extends AnchorPane {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
-                fileReceiver.process(new FileUpdateEvent(new FileApiWithFolder(file.id(), newName, Optional.empty())))
+                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName, file.tags(), file.folderId())))
                         .subscribe();
                 return true;
             }

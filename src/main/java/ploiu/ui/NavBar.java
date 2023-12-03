@@ -13,7 +13,6 @@ import ploiu.event.Event;
 import ploiu.event.FileUpdateEvent;
 import ploiu.event.FolderEvent;
 import ploiu.model.FileApi;
-import ploiu.model.FileApiWithFolder;
 import ploiu.model.FileObject;
 import ploiu.model.FolderApi;
 import ploiu.service.DragNDropService;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class NavBar extends HBox {
     // the "stack" of folders that represents our journey to the current folder
@@ -119,7 +117,7 @@ public class NavBar extends HBox {
                                     .subscribe();
                         } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {
                             event.consume();
-                            var newApi = new FileApiWithFolder(droppedFile.id(), droppedFile.name(), Optional.of(folder.id()));
+                            var newApi = new FileApi(droppedFile.id(), droppedFile.name(), droppedFile.tags(), folder.id());
                             fileReceiver.process(new FileUpdateEvent(newApi))
                                     .subscribe();
                         }

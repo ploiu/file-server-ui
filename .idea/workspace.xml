@@ -11,12 +11,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/TagClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileSearch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FileSearchTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApiWithFolder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/UpdateFileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/UpdateFileRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,9 +62,9 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="JUnit5 Test Class" />
         <option value="Record" />
         <option value="Interface" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -88,6 +100,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "tag-functionality",
     "last.edited.regexp": "test.a.txt",
+    "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
     "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/test/java/ploiu",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -112,6 +125,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="ploiu.model" />
       <recent name="ploiu.event" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -126,9 +140,9 @@
       <recent name="ploiu.ui.DataTypes" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.model" />
       <recent name="ploiu.service" />
       <recent name="ploiu.util" />
-      <recent name="ploiu.model" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ploiu.model" />
@@ -202,7 +216,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderApproximationTests.testSize" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FileSearchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -215,7 +229,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.model.FolderApproximationTests.testSize&quot;" />
+            <option value="&quot;ploiu.model.FileSearchTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -272,9 +286,9 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
+      <item itemvalue="Gradle.FileSearchTests" />
       <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
       <item itemvalue="Gradle.file-server-ui [help]" />
-      <item itemvalue="Gradle.FolderApproximationTests.testSize" />
       <item itemvalue="Gradle.file-server-ui [test]" />
       <item itemvalue="Gradle.DragNDropServiceTests" />
     </list>
@@ -282,9 +296,9 @@
       <list>
         <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
+        <item itemvalue="Gradle.FileSearchTests" />
         <item itemvalue="Gradle.file-server-ui [help]" />
         <item itemvalue="Gradle.DragNDropServiceTests" />
-        <item itemvalue="Gradle.FolderApproximationTests.testSize" />
       </list>
     </recent_temporary>
   </component>
@@ -386,7 +400,8 @@
       <workItem from="1698015909739" duration="2171000" />
       <workItem from="1698018224318" duration="792000" />
       <workItem from="1701387574269" duration="239000" />
-      <workItem from="1701387836441" duration="7546000" />
+      <workItem from="1701387836441" duration="7890000" />
+      <workItem from="1701551593914" duration="7871000" />
     </task>
     <servers />
   </component>
@@ -420,33 +435,9 @@
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>140</line>
-          <properties>
-            <option name="lambda-ordinal" value="0" />
-          </properties>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>142</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>149</line>
-          <properties>
-            <option name="lambda-ordinal" value="0" />
-          </properties>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>147</line>
-          <properties>
-            <option name="lambda-ordinal" value="0" />
-          </properties>
-          <option name="timeStamp" value="26" />
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

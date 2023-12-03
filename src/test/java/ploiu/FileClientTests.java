@@ -26,12 +26,14 @@ import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.CreateFileRequest;
+import ploiu.model.FileSearch;
 import ploiu.model.UpdateFileRequest;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -147,7 +149,7 @@ public class FileClientTests {
     @NullAndEmptySource
     @ValueSource(strings = {" ", "\n", "\r", "\t"})
     void testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty(String query) {
-        var e = assertThrows(Exception.class, () -> fileClient.search(query).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileClient.search(FileSearch.fromInput(query)).blockingGet()).getCause();
         assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Query cannot be null or empty.", e.getMessage());
 
@@ -157,7 +159,7 @@ public class FileClientTests {
     void testSearchContentsUsesGET() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search("whatever").blockingGet();
+        fileClient.search(FileSearch.fromInput("whatever")).blockingGet();
         verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
     }
 
@@ -165,7 +167,7 @@ public class FileClientTests {
     void testSearchContentsUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search("whatever").blockingGet();
+        fileClient.search(FileSearch.fromInput("whatever")).blockingGet();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/metadata?search=whatever")), any(HttpClientResponseHandler.class));
     }
 
@@ -228,7 +230,7 @@ public class FileClientTests {
     void testUpdateFileUsesPUT() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
-        fileClient.updateFile(new UpdateFileRequest(0, 0, "test")).blockingGet();
+        fileClient.updateFile(new UpdateFileRequest(0, 0, "test", List.of())).blockingGet();
         var req = backend.takeRequest();
         assertEquals("PUT", req.getMethod());
     }
@@ -237,7 +239,7 @@ public class FileClientTests {
     void testUpdateFileUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
-        fileClient.updateFile(new UpdateFileRequest(0, 0, "test")).blockingGet();
+        fileClient.updateFile(new UpdateFileRequest(0, 0, "test", List.of())).blockingGet();
         var req = backend.takeRequest();
         assertEquals("/files", req.getPath());
     }
@@ -246,7 +248,7 @@ public class FileClientTests {
     void testUpdateFilePassesBody() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
-        var reqBody = new UpdateFileRequest(0, 0, "test");
+        var reqBody = new UpdateFileRequest(0, 0, "test", List.of());
         fileClient.updateFile(reqBody).blockingGet();
         var req = backend.takeRequest();
         var receivedBody = new ObjectMapper().readValue(req.getBody().inputStream(), UpdateFileRequest.class);
@@ -257,14 +259,14 @@ public class FileClientTests {
     @EmptySource
     @ValueSource(strings = {" "})
     void testUpdateFileRequiresFileName(String name) {
-        var e = assertThrows(Exception.class, () -> fileClient.updateFile(new UpdateFileRequest(0, 0, name)).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileClient.updateFile(new UpdateFileRequest(0, 0, name, List.of())).blockingGet()).getCause();
         assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Name cannot be blank.", e.getMessage());
     }
 
     @Test
     void testUpdateFileRequiresPositiveId() {
-        var e = assertThrows(Exception.class, () -> fileClient.updateFile(new UpdateFileRequest(-1, 0, "name")).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileClient.updateFile(new UpdateFileRequest(-1, 0, "name", List.of())).blockingGet()).getCause();
         assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Id cannot be negative.", e.getMessage());
     }

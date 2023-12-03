@@ -92,7 +92,7 @@ class DragNDropServiceTests {
         helper.createFile("top/second.txt");
         helper.createFile("top/third.txt");
         when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of(), List.of())));
-        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of())));
+        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of(), null)));
         service.uploadFolders(List.of(dir), rootApi).toList().blockingGet();
         verify(folderClient).createFolder(any());
         verify(fileService).createFile(argThat(it -> it.file().getName().equals("first.txt") && it.folderId() == 1));
@@ -143,7 +143,7 @@ class DragNDropServiceTests {
         when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle2")))).thenReturn(Single.just(new FolderApi(4, 1, "middle2", null, List.of(), List.of(), List.of())));
         when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 2, "bottom")))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
 
-        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of())));
+        when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of(), null)));
 
         service.uploadFolders(List.of(top), rootApi).toList().blockingGet();
 

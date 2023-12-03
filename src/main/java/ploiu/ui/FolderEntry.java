@@ -16,12 +16,14 @@ import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
 import ploiu.event.FileUpdateEvent;
 import ploiu.event.FolderEvent;
-import ploiu.model.*;
+import ploiu.model.FileApi;
+import ploiu.model.FileObject;
+import ploiu.model.FolderApi;
+import ploiu.model.TextInputDialogOptions;
 import ploiu.service.DragNDropService;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 
 import static ploiu.util.DialogUtils.showErrorDialog;
 
@@ -127,7 +129,7 @@ public class FolderEntry extends AnchorPane {
                         .subscribe();
             } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {
                 event.consume();
-                var newApi = new FileApiWithFolder(droppedFile.id(), droppedFile.name(), Optional.of(folder.id()));
+                var newApi = new FileApi(droppedFile.id(), droppedFile.name(), droppedFile.tags(), folder.id());
                 fileReceiver.process(new FileUpdateEvent(newApi))
                         .subscribe();
             }

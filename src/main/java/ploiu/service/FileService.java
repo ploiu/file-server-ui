@@ -7,9 +7,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import ploiu.client.FileClient;
-import ploiu.client.TagClient;
 import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
+import ploiu.model.FileSearch;
 import ploiu.model.UpdateFileRequest;
 
 import java.io.File;
@@ -51,7 +51,7 @@ public class FileService {
     }
 
     public Single<Collection<FileApi>> search(String query) {
-        return fileClient.search(query);
+        return fileClient.search(FileSearch.fromInput(query));
     }
 
     public Single<FileApi> getMetadata(long id) {
