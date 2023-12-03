@@ -166,9 +166,7 @@ public class MainFrame extends AnchorPane {
             var file = updateEvent.get();
             UpdateFileRequest req;
             if (updateEvent.get() instanceof FileApi fileApi) {
-                req = new UpdateFileRequest(fileApi.id(), currentFolder.id(), fileApi.name());
-            } else if (updateEvent.get() instanceof FileApiWithFolder fileApiWithFolder) {
-                req = new UpdateFileRequest(fileApiWithFolder.id(), fileApiWithFolder.folderId().orElse(currentFolder.id()), fileApiWithFolder.name());
+                req = new UpdateFileRequest(fileApi.id(), fileApi.folderId() == null ? currentFolder.id() : fileApi.folderId(), fileApi.name(), fileApi.tags());
             } else {
                 throw new UnsupportedOperationException("Unknown subclass of FileObject");
             }

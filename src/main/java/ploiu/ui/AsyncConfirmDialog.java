@@ -1,10 +1,7 @@
 package ploiu.ui;
 
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,10 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import ploiu.event.Event;
-import ploiu.event.EventReceiver;
 import ploiu.model.AsyncConfirmDialogOptions;
-import ploiu.model.ConfirmDialogOptions;
 
 import java.io.IOException;
 
