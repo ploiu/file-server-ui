@@ -47,4 +47,8 @@ public class SearchBar extends HBox {
                     .subscribe();
         }
     }
+
+    public void focus() {
+        searchField.requestFocus();
+    }
 }

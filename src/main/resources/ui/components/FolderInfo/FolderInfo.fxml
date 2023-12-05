@@ -1,0 +1,39 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1"
+         xmlns="http://javafx.com/javafx/17.0.2-ea"
+         type="AnchorPane"
+         stylesheets="@FolderInfo.css"
+         styleClass="bounds-test-blue">
+    <VBox fx:id="rootPane" styleClass="info-pane,bounds-test-green" viewOrder="2">
+        <!--info labels-->
+        <VBox fx:id="folderInfo">
+            <Label fx:id="fileCountLabel" styleClass="text"/>
+            <Label fx:id="folderCountLabel" styleClass="text"/>
+            <!--<Label fx:id="dateCreatedLabel" styleClass="text" />-->
+        </VBox>
+        <!--folder icon, action buttons-->
+        <HBox>
+            <ImageView preserveRatio="true">
+                <Image url="@../../../assets/img/folder.png"/>
+            </ImageView>
+            <VBox>
+                <Button fx:id="renameButton" styleClass="btn,btn-warning" text="Rename"/>
+                <Button fx:id="deleteButton" styleClass="btn,btn-error" text="Delete"/>
+            </VBox>
+        </HBox>
+        <!--folder title-->
+        <Label fx:id="folderTitle" styleClass="text"/>
+        <!--tags-->
+        <HBox>
+            <Button fx:id="addTagButton" styleClass="btn,btn-primary-outline" onMouseClicked="#addTagClicked">Add Tag
+            </Button>
+            <ScrollPane>
+                <FlowPane fx:id="tagList"/>
+            </ScrollPane>
+        </HBox>
+    </VBox>
+
+</fx:root>

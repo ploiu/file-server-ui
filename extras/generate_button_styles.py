@@ -14,6 +14,13 @@ def basic(type):
 .btn-{type[0]} {{
     -fx-background-color: -{type[0]};
     -fx-text-fill: -{type[1]}
+}}
+
+.btn-{type[0]}-outline {{
+    -fx-border-style: dashed;
+    -fx-border-color: -{type[0]};
+    -fx-background-color: none;
+    -fx-text-fill: -text;
 }}"""
 
 
@@ -21,12 +28,22 @@ def hover(type):
     return f"""
 .btn-{type[0]}:hover {{
     -fx-background-color: -{type[0]}-1;
+}}
+
+.btn-{type[0]}-outline:hover {{
+    -fx-border-style: none;
+    -fx-background-color: -{type[0]}-1;
 }}"""
 
 
 def clicked(type):
     return f"""
 .btn-{type[0]}:armed {{
+    -fx-background-color: -{type[0]}-2;
+}}
+
+.btn-{type[0]}-outline:armed {{
+    -fx-border-style: none;
     -fx-background-color: -{type[0]}-2;
 }}"""
 

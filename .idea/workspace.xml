@@ -11,24 +11,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileSearch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/model/FileSearchTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderInfo/FolderInfo.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderInfo/FolderInfo.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileApiWithFolder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/UpdateFileRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/UpdateFileRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extras/generate_button_styles.py" beforeDir="false" afterPath="$PROJECT_DIR$/extras/generate_button_styles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/SearchBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/SearchBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/buttons.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/buttons.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +92,7 @@
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "tag-functionality",
+    "git-widget-placeholder": "main",
     "last.edited.regexp": "test.a.txt",
     "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
     "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/test/java/ploiu",
@@ -111,7 +105,7 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "editing.templates",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -167,7 +161,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="DragNDropServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -295,9 +289,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
-        <item itemvalue="Gradle.FileSearchTests" />
         <item itemvalue="Gradle.file-server-ui [help]" />
+        <item itemvalue="Gradle.FileSearchTests" />
+        <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
         <item itemvalue="Gradle.DragNDropServiceTests" />
       </list>
     </recent_temporary>
@@ -401,7 +395,9 @@
       <workItem from="1698018224318" duration="792000" />
       <workItem from="1701387574269" duration="239000" />
       <workItem from="1701387836441" duration="7890000" />
-      <workItem from="1701551593914" duration="7871000" />
+      <workItem from="1701551593914" duration="8543000" />
+      <workItem from="1701613310430" duration="644000" />
+      <workItem from="1701732943242" duration="9322000" />
     </task>
     <servers />
   </component>
@@ -436,7 +432,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java</url>
-          <line>119</line>
+          <line>118</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
       </breakpoints>

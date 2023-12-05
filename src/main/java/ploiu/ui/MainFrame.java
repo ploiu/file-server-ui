@@ -1,12 +1,13 @@
 package ploiu.ui;
 
 import io.reactivex.rxjava3.core.Single;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
@@ -46,6 +47,8 @@ public class MainFrame extends AnchorPane {
     private SearchBar searchBar;
     // so we know where to add files / folders
     private FolderApi currentFolder;
+    private final ObjectProperty<FolderApi> editingFolder = new SimpleObjectProperty<>(null);
+    private FolderInfo folderInfo;
 
     /// EVENT HANDLERS
     // search bar
@@ -290,7 +293,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private FolderEntry createFolderEntry(FolderApi folder) {
-        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents, asyncFileCrudEvents);
+        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents, asyncFileCrudEvents, editingFolder);
         // when clicking any of the folder entries, clear the page and populate it with the new folder contents
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
@@ -347,12 +350,41 @@ public class MainFrame extends AnchorPane {
 
     @FXML
     private void initialize() {
-        widthProperty().addListener((obs, oldVal, newVal) -> {
-            folderPane.setPrefWidth(newVal.doubleValue());
-        });
+        widthProperty().addListener((obs, oldVal, newVal) -> folderPane.setPrefWidth(newVal.doubleValue()));
+        heightProperty().addListener((obs, oldVal, newVal) -> scrollPane.setPrefHeight(newVal.doubleValue() - 50));
+        editingFolder.addListener((obs, oldFolder, f) -> {
+            if (f == null && folderInfo != null) {
+                this.getChildren().remove(folderInfo);
+                folderInfo = null;
+            } else if (f != null) {
+                // we don't contain detailed info about the folder unless we directly pull it
+                folderClient.getFolder(f.id())
+                        .observeOn(JavaFxScheduler.platform())
+                        .doOnSuccess(retrieved -> {
+                            this.folderInfo = new FolderInfo(retrieved, asyncFolderCrudEvents);
+                            this.getChildren().add(folderInfo);
+                            folderInfo.toFront();
+                        })
+                        .subscribe();
 
-        heightProperty().addListener((obs, oldVal, newVal) -> {
-            scrollPane.setPrefHeight(newVal.doubleValue() - 50);
+            }
         });
+    }
+
+    @FXML
+    void keyPressed(KeyEvent e) {
+        if (e.isConsumed()) {
+            return;
+        }
+        // hide folder + TODO file info
+        if (e.getCode() == KeyCode.ESCAPE && editingFolder.get() != null) {
+            e.consume();
+            editingFolder.setValue(null);
+        }
+        // focus search bar
+        else if (e.getCode() == KeyCode.SLASH && !e.isShiftDown() && editingFolder.get() == null) {
+            e.consume();
+            Platform.runLater(() -> searchBar.focus());
+        }
     }
 }
