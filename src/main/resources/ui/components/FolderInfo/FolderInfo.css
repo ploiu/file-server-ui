@@ -2,4 +2,11 @@
 
 .info-pane {
     -fx-background-color: -background;
+    -fx-border-style: hidden hidden hidden solid;
+    -fx-border-width: 2;
+    -fx-border-color: black;
+}
+
+.text, .btn {
+    -fx-font-size: 24px;
 }

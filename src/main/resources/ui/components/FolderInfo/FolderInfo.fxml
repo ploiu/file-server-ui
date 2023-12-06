@@ -1,3 +1,4 @@
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -5,32 +6,62 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1"
          xmlns="http://javafx.com/javafx/17.0.2-ea"
          type="AnchorPane"
-         stylesheets="@FolderInfo.css"
-         styleClass="bounds-test-blue">
-    <VBox fx:id="rootPane" styleClass="info-pane,bounds-test-green" viewOrder="2">
+         stylesheets="@FolderInfo.css">
+    <VBox fx:id="rootPane"
+          AnchorPane.rightAnchor="0"
+          styleClass="info-pane" viewOrder="2">
         <!--info labels-->
         <VBox fx:id="folderInfo">
+            <VBox.margin>
+                <Insets left="10"/>
+            </VBox.margin>
             <Label fx:id="fileCountLabel" styleClass="text"/>
             <Label fx:id="folderCountLabel" styleClass="text"/>
             <!--<Label fx:id="dateCreatedLabel" styleClass="text" />-->
         </VBox>
         <!--folder icon, action buttons-->
-        <HBox>
-            <ImageView preserveRatio="true">
-                <Image url="@../../../assets/img/folder.png"/>
+        <AnchorPane fx:id="iconButtonWrapper">
+            <ImageView preserveRatio="true" AnchorPane.topAnchor="12">
+                <Image url="@../../../assets/img/folder.png" requestedWidth="128" requestedHeight="128"/>
             </ImageView>
-            <VBox>
-                <Button fx:id="renameButton" styleClass="btn,btn-warning" text="Rename"/>
-                <Button fx:id="deleteButton" styleClass="btn,btn-error" text="Delete"/>
+            <!--buttons-->
+            <VBox fx:id="buttonWrapper"
+                  AnchorPane.leftAnchor="138"
+                  AnchorPane.rightAnchor="10"
+                  AnchorPane.topAnchor="20"
+                  AnchorPane.bottomAnchor="0">
+                <Button fx:id="renameButton"
+                        styleClass="btn,btn-warning"
+                        text="Rename"/>
+                <Button fx:id="deleteButton"
+                        styleClass="btn,btn-error" text="Delete">
+                    <VBox.margin>
+                        <Insets top="10"/>
+                    </VBox.margin>
+                </Button>
             </VBox>
-        </HBox>
+        </AnchorPane>
         <!--folder title-->
-        <Label fx:id="folderTitle" styleClass="text"/>
+        <Label fx:id="folderTitle" styleClass="text">
+            <VBox.margin>
+                <Insets left="10" top="-10"/>
+            </VBox.margin>
+        </Label>
         <!--tags-->
         <HBox>
-            <Button fx:id="addTagButton" styleClass="btn,btn-primary-outline" onMouseClicked="#addTagClicked">Add Tag
+            <VBox.margin>
+                <Insets left="10"/>
+            </VBox.margin>
+            <Button fx:id="addTagButton" styleClass="btn,btn-primary-outline" onMouseClicked="#addTagClicked">
+                <HBox.margin>
+                    <Insets top="10"/>
+                </HBox.margin>
+                Add Tag
             </Button>
             <ScrollPane>
+                <HBox.margin>
+                    <Insets top="10"/>
+                </HBox.margin>
                 <FlowPane fx:id="tagList"/>
             </ScrollPane>
         </HBox>
