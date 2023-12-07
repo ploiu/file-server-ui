@@ -8,5 +8,13 @@
 }
 
 .text, .btn {
-    -fx-font-size: 24px;
+    -fx-font-size: 18px;
+}
+
+.tag-btn:hover {
+    -fx-background-color: -error;
+}
+
+.tag-btn:armed {
+    -fx-background-color: -error-2;
 }

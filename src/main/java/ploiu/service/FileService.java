@@ -35,6 +35,8 @@ public class FileService {
                     // file name differs here because the cache dir could have a ton of files with the same name if we don't include the file id
                     return new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
                 })
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .flatMap(fsFile -> {
                     return fileClient.getFileContents(fileApi.id())
                             .observeOn(Schedulers.io())
@@ -44,30 +46,44 @@ public class FileService {
                                 Files.copy(contents, fsFile.toPath(), REPLACE_EXISTING);
                                 return fsFile;
                             });
-                })
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io());
+                });
 
     }
 
     public Single<Collection<FileApi>> search(String query) {
-        return fileClient.search(FileSearch.fromInput(query));
+        return Single.just(query)
+                .map(FileSearch::fromInput)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMap(fileClient::search);
     }
 
     public Single<FileApi> getMetadata(long id) {
-        return fileClient.getMetadata(id);
+        return Single.just(id)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMap(fileClient::getMetadata);
     }
 
     public Completable deleteFile(long id) {
-        return fileClient.deleteFile(id);
+        return Single.just(id)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMapCompletable(fileClient::deleteFile);
     }
 
     public Single<FileApi> updateFile(UpdateFileRequest request) {
-        return fileClient.updateFile(request);
+        return Single.just(request)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMap(fileClient::updateFile);
     }
 
     public Single<FileApi> createFile(CreateFileRequest request) {
-        return fileClient.createFile(request);
+        return Single.just(request)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMap(fileClient::createFile);
     }
 
 }

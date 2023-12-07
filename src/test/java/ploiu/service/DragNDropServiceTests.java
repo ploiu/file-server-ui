@@ -55,7 +55,7 @@ class DragNDropServiceTests {
         var dir = helper.createDir("top");
         when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "", null, List.of(), List.of(), List.of())));
         service.uploadFolders(List.of(dir), rootApi).toList().blockingGet();
-        verify(folderClient).createFolder(eq(new FolderRequest(Optional.empty(), 0, "top")));
+        verify(folderClient).createFolder(eq(new FolderRequest(Optional.empty(), 0, "top", List.of())));
         verifyNoMoreInteractions(folderClient);
         verifyNoInteractions(fileService);
     }
@@ -138,10 +138,10 @@ class DragNDropServiceTests {
 
         when(folderClient.createFolder(any())).thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of(), List.of()))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
 
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 0, "top")))).thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of(), List.of())));
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle")))).thenReturn(Single.just(new FolderApi(2, 1, "middle", null, List.of(), List.of(), List.of())));
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle2")))).thenReturn(Single.just(new FolderApi(4, 1, "middle2", null, List.of(), List.of(), List.of())));
-        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 2, "bottom")))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 0, "top", List.of())))).thenReturn(Single.just(new FolderApi(1, 0, "top", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle", List.of())))).thenReturn(Single.just(new FolderApi(2, 1, "middle", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 1, "middle2", List.of())))).thenReturn(Single.just(new FolderApi(4, 1, "middle2", null, List.of(), List.of(), List.of())));
+        when(folderClient.createFolder(eq(new FolderRequest(Optional.empty(), 2, "bottom", List.of())))).thenReturn(Single.just(new FolderApi(3, 2, "bottom", null, List.of(), List.of(), List.of())));
 
         when(fileService.createFile(any())).thenReturn(Single.just(new FileApi(0, "", List.of(), null)));
 

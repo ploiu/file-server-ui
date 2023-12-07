@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -21,8 +20,8 @@ import ploiu.model.TagApi;
 import ploiu.model.TextInputDialogOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Optional;
 
 import static ploiu.util.DialogUtils.showErrorDialog;
 
@@ -75,13 +74,16 @@ public class FolderInfo extends AnchorPane {
                 btn.getStyleClass().add("tag-btn");
                 btn.setOnAction(action -> removeTag(tag));
                 tagList.getChildren().add(btn);
-                // TODO button spacing
             }
         });
     }
 
     private void removeTag(TagApi tag) {
-        throw new UnsupportedOperationException();
+        var f = folder.get();
+        var updatedTags = new ArrayList<>(f.tags());
+        updatedTags.remove(tag);
+        var updatedFolder = new FolderApi(f.id(), f.parentId(), f.name(), f.path(), f.folders(), f.files(), updatedTags);
+        updateFolder(updatedFolder);
     }
 
     @FXML
@@ -103,26 +105,63 @@ public class FolderInfo extends AnchorPane {
         });
     }
 
+    private void updateFolder(FolderApi updatedFolder) {
+        var event = new FolderEvent(updatedFolder, FolderEvent.Type.UPDATE);
+        folderReceiver.process(event)
+                .observeOn(JavaFxScheduler.platform())
+                .doOnError(e -> showErrorDialog("Failed to update folder, error is " + e.getMessage(), "Failed to update folder", null))
+                .doOnSuccess(success -> {
+                    if (success) {
+                        this.folder.setValue(updatedFolder);
+                    }
+                })
+                .subscribe();
+    }
+
     @FXML
-    void addTagClicked(ActionEvent ignored) {
+    void addTagClicked() {
         EventReceiver<String> confirmCallback = res -> {
             var f = folder.get();
             var tags = new HashSet<>(f.tags());
-            tags.add(new TagApi(Optional.empty(), res.get()));
+            tags.add(new TagApi(null, res.get()));
             var updatedFolder = new FolderApi(f.id(), f.parentId(), f.name(), f.path(), f.folders(), f.files(), tags);
-            var event = new FolderEvent(updatedFolder, FolderEvent.Type.UPDATE);
-            folderReceiver.process(event)
-                    .observeOn(JavaFxScheduler.platform())
-                    .doOnError(e -> showErrorDialog("Failed to update folder tags, error is " + e.getMessage(), "Failed to update folder", null))
-                    .doOnSuccess(success -> {
-                        if (success) {
-                            this.folder.setValue(updatedFolder);
-                        }
-                    })
-                    .subscribe();
+            updateFolder(updatedFolder);
             return true;
         };
         new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), confirmCallback, "Enter Tag Title"));
+    }
+
+    @FXML
+    void renameClicked() {
+        EventReceiver<String> callback = e -> {
+            var val = e.get();
+            if (val != null && !val.isBlank()) {
+                var old = folder.get();
+                var newFolder = new FolderApi(old.id(), old.parentId(), val, old.path(), old.folders(), old.files(), old.tags());
+                updateFolder(newFolder);
+                return true;
+            }
+            return false;
+        };
+        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), callback, "Rename Folder"));
+    }
+
+    @FXML
+    void deleteClicked() {
+        EventReceiver<String> dialogCallback = res -> {
+            // make the user type the folder name they're deleting to confirm
+            if (res.get().equals(folder.get().name())) {
+                folderReceiver.process(new FolderEvent(folder.get(), FolderEvent.Type.DELETE))
+                        .doOnSuccess(ignoredRes -> folder.setValue(null))
+                        .subscribe();
+                return true;
+            }
+            showErrorDialog("[" + res.get() + "] does not match the folder name [" + folder.get().name() + "]", "Failed to delete folder", null);
+            return false;
+        };
+        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")
+                .bodyText("Are you sure you want to delete? Type the name of the folder and click Confirm to delete")
+                .windowTitle("Confirm Delete?"));
     }
 
     private void updateWidth(double width) {

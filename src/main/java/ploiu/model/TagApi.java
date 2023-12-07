@@ -1,8 +1,9 @@
 package ploiu.model;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.io.Serializable;
 
-public record TagApi(@NotNull Optional<String> id, @NotNull String title) {
+public record TagApi(@Nullable Long id, @NotNull String title) implements Serializable {
 }

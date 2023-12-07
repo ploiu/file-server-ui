@@ -28,13 +28,16 @@
             <VBox fx:id="buttonWrapper"
                   AnchorPane.leftAnchor="138"
                   AnchorPane.rightAnchor="10"
-                  AnchorPane.topAnchor="20"
+                  AnchorPane.topAnchor="43"
                   AnchorPane.bottomAnchor="0">
                 <Button fx:id="renameButton"
                         styleClass="btn,btn-warning"
-                        text="Rename"/>
+                        text="Rename"
+                        onAction="#renameClicked"/>
                 <Button fx:id="deleteButton"
-                        styleClass="btn,btn-error" text="Delete">
+                        styleClass="btn,btn-error"
+                        text="Delete"
+                        onAction="#deleteClicked">
                     <VBox.margin>
                         <Insets top="10"/>
                     </VBox.margin>
@@ -52,17 +55,24 @@
             <VBox.margin>
                 <Insets left="10"/>
             </VBox.margin>
-            <Button fx:id="addTagButton" styleClass="btn,btn-primary-outline" onMouseClicked="#addTagClicked">
+            <Button fx:id="addTagButton"
+                    styleClass="btn,btn-primary-outline"
+                    onAction="#addTagClicked">
                 <HBox.margin>
                     <Insets top="10"/>
                 </HBox.margin>
+                <graphic>
+                    <ImageView>
+                        <Image url="@../../../assets/img/plus.png" requestedWidth="12" requestedHeight="12"/>
+                    </ImageView>
+                </graphic>
                 Add Tag
             </Button>
             <ScrollPane>
                 <HBox.margin>
-                    <Insets top="10"/>
+                    <Insets top="10" left="10"/>
                 </HBox.margin>
-                <FlowPane fx:id="tagList"/>
+                <FlowPane fx:id="tagList" hgap="10"/>
             </ScrollPane>
         </HBox>
     </VBox>

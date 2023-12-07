@@ -11,11 +11,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FolderRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/TagApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/TagApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/DragNDropService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderInfo/FolderInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderInfo/FolderInfo.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderInfo/FolderInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderInfo/FolderInfo.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FolderClientTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/service/DragNDropServiceTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,8 +158,8 @@
       <command value="gradlew help --scan" />
       <command value="gradle help --warning-mode=all" />
       <command value="file_server" />
-      <command value="open file_server" />
       <command value="gradlew test" />
+      <command value="open file_server" />
     </option>
   </component>
   <component name="RunManager" selected="Application.Main">
@@ -391,7 +399,8 @@
       <workItem from="1701551593914" duration="8543000" />
       <workItem from="1701613310430" duration="644000" />
       <workItem from="1701732943242" duration="9322000" />
-      <workItem from="1701819484181" duration="6646000" />
+      <workItem from="1701819484181" duration="7303000" />
+      <workItem from="1701904308103" duration="10237000" />
     </task>
     <servers />
   </component>
@@ -420,14 +429,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java</url>
-          <line>75</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java</url>
-          <line>118</line>
-          <option name="timeStamp" value="28" />
+          <line>114</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

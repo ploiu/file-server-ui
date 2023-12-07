@@ -3,6 +3,7 @@ package ploiu.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -12,6 +13,6 @@ import java.util.Optional;
  * @param parentId the parent id of the folder, with 0 being the root
  * @param name     the name of the folder
  */
-public record FolderRequest(@NotNull Optional<Long> id, long parentId, String name) {
+public record FolderRequest(@NotNull Optional<Long> id, long parentId, String name, Collection<TagApi> tags) {
 
 }
