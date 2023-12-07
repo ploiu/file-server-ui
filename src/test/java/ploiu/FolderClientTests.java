@@ -18,6 +18,7 @@ import ploiu.exception.BadFolderRequestException;
 import ploiu.model.FolderRequest;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,7 +78,7 @@ class FolderClientTests {
     void testCreateFolderUsesPost() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test")).subscribe();
+        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test", List.of())).subscribe();
         var req = backend.takeRequest();
         assertEquals("POST", req.getMethod());
     }
@@ -86,14 +87,14 @@ class FolderClientTests {
     void testCreateFolderUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test")).subscribe();
+        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test", List.of())).subscribe();
         var req = backend.takeRequest();
         assertEquals("/folders", req.getPath());
     }
 
     @Test
     void testUpdateFolderRequiresFolderId() {
-        var request = new FolderRequest(Optional.empty(), 0, "test");
+        var request = new FolderRequest(Optional.empty(), 0, "test", List.of());
         folderClient.updateFolder(request)
                 .doOnError(exception -> {
                     assertInstanceOf(BadFolderRequestException.class, exception);
@@ -104,7 +105,7 @@ class FolderClientTests {
 
     @Test
     void testUpdateFolderRequiresNonZeroId() {
-        var request = new FolderRequest(Optional.of(0L), 0, "test");
+        var request = new FolderRequest(Optional.of(0L), 0, "test", List.of());
         folderClient.updateFolder(request)
                 .doOnError(exception -> {
                     assertInstanceOf(BadFolderRequestException.class, exception);
@@ -117,7 +118,7 @@ class FolderClientTests {
     void testUpdateFolderUsesPut() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test")).subscribe();
+        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test", List.of())).subscribe();
         var req = backend.takeRequest();
         assertEquals("PUT", req.getMethod());
     }
@@ -126,7 +127,7 @@ class FolderClientTests {
     void testUpdateFolderUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test")).subscribe();
+        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test", List.of())).subscribe();
         var req = backend.takeRequest();
         assertEquals("/folders", req.getPath());
     }

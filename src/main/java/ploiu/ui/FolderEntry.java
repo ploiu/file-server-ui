@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,11 +43,13 @@ public class FolderEntry extends AnchorPane {
     private ContextMenu folderMenu;
     private final AsyncEventReceiver<FolderApi> folderReceiver;
     private final AsyncEventReceiver<FileObject> fileReceiver;
+    private final ObjectProperty<FolderApi> folderToEdit;
 
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
 
-    public FolderEntry(FolderApi folder, AsyncEventReceiver<FolderApi> folderReceiver, AsyncEventReceiver<FileObject> fileReceiver) {
+    public FolderEntry(FolderApi folder, AsyncEventReceiver<FolderApi> folderReceiver, AsyncEventReceiver<FileObject> fileReceiver, ObjectProperty<FolderApi> folderToEdit) {
         this.folder = folder;
+        this.folderToEdit = folderToEdit;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FolderEntry/FolderEntry.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -99,6 +102,11 @@ public class FolderEntry extends AnchorPane {
         var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")
                 .bodyText("Are you sure you want to delete? Type the name of the folder and click Confirm to delete")
                 .windowTitle("Confirm Delete?"));
+    }
+
+    @FXML
+    private void infoItemClicked(ActionEvent event) {
+        folderToEdit.setValue(folder);
     }
 
     @FXML

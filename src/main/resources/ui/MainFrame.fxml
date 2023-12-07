@@ -10,10 +10,11 @@
          xmlns="http://javafx.com/javafx/17.0.2-ea"
          onDragOver="#onDragOver"
          onDragDropped="#onDragDropped"
+         onKeyPressed="#keyPressed"
 >
-    <children>
+    <HBox fx:id="wrapper">
         <VBox>
-            <SearchBar receiver="$searchEvents"/>
+            <SearchBar fx:id="searchBar" receiver="$searchEvents"/>
             <NavBar
                     navigationReceiver="$folderNavigationEvents"
                     folderReceiver="$folderCrudEvents"
@@ -30,5 +31,5 @@
                 </VBox>
             </ScrollPane>
         </VBox>
-    </children>
+    </HBox>
 </fx:root>

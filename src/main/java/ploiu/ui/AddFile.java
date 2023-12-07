@@ -63,9 +63,9 @@ public class AddFile extends AnchorPane {
         // we don't want to peg the server too much since it's designed for raspberry pi, so we should execute the requests sequentially
         uploadList.stream().reduce(Observable::concatWith)
                 .get()
+                .subscribeOn(Schedulers.io())
                 // this is important because the observer subscribes on whatever thread it was created on...I might want to move this somewhere else
                 .doFinally(modal::close)
-                .subscribeOn(Schedulers.io())
                 .subscribe(ignored -> modal.updateProgress(modalProgress.addAndGet(1) * progressAmount));
     }
 }

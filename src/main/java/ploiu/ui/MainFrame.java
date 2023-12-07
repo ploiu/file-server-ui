@@ -1,12 +1,13 @@
 package ploiu.ui;
 
 import io.reactivex.rxjava3.core.Single;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
@@ -46,6 +47,8 @@ public class MainFrame extends AnchorPane {
     private SearchBar searchBar;
     // so we know where to add files / folders
     private FolderApi currentFolder;
+    private final ObjectProperty<FolderApi> editingFolder = new SimpleObjectProperty<>(null);
+    private FolderInfo folderInfo;
 
     /// EVENT HANDLERS
     // search bar
@@ -53,6 +56,7 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<String> asyncSearchEvents = event -> {
         fileService
                 .search(event.get())
+                .observeOn(JavaFxScheduler.platform())
                 .doOnError(e -> {
                     if (e instanceof BadFileRequestException) {
                         showErrorDialog(e.getMessage(), "Bad Search Text", null);
@@ -60,13 +64,11 @@ public class MainFrame extends AnchorPane {
                         showErrorDialog(e.getMessage(), "Server Error", null);
                     }
                 })
-                .observeOn(JavaFxScheduler.platform())
                 .doOnSuccess(files -> {
                     this.folderPane.getChildren().clear();
                     this.filePane.getChildren().clear();
-                    for (FileApi file : files) {
-                        this.filePane.getChildren().add(createFileEntry(file));
-                    }
+                    var fileEntries = files.stream().map(this::createFileEntry).toList();
+                    this.filePane.getChildren().addAll(fileEntries);
                 })
                 .subscribe();
         return Single.just(true);
@@ -83,7 +85,7 @@ public class MainFrame extends AnchorPane {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
             return folderClient
-                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name()))
+                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags()))
                     .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
                     .map(ignored -> true);
         } else {
@@ -93,7 +95,7 @@ public class MainFrame extends AnchorPane {
 
     private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
-            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name());
+            var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name(), fe.get().tags());
             return folderClient
                     .createFolder(req)
                     .observeOn(JavaFxScheduler.platform())
@@ -260,8 +262,8 @@ public class MainFrame extends AnchorPane {
                 .doOnNext(ignored -> folderPane.getChildren().clear())
                 .flatMapIterable(FolderApi::folders)
                 .map(this::createFolderEntry)
-                .doOnNext(this.folderPane.getChildren()::add)
                 .toList()
+                .doOnSuccess(this.folderPane.getChildren()::addAll)
                 .subscribe(ignored -> drawAddFolder());
 
         // handle child files
@@ -269,8 +271,8 @@ public class MainFrame extends AnchorPane {
                 .doOnNext(ignored -> filePane.getChildren().clear())
                 .flatMapIterable(FolderApi::files)
                 .map(this::createFileEntry)
-                .doOnNext(filePane.getChildren()::add)
                 .toList()
+                .doOnSuccess(filePane.getChildren()::addAll)
                 .subscribe(ignored -> drawAddFile());
 
     }
@@ -290,7 +292,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private FolderEntry createFolderEntry(FolderApi folder) {
-        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents, asyncFileCrudEvents);
+        var folderEntry = new FolderEntry(folder, asyncFolderCrudEvents, asyncFileCrudEvents, editingFolder);
         // when clicking any of the folder entries, clear the page and populate it with the new folder contents
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
@@ -347,12 +349,43 @@ public class MainFrame extends AnchorPane {
 
     @FXML
     private void initialize() {
-        widthProperty().addListener((obs, oldVal, newVal) -> {
-            folderPane.setPrefWidth(newVal.doubleValue());
-        });
+        widthProperty().addListener((obs, oldVal, newVal) -> folderPane.setPrefWidth(newVal.doubleValue()));
+        heightProperty().addListener((obs, oldVal, newVal) -> scrollPane.setPrefHeight(newVal.doubleValue() - 50));
+        editingFolder.addListener((obs, oldFolder, f) -> {
+            System.out.println(editingFolder.isBound());
+            if (f == null && folderInfo != null) {
+                this.getChildren().remove(folderInfo);
+                folderInfo = null;
+            } else if (f != null) {
+                // we don't contain detailed info about the folder unless we directly pull it
+                folderClient.getFolder(f.id())
+                        .observeOn(JavaFxScheduler.platform())
+                        .doOnSuccess(retrieved -> {
+                            this.folderInfo = new FolderInfo(retrieved, asyncFolderCrudEvents);
+                            this.getChildren().add(folderInfo);
+                            folderInfo.toFront();
+                        })
+                        .subscribe();
 
-        heightProperty().addListener((obs, oldVal, newVal) -> {
-            scrollPane.setPrefHeight(newVal.doubleValue() - 50);
+            }
         });
+    }
+
+    @FXML
+    void keyPressed(KeyEvent e) {
+        if (e.isConsumed()) {
+            return;
+        }
+        // hide folder + TODO file info
+        if (e.getCode() == KeyCode.ESCAPE && editingFolder.get() != null) {
+            e.consume();
+            editingFolder.unbind();
+            editingFolder.setValue(null);
+        }
+        // focus search bar
+        else if (e.getCode() == KeyCode.SLASH && !e.isShiftDown() && editingFolder.get() == null) {
+            e.consume();
+            Platform.runLater(() -> searchBar.focus());
+        }
     }
 }

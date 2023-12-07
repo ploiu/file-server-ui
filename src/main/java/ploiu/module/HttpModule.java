@@ -40,7 +40,6 @@ public class HttpModule extends AbstractModule {
 
     @Inject
     @Provides
-    @SuppressWarnings("unused")
     Retrofit retrofitClient(ServerConfig serverConfig, AuthenticationConfig authConfig) {
         // use okhttp so I can add headers to every request
         var client = new OkHttpClient.Builder()
@@ -60,7 +59,6 @@ public class HttpModule extends AbstractModule {
 
     @Inject
     @Provides
-    @SuppressWarnings("unused")
     TagClient tagClient(Retrofit retrofit) {
         return retrofit.create(TagClient.class);
     }

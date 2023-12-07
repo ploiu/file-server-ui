@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.stage.Window;
 import lombok.RequiredArgsConstructor;
 import ploiu.client.FolderClient;
@@ -43,6 +44,7 @@ public class DragNDropService {
         }
         return Observable
                 .fromIterable(files)
+                .subscribeOn(Schedulers.io())
                 .map(f -> new CreateFileRequest(targetFolder.id(), f))
                 .flatMap(req -> fileService.createFile(req).toObservable());
     }
@@ -80,7 +82,7 @@ public class DragNDropService {
     }
 
     Single<FolderApi> uploadFolder(FolderApproximation approximation, FolderApi targetFolder) {
-        var req = new FolderRequest(Optional.empty(), targetFolder.id(), approximation.self().getName());
+        var req = new FolderRequest(Optional.empty(), targetFolder.id(), approximation.self().getName(), targetFolder.tags());
         return folderClient.createFolder(req);
     }
 }
