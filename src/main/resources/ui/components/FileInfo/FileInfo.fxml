@@ -1,0 +1,93 @@
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1"
+         xmlns="http://javafx.com/javafx/17.0.2-ea"
+         type="AnchorPane"
+         stylesheets="@FileInfo.css">
+    <VBox fx:id="rootPane"
+          AnchorPane.rightAnchor="0"
+          styleClass="info-pane" viewOrder="2">
+        <!--info labels-->
+        <VBox fx:id="fileInfo">
+            <VBox.margin>
+                <Insets left="10"/>
+            </VBox.margin>
+            <!--<Label fx:id="sizeLabel" styleClass="text" />-->
+            <!--<Label fx:id="dateCreatedLabel" styleClass="text" />-->
+        </VBox>
+        <!--file icon, action buttons-->
+        <AnchorPane fx:id="iconButtonWrapper">
+            <ImageView fx:id="fileIcon" preserveRatio="true" AnchorPane.topAnchor="12" />
+            <!--buttons-->
+            <HBox fx:id="buttonWrapper"
+                  AnchorPane.leftAnchor="138"
+                  AnchorPane.rightAnchor="10"
+                  AnchorPane.topAnchor="43"
+                  AnchorPane.bottomAnchor="0">
+                <Button fx:id="openButton"
+                        styleClass="btn,btn-primary"
+                        text="Open"
+                        onAction="#openClicked"/>
+                <Button fx:id="renameButton"
+                        styleClass="btn,btn-warning"
+                        text="Rename"
+                        onAction="#renameClicked">
+                    <HBox.margin>
+                        <Insets left="20"/>
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="deleteButton"
+                        styleClass="btn,btn-error"
+                        text="Delete"
+                        onAction="#deleteClicked">
+                    <HBox.margin>
+                        <Insets left="20"/>
+                    </HBox.margin>
+                </Button>
+            </HBox>
+            <Button
+                    AnchorPane.leftAnchor="138"
+                    AnchorPane.rightAnchor="10"
+                    AnchorPane.topAnchor="93"
+                    AnchorPane.bottomAnchor="0"
+                    text="Save"
+                    onAction="#saveClicked"
+                    styleClass="btn,btn-primary" />
+        </AnchorPane>
+        <!--file title-->
+        <Label fx:id="fileTitle" styleClass="text">
+            <VBox.margin>
+                <Insets left="10" top="10"/>
+            </VBox.margin>
+        </Label>
+        <!--tags-->
+        <HBox>
+            <VBox.margin>
+                <Insets left="10"/>
+            </VBox.margin>
+            <Button fx:id="addTagButton"
+                    styleClass="btn,btn-primary-outline"
+                    onAction="#addTagClicked">
+                <HBox.margin>
+                    <Insets top="10"/>
+                </HBox.margin>
+                <graphic>
+                    <ImageView>
+                        <Image url="@../../../assets/img/plus.png" requestedWidth="12" requestedHeight="12"/>
+                    </ImageView>
+                </graphic>
+                Add Tag
+            </Button>
+            <ScrollPane>
+                <HBox.margin>
+                    <Insets top="10" left="10"/>
+                </HBox.margin>
+                <FlowPane fx:id="tagList" hgap="10"/>
+            </ScrollPane>
+        </HBox>
+    </VBox>
+
+</fx:root>

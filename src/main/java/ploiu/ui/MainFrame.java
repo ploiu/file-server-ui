@@ -48,7 +48,9 @@ public class MainFrame extends AnchorPane {
     // so we know where to add files / folders
     private FolderApi currentFolder;
     private final ObjectProperty<FolderApi> editingFolder = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<FileApi> editingFile = new SimpleObjectProperty<>(null);
     private FolderInfo folderInfo;
+    private FileInfo fileInfo;
 
     /// EVENT HANDLERS
     // search bar
@@ -278,7 +280,7 @@ public class MainFrame extends AnchorPane {
     }
 
     private FileEntry createFileEntry(FileApi file) {
-        var fileEntry = new FileEntry(file, asyncFileCrudEvents);
+        var fileEntry = new FileEntry(file, asyncFileCrudEvents, editingFile);
         fileEntry.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
                 var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
@@ -352,7 +354,6 @@ public class MainFrame extends AnchorPane {
         widthProperty().addListener((obs, oldVal, newVal) -> folderPane.setPrefWidth(newVal.doubleValue()));
         heightProperty().addListener((obs, oldVal, newVal) -> scrollPane.setPrefHeight(newVal.doubleValue() - 50));
         editingFolder.addListener((obs, oldFolder, f) -> {
-            System.out.println(editingFolder.isBound());
             if (f == null && folderInfo != null) {
                 this.getChildren().remove(folderInfo);
                 folderInfo = null;
@@ -369,6 +370,23 @@ public class MainFrame extends AnchorPane {
 
             }
         });
+        editingFile.addListener((obs, oldFile, f) -> {
+            if (f == null && fileInfo != null) {
+                this.getChildren().remove(fileInfo);
+                fileInfo = null;
+            } else if (f != null) {
+                // make sure we have updated file information
+                fileService
+                        .getMetadata(f.id())
+                        .observeOn(JavaFxScheduler.platform())
+                        .doOnSuccess(retrieved -> {
+                            this.fileInfo = new FileInfo(retrieved, asyncFileCrudEvents);
+                            this.getChildren().add(fileInfo);
+                            fileInfo.toFront();
+                        })
+                        .subscribe();
+            }
+        });
     }
 
     @FXML
@@ -376,11 +394,13 @@ public class MainFrame extends AnchorPane {
         if (e.isConsumed()) {
             return;
         }
-        // hide folder + TODO file info
-        if (e.getCode() == KeyCode.ESCAPE && editingFolder.get() != null) {
+        // hide folder + file info
+        if (e.getCode() == KeyCode.ESCAPE && (editingFolder.get() != null || editingFile != null)) {
             e.consume();
             editingFolder.unbind();
             editingFolder.setValue(null);
+            editingFile.unbind();
+            editingFile.setValue(null);
         }
         // focus search bar
         else if (e.getCode() == KeyCode.SLASH && !e.isShiftDown() && editingFolder.get() == null) {
