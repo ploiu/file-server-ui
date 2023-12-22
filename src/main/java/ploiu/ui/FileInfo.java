@@ -14,12 +14,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
-import ploiu.event.AsyncEventReceiver;
-import ploiu.event.EventReceiver;
-import ploiu.event.FileDeleteEvent;
-import ploiu.event.FileUpdateEvent;
+import ploiu.event.*;
 import ploiu.model.*;
+import ploiu.service.FileService;
 import ploiu.util.MimeUtils;
 
 import java.io.IOException;
@@ -27,11 +26,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import static ploiu.util.DialogUtils.showErrorDialog;
+import static ploiu.util.UIUtils.desktop;
 
 public class FileInfo extends AnchorPane {
     private final ObjectProperty<FileApi> file = new SimpleObjectProperty<>(null);
+    private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final AsyncEventReceiver<FileObject> fileReceiver;
-    private final String iconPathLocation;
+    private String iconPathLocation;
 
     @FXML
     private VBox rootPane;
@@ -74,6 +75,9 @@ public class FileInfo extends AnchorPane {
         Platform.runLater(() -> {
             tagList.getChildren().clear();
             fileTitle.setText(newFile.name());
+            iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(MimeUtils.determineMimeType(newFile.name()));
+            var image = new Image(iconPathLocation, 128, 128, true, true);
+            fileIcon.setImage(image);
             var tags = newFile.tags();
             for (var tag : tags) {
                 var btn = new Button(tag.title());
@@ -160,7 +164,6 @@ public class FileInfo extends AnchorPane {
             if (e.get()) {
                 fileReceiver.process(new FileDeleteEvent(file.get()))
                         .doOnSuccess(ignored -> {
-                            // TODO this is a different object than the editingFile object in MainFrame. Pass the value from MainFrame to here. Need to do the same with FolderInfo
                             file.setValue(null);
                         })
                         .subscribe();
@@ -172,12 +175,22 @@ public class FileInfo extends AnchorPane {
 
     @FXML
     void openClicked() {
-        throw new UnsupportedOperationException("unimplemented");
+        var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+        modal.open();
+        fileService.saveAndGetFile(file.get(), null)
+                .doFinally(modal::close)
+                .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
     }
 
     @FXML
     void saveClicked() {
-        throw new UnsupportedOperationException("unimplemented");
+        var chooser = new DirectoryChooser();
+        chooser.setTitle("Save " + file.get().name() + "...");
+        var selectedDir = chooser.showDialog(getScene().getWindow());
+        if (selectedDir != null) {
+            fileReceiver.process(new FileSaveEvent(file.get(), selectedDir))
+                    .subscribe();
+        }
     }
 
     private void updateWidth(double width) {

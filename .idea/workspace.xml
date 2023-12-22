@@ -11,13 +11,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +88,7 @@
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "file-info",
     "kotlin-language-version-configured": "true",
     "last.edited.regexp": "test.a.txt",
     "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
@@ -414,6 +412,7 @@
       <workItem from="1702820266323" duration="261000" />
       <workItem from="1702858659448" duration="70000" />
       <workItem from="1702942585907" duration="6344000" />
+      <workItem from="1703204563609" duration="3961000" />
     </task>
     <servers />
   </component>
@@ -445,11 +444,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java</url>
           <line>114</line>
           <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>373</line>
-          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -20,7 +20,7 @@
         </VBox>
         <!--file icon, action buttons-->
         <AnchorPane fx:id="iconButtonWrapper">
-            <ImageView fx:id="fileIcon" preserveRatio="true" AnchorPane.topAnchor="12" />
+            <ImageView fx:id="fileIcon" preserveRatio="true" AnchorPane.topAnchor="12"/>
             <!--buttons-->
             <HBox fx:id="buttonWrapper"
                   AnchorPane.leftAnchor="138"
@@ -55,7 +55,7 @@
                     AnchorPane.bottomAnchor="0"
                     text="Save"
                     onAction="#saveClicked"
-                    styleClass="btn,btn-primary" />
+                    styleClass="btn,btn-primary"/>
         </AnchorPane>
         <!--file title-->
         <Label fx:id="fileTitle" styleClass="text">
@@ -85,7 +85,7 @@
                 <HBox.margin>
                     <Insets top="10" left="10"/>
                 </HBox.margin>
-                <FlowPane fx:id="tagList" hgap="10"/>
+                <FlowPane fx:id="tagList" hgap="10" vgap="10"/>
             </ScrollPane>
         </HBox>
     </VBox>

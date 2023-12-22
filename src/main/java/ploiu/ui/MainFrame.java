@@ -19,22 +19,21 @@ import ploiu.model.*;
 import ploiu.service.DragNDropService;
 import ploiu.service.FileService;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ploiu.event.FolderEvent.Type.*;
 import static ploiu.util.DialogUtils.showErrorDialog;
+import static ploiu.util.UIUtils.desktop;
 
-@SuppressWarnings("unused")
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
-    private final Desktop desktop = Desktop.getDesktop();
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -281,13 +280,32 @@ public class MainFrame extends AnchorPane {
 
     private FileEntry createFileEntry(FileApi file) {
         var fileEntry = new FileEntry(file, asyncFileCrudEvents, editingFile);
+        var timesClicked = new AtomicInteger(0);
+        var waitMillis = 250L;
         fileEntry.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
-                modal.open();
-                fileService.saveAndGetFile(fileEntry.getFile(), null)
-                        .doFinally(modal::close)
-                        .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                if (timesClicked.incrementAndGet() == 1) {
+                    // start the timer
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(waitMillis);
+                        } catch (InterruptedException ignored) {
+                        }
+                        var clickCount = timesClicked.get();
+                        // regardless of click count, reset the count
+                        timesClicked.set(0);
+                        if (clickCount == 2) {
+                            // open the file
+                            var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+                            modal.open();
+                            fileService.saveAndGetFile(file, null)
+                                    .doFinally(modal::close)
+                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                        } else {
+                            editingFile.set(file);
+                        }
+                    }).start();
+                }
             }
         });
         return fileEntry;
