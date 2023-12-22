@@ -17,6 +17,7 @@
                 <MenuItem text="Save As..." onAction="#saveAsClicked"/>
                 <MenuItem text="Rename File" onAction="#renameItemClicked"/>
                 <MenuItem text="Delete File" onAction="#deleteItemClicked"/>
+                <MenuItem text="Info" onAction="#infoItemClicked"/>
             </items>
         </ContextMenu>
     </fx:define>

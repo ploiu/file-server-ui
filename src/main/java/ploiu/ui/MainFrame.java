@@ -19,22 +19,21 @@ import ploiu.model.*;
 import ploiu.service.DragNDropService;
 import ploiu.service.FileService;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ploiu.event.FolderEvent.Type.*;
 import static ploiu.util.DialogUtils.showErrorDialog;
+import static ploiu.util.UIUtils.desktop;
 
-@SuppressWarnings("unused")
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
-    private final Desktop desktop = Desktop.getDesktop();
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -48,7 +47,9 @@ public class MainFrame extends AnchorPane {
     // so we know where to add files / folders
     private FolderApi currentFolder;
     private final ObjectProperty<FolderApi> editingFolder = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<FileApi> editingFile = new SimpleObjectProperty<>(null);
     private FolderInfo folderInfo;
+    private FileInfo fileInfo;
 
     /// EVENT HANDLERS
     // search bar
@@ -278,14 +279,33 @@ public class MainFrame extends AnchorPane {
     }
 
     private FileEntry createFileEntry(FileApi file) {
-        var fileEntry = new FileEntry(file, asyncFileCrudEvents);
+        var fileEntry = new FileEntry(file, asyncFileCrudEvents, editingFile);
+        var timesClicked = new AtomicInteger(0);
+        var waitMillis = 250L;
         fileEntry.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
-                var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
-                modal.open();
-                fileService.saveAndGetFile(fileEntry.getFile(), null)
-                        .doFinally(modal::close)
-                        .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                if (timesClicked.incrementAndGet() == 1) {
+                    // start the timer
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(waitMillis);
+                        } catch (InterruptedException ignored) {
+                        }
+                        var clickCount = timesClicked.get();
+                        // regardless of click count, reset the count
+                        timesClicked.set(0);
+                        if (clickCount == 2) {
+                            // open the file
+                            var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+                            modal.open();
+                            fileService.saveAndGetFile(file, null)
+                                    .doFinally(modal::close)
+                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                        } else {
+                            editingFile.set(file);
+                        }
+                    }).start();
+                }
             }
         });
         return fileEntry;
@@ -352,7 +372,6 @@ public class MainFrame extends AnchorPane {
         widthProperty().addListener((obs, oldVal, newVal) -> folderPane.setPrefWidth(newVal.doubleValue()));
         heightProperty().addListener((obs, oldVal, newVal) -> scrollPane.setPrefHeight(newVal.doubleValue() - 50));
         editingFolder.addListener((obs, oldFolder, f) -> {
-            System.out.println(editingFolder.isBound());
             if (f == null && folderInfo != null) {
                 this.getChildren().remove(folderInfo);
                 folderInfo = null;
@@ -369,6 +388,23 @@ public class MainFrame extends AnchorPane {
 
             }
         });
+        editingFile.addListener((obs, oldFile, f) -> {
+            if (f == null && fileInfo != null) {
+                this.getChildren().remove(fileInfo);
+                fileInfo = null;
+            } else if (f != null) {
+                // make sure we have updated file information
+                fileService
+                        .getMetadata(f.id())
+                        .observeOn(JavaFxScheduler.platform())
+                        .doOnSuccess(retrieved -> {
+                            this.fileInfo = new FileInfo(retrieved, asyncFileCrudEvents);
+                            this.getChildren().add(fileInfo);
+                            fileInfo.toFront();
+                        })
+                        .subscribe();
+            }
+        });
     }
 
     @FXML
@@ -376,11 +412,13 @@ public class MainFrame extends AnchorPane {
         if (e.isConsumed()) {
             return;
         }
-        // hide folder + TODO file info
-        if (e.getCode() == KeyCode.ESCAPE && editingFolder.get() != null) {
+        // hide folder + file info
+        if (e.getCode() == KeyCode.ESCAPE && (editingFolder.get() != null || editingFile != null)) {
             e.consume();
             editingFolder.unbind();
             editingFolder.setValue(null);
+            editingFile.unbind();
+            editingFile.setValue(null);
         }
         // focus search bar
         else if (e.getCode() == KeyCode.SLASH && !e.isShiftDown() && editingFolder.get() == null) {

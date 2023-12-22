@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,7 @@ public class FileEntry extends AnchorPane {
     @Getter
     private final FileApi file;
     private final AsyncEventReceiver<FileObject> fileReceiver;
+    private final ObjectProperty<FileApi> editingFile;
     @FXML
     private ImageView icon;
     @FXML
@@ -35,8 +37,9 @@ public class FileEntry extends AnchorPane {
     @FXML
     private ContextMenu fileMenu;
 
-    public FileEntry(FileApi file, AsyncEventReceiver<FileObject> eventHandler) {
+    public FileEntry(FileApi file, AsyncEventReceiver<FileObject> eventHandler, ObjectProperty<FileApi> editingFile) {
         super();
+        this.editingFile = editingFile;
         this.file = file;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
         loader.setRoot(this);
@@ -54,7 +57,6 @@ public class FileEntry extends AnchorPane {
     }
 
     @FXML
-    @SuppressWarnings("unused")
     private void initialize() {
         this.setOnContextMenuRequested(event -> {
             fileMenu.show(this, event.getScreenX(), event.getScreenY());
@@ -62,7 +64,6 @@ public class FileEntry extends AnchorPane {
     }
 
     @FXML
-    @SuppressWarnings("unused")
     private void renameItemClicked(ActionEvent event) {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
@@ -77,7 +78,6 @@ public class FileEntry extends AnchorPane {
     }
 
     @FXML
-    @SuppressWarnings("unused")
     private void deleteItemClicked(ActionEvent ignored) {
         EventReceiver<Boolean> dialogCallback = res -> {
             if (res.get()) {
@@ -91,7 +91,6 @@ public class FileEntry extends AnchorPane {
     }
 
     @FXML
-    @SuppressWarnings("unused")
     private void saveAsClicked(ActionEvent ignored) {
         var chooser = new DirectoryChooser();
         chooser.setTitle("Save " + file.name() + "...");
@@ -107,5 +106,10 @@ public class FileEntry extends AnchorPane {
         var board = startDragAndDrop(TransferMode.MOVE);
         board.setContent(Map.of(DataTypes.FILE, this.file));
         e.consume();
+    }
+
+    @FXML
+    private void infoItemClicked(ActionEvent ignored) {
+        editingFile.set(file);
     }
 }

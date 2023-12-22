@@ -2,6 +2,7 @@ package ploiu.util;
 
 import javafx.scene.image.Image;
 
+import java.awt.Desktop;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public final class UIUtils {
 
     // cache because creating an image takes a lot of time
     public static final Map<String, Image> MIME_IMAGE_MAPPING = new HashMap<>();
+    public static final Desktop desktop = Desktop.getDesktop();
 
     // load all the icons into memory on application start, instead of on the fly
     public static void init() {

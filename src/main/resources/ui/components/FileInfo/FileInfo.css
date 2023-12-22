@@ -1,0 +1,20 @@
+@import "../../styles.css";
+
+.info-pane {
+    -fx-background-color: -background;
+    -fx-border-style: hidden hidden hidden solid;
+    -fx-border-width: 2;
+    -fx-border-color: black;
+}
+
+.text, .btn {
+    -fx-font-size: 18px;
+}
+
+.tag-btn:hover {
+    -fx-background-color: -error;
+}
+
+.tag-btn:armed {
+    -fx-background-color: -error-2;
+}
