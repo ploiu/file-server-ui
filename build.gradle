@@ -106,6 +106,7 @@ jlink {
         } else if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             installerType = 'exe'
         }
+	imageOptions = ['--icon', 'src/main/resources/assets/img/icon.ico']
         installerOutputDir = file("$buildDir/file-server-installer")
     }
 
