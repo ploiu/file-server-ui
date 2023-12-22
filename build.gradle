@@ -103,10 +103,11 @@ jlink {
         skipInstaller = false
         if (Os.isFamily(Os.FAMILY_UNIX)) {
             installerType = 'deb'
+	    imageOptions = ['--icon', 'src/main/resources/assets/img/icon.png']
         } else if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             installerType = 'exe'
+	    imageOptions = ['--icon', 'src/main/resources/assets/img/icon.ico']
         }
-	imageOptions = ['--icon', 'src/main/resources/assets/img/icon.ico']
         installerOutputDir = file("$buildDir/file-server-installer")
     }
 
