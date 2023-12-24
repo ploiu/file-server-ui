@@ -16,4 +16,6 @@ will need to navigate to `C:\Program Files\ploiu-file-server` and manually add `
 for the same reason.
 
 ## Other
-parts of the application icon were created with images on the public domain. I found it [here](https://www.svgrepo.com/svg/153295/server)
+
+parts of the application icon were created with images on the public domain. I found
+it [here](https://www.svgrepo.com/svg/153295/server)
