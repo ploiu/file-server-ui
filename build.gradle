@@ -14,8 +14,8 @@ plugins {
 }
 
 def versions = [
-        junit   : '5.10.0',
-        mockito : '5.4.0',
+        junit   : '5.10.2',
+        mockito : '5.11.0',
         lombok  : '1.18.28',
         jackson : '2.15.2',
         slf4j   : '2.0.7',
@@ -26,14 +26,19 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.openjfx.javafxplugin'
 
-sourceCompatibility = 17
-targetCompatibility = 17
-
 group 'ploiu'
 version '1.0'
 
 repositories {
     mavenCentral()
+}
+
+configurations.all {
+    exclude group: 'org.hamcrest', module: 'hamcrest-core'
+}
+
+java {
+    version = JavaLanguageVersion.of(17)
 }
 
 dependencies {
@@ -64,16 +69,28 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:$versions.lombok"
     testAnnotationProcessor "org.projectlombok:lombok:$versions.lombok"
 
+    testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation "org.junit.jupiter:junit-jupiter-api:$versions.junit"
     testImplementation "org.junit.jupiter:junit-jupiter-params:$versions.junit"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "org.mockito:mockito-junit-jupiter:$versions.mockito"
     testImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.11'
+    testImplementation 'org.testfx:testfx-junit5:4.0.18'
+    testImplementation 'org.assertj:assertj-core:3.25.3'
+    testImplementation 'org.testfx:openjfx-monocle:17.0.10'
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$versions.junit"
 }
 
 test {
+    jvmArgs = [
+            '--add-exports=javafx.graphics/com.sun.javafx.application=org.testfx',
+            '--add-exports=javafx.graphics/com.sun.glass.ui=org.testfx.monocle',
+            '--add-exports=javafx.graphics/com.sun.javafx.util=org.testfx.monocle',
+            '--add-exports=javafx.base/com.sun.javafx.logging=org.testfx.monocle',
+            '--add-opens=javafx.graphics/com.sun.glass.ui=org.testfx',
+            '--add-opens=javafx.graphics/com.sun.javafx.application=org.testfx'
+    ]
     useJUnitPlatform()
     testLogging {
         events "PASSED", "SKIPPED", "FAILED"
