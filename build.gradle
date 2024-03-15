@@ -84,12 +84,23 @@ dependencies {
 
 test {
     jvmArgs = [
+            // exports
             '--add-exports=javafx.graphics/com.sun.javafx.application=org.testfx',
             '--add-exports=javafx.graphics/com.sun.glass.ui=org.testfx.monocle',
             '--add-exports=javafx.graphics/com.sun.javafx.util=org.testfx.monocle',
             '--add-exports=javafx.base/com.sun.javafx.logging=org.testfx.monocle',
+            '--add-exports=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED',
+            // opens
             '--add-opens=javafx.graphics/com.sun.glass.ui=org.testfx',
             '--add-opens=javafx.graphics/com.sun.javafx.application=org.testfx'
+    ]
+    // headless ("invisible ui") mode for ui tests
+    systemProperties << [
+            'testfx.robot'     : 'glass',
+            'testfx.headless'  : 'true',
+            'java.awt.headless': 'true',
+            'prism.order'      : 'sw',
+            'prism.text'       : 't2k'
     ]
     useJUnitPlatform()
     testLogging {

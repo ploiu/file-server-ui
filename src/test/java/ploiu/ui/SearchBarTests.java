@@ -2,6 +2,7 @@ package ploiu.ui;
 
 import io.reactivex.rxjava3.core.Single;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -16,27 +17,19 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
+import ploiu.ReflectionTestUtils;
 import ploiu.event.AsyncEventReceiver;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({ApplicationExtension.class, MockitoExtension.class})
 public class SearchBarTests {
 
     AsyncEventReceiver<String> receiver;
     SearchBar searchBar;
-
-    @BeforeAll
-    public static void before() {
-        System.setProperty("testfx.robot", "glass");
-        System.setProperty("testfx.headless", "true");
-        System.setProperty("java.awt.headless", "true");
-        System.setProperty("prism.order", "sw");
-        System.setProperty("prism.text", "t2k");
-    }
 
     @Start
     void start(Stage stage) {
@@ -64,6 +57,15 @@ public class SearchBarTests {
         robot.type(KeyCode.T, KeyCode.E, KeyCode.S, KeyCode.T);
         robot.type(KeyCode.ENTER);
         verify(receiver).process(argThat(it -> "test".equals(it.get())));
+    }
+
+    @Test
+    @DisplayName("Test that the focus method focuses the search box")
+    void testFocus(FxRobot robot) {
+        var textField = mock(TextField.class);
+        ReflectionTestUtils.setField(searchBar, "searchField", textField);
+        searchBar.focus();
+        verify(textField).requestFocus();
     }
 
 }

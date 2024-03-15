@@ -8,9 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/ReflectionTestUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FolderInfoTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/SearchBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/SearchBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/TextInputDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/TextInputDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/SearchBarTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/SearchBarTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,8 +54,8 @@
         <option value="CSS File" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -81,6 +84,9 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.Main.executor": "Run",
     "Gradle.Build file-server-ui.executor": "Run",
+    "Gradle.FolderInfoTests.executor": "Run",
+    "Gradle.FolderInfoTests.testRenameShowsModal.executor": "Debug",
+    "Gradle.SearchBarTests.executor": "Run",
     "Gradle.file-server-ui [:Main.main()].executor": "Run",
     "Gradle.file-server-ui [test].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -132,6 +138,7 @@
       <recent name="ploiu.ui.DataTypes" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.ui" />
       <recent name="ploiu.model" />
       <recent name="ploiu.service" />
       <recent name="ploiu.util" />
@@ -159,8 +166,8 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
-    <configuration name="DragNDropServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.FolderInfoTests">
+    <configuration name="FolderInfoTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -173,7 +180,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.service.DragNDropServiceTests&quot;" />
+            <option value="&quot;ploiu.ui.FolderInfoTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -184,7 +191,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FolderInfoTests.testRenameShowsModal" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -197,7 +204,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty&quot;" />
+            <option value="&quot;ploiu.ui.FolderInfoTests.testRenameShowsModal&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -208,7 +215,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FileSearchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="SearchBarTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -221,7 +228,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.model.FileSearchTests&quot;" />
+            <option value="&quot;ploiu.ui.SearchBarTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -278,26 +285,26 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.FileSearchTests" />
-      <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
+      <item itemvalue="Gradle.FolderInfoTests" />
+      <item itemvalue="Gradle.FolderInfoTests.testRenameShowsModal" />
+      <item itemvalue="Gradle.SearchBarTests" />
       <item itemvalue="Gradle.file-server-ui [help]" />
       <item itemvalue="Gradle.file-server-ui [test]" />
-      <item itemvalue="Gradle.DragNDropServiceTests" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.FolderInfoTests" />
+        <item itemvalue="Gradle.FolderInfoTests.testRenameShowsModal" />
+        <item itemvalue="Gradle.SearchBarTests" />
         <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.file-server-ui [help]" />
-        <item itemvalue="Gradle.FileSearchTests" />
-        <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
-        <item itemvalue="Gradle.DragNDropServiceTests" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-249ae16d76d6-7c0527ad" />
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
       </set>
     </attachedChunks>
   </component>
@@ -411,6 +418,7 @@
       <workItem from="1702942585907" duration="6344000" />
       <workItem from="1703204563609" duration="3961000" />
       <workItem from="1703376111584" duration="980000" />
+      <workItem from="1710462433527" duration="4780000" />
     </task>
     <servers />
   </component>
@@ -436,20 +444,20 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/ploiu/ReflectionTestUtils.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
       </pinned-members>
     </pin-to-top-manager>
-    <watches-manager>
-      <configuration name="GradleRunConfiguration">
-        <watch expression="Platform.isFxApplicationThread()" language="JAVA" custom="javafx.application.Platform" />
-        <watch expression="approximation.self" language="JAVA" />
-        <watch expression="approximation.childFiles" language="JAVA" />
-        <watch expression="approximation.childFolders" language="JAVA" />
-        <watch expression="f.self" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -457,5 +465,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/file_server_ui$FileServiceTests.ic" NAME="FileServiceTests Coverage Results" MODIFIED="1697069069423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/file_server_ui$SearchBarTests.ic" NAME="SearchBarTests Coverage Results" MODIFIED="1710454138795" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
