@@ -3,11 +3,9 @@ package ploiu.ui;
 import io.reactivex.rxjava3.core.Single;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +18,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 import ploiu.ReflectionTestUtils;
 import ploiu.event.AsyncEventReceiver;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static javafx.scene.input.KeyCode.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -43,9 +41,9 @@ public class SearchBarTests {
     @DisplayName("Test that clicking the search button calls the receiver")
     void testClickingButton(FxRobot robot) {
         when(receiver.process(any())).thenReturn(Single.never());
-        robot.clickOn(searchBar, MouseButton.PRIMARY);
-        robot.type(KeyCode.T, KeyCode.E, KeyCode.S, KeyCode.T);
-        robot.clickOn(LabeledMatchers.hasText("Search"), MouseButton.PRIMARY);
+        robot.clickOn(searchBar);
+        robot.type(T, E, S, T);
+        robot.clickOn(LabeledMatchers.hasText("Search"));
         verify(receiver).process(argThat(it -> "test".equals(it.get())));
     }
 
@@ -54,8 +52,8 @@ public class SearchBarTests {
     void testHittingEnter(FxRobot robot) {
         when(receiver.process(any())).thenReturn(Single.never());
         robot.clickOn(searchBar, MouseButton.PRIMARY);
-        robot.type(KeyCode.T, KeyCode.E, KeyCode.S, KeyCode.T);
-        robot.type(KeyCode.ENTER);
+        robot.type(T, E, S, T);
+        robot.type(ENTER);
         verify(receiver).process(argThat(it -> "test".equals(it.get())));
     }
 
