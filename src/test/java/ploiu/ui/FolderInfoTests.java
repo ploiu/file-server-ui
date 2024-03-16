@@ -1,7 +1,9 @@
 package ploiu.ui;
 
 import io.reactivex.rxjava3.core.Single;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.DisplayName;
@@ -25,11 +27,11 @@ import java.util.List;
 import java.util.Set;
 
 import static javafx.scene.input.KeyCode.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
+import static org.testfx.api.FxAssert.verifyThat;
 import static ploiu.event.FolderEvent.Type.UPDATE;
 
 @ExtendWith({ApplicationExtension.class, MockitoExtension.class})
@@ -104,9 +106,9 @@ class FolderInfoTests {
     void testDeleteGoodConfirm(FxRobot robot) {
         when(receiver.process(any())).thenReturn(Single.never());
 
-        robot.clickOn(folderInfo.lookup("#deleteButton"));
+        robot.clickOn("#deleteButton");
         var dialog = (TextInputDialog) robot.listTargetWindows().get(1).getScene().getRoot();
-        robot.clickOn("#textBox");
+        robot.clickOn(dialog.lookup("#textBox"));
         robot.type(T, E, S, T);
         robot.clickOn(dialog.lookup("#actionButton"));
 
@@ -139,7 +141,7 @@ class FolderInfoTests {
         robot.type(R, E, N, A, M, E, D);
         robot.clickOn(dialog.lookup("#actionButton"));
 
-        FxAssert.verifyThat("#folderTitle", LabeledMatchers.hasText("renamed"));
+        verifyThat("#folderTitle", LabeledMatchers.hasText("renamed"));
     }
 
     @Test
@@ -156,24 +158,57 @@ class FolderInfoTests {
     @Test
     @DisplayName("clicking on the add tag button shows a text dialog to type the tag name")
     void testAddTagShowsDialog(FxRobot robot) {
-        fail();
+        robot.clickOn("#addTagButton");
+        var dialog = (TextInputDialog) robot.listTargetWindows().get(1).getScene().getRoot();
+
+        assertEquals("Enter Tag Title", dialog.getWindowTitle());
     }
 
     @Test
     @DisplayName("adding a tag updates the folder with the newly-added tag")
     void testAddTagUpdates(FxRobot robot) {
-        fail();
+        when(receiver.process(any())).thenReturn(Single.never());
+
+        robot.clickOn("#addTagButton");
+        var dialog = (TextInputDialog) robot.listTargetWindows().get(1).getScene().getRoot();
+        robot.clickOn(dialog.lookup("#textBox"));
+        robot.type(T, E, S, T);
+        robot.clickOn(dialog.lookup("#actionButton"));
+
+        verify(receiver).process(argThat(event -> ((FolderEvent) event).getType() == UPDATE && event.get().tags().contains(new TagApi(null, "test"))));
     }
 
     @Test
     @DisplayName("Test that loading the folder shows the proper folder fields")
     void testViewShowsFolderFields(FxRobot robot) {
-        fail();
+        /* data fields */
+        // file count
+        verifyThat("#fileCountLabel", Node::isVisible);
+        verifyThat("#fileCountLabel", LabeledMatchers.hasText("Files: 1"));
+        // folder count
+        verifyThat("#folderCountLabel", Node::isVisible);
+        verifyThat("#folderCountLabel", LabeledMatchers.hasText("Folders: 1"));
+        // folder title
+        verifyThat("#folderTitle", Node::isVisible);
+        verifyThat("#folderTitle", LabeledMatchers.hasText("test"));
+
+        /* interactive elements */
+        // add tag button
+        verifyThat("#addTagButton", Node::isVisible);
+        // delete button
+        verifyThat("#deleteButton", Node::isVisible);
+        // rename button
+        verifyThat("#renameButton", Node::isVisible);
     }
 
     @Test
     @DisplayName("Test that loading the folder shows the proper tags")
     void testViewShowsTags(FxRobot robot) {
-        fail();
+        var tags = folderInfo.lookupAll(".tag-btn").stream().map(it -> ((Button) it).getText()).toList();
+
+        assertTrue(tags.contains("tag1"));
+        assertTrue(tags.contains("tag2"));
+        assertTrue(tags.contains("tag3"));
+
     }
 }

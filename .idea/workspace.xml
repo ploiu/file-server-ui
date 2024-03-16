@@ -9,9 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FolderInfoTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FolderInfoTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/SearchBarTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/SearchBarTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,11 +81,12 @@
     "Application.Main.executor": "Run",
     "Gradle.Build file-server-ui.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
-    "Gradle.FolderInfoTests.executor": "Coverage",
+    "Gradle.FolderInfoTests.executor": "Run",
     "Gradle.FolderInfoTests.testDeleteBadConfirm.executor": "Run",
     "Gradle.FolderInfoTests.testRemoveTag.executor": "Run",
     "Gradle.FolderInfoTests.testRenameShowsModal.executor": "Debug",
     "Gradle.FolderInfoTests.testUpdateFailure.executor": "Run",
+    "Gradle.FolderInfoTests.testViewShowsFolderFields.executor": "Debug",
     "Gradle.SearchBarTests.executor": "Run",
     "Gradle.file-server-ui [:Main.main()].executor": "Run",
     "Gradle.file-server-ui [test].executor": "Run",
@@ -112,7 +111,7 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "AtomSettingsConfigurable",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -169,7 +168,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+  <component name="RunManager" selected="Gradle.FolderInfoTests.testViewShowsFolderFields">
     <configuration name="FolderInfoTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -184,30 +183,6 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;ploiu.ui.FolderInfoTests&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="FolderInfoTests.testDeleteBadConfirm" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;ploiu.ui.FolderInfoTests.testDeleteBadConfirm&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -266,6 +241,30 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="FolderInfoTests.testViewShowsFolderFields" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.ui.FolderInfoTests.testViewShowsFolderFields&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -290,7 +289,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.FolderInfoTests.testDeleteBadConfirm" />
+      <item itemvalue="Gradle.FolderInfoTests.testViewShowsFolderFields" />
       <item itemvalue="Gradle.FolderInfoTests.testRemoveTag" />
       <item itemvalue="Gradle.FolderInfoTests.testUpdateFailure" />
       <item itemvalue="Gradle.FolderInfoTests" />
@@ -298,11 +297,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.file-server-ui [test]" />
+        <item itemvalue="Gradle.FolderInfoTests.testViewShowsFolderFields" />
         <item itemvalue="Gradle.FolderInfoTests" />
+        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.FolderInfoTests.testRemoveTag" />
         <item itemvalue="Gradle.FolderInfoTests.testUpdateFailure" />
-        <item itemvalue="Gradle.FolderInfoTests.testDeleteBadConfirm" />
       </list>
     </recent_temporary>
   </component>
@@ -456,6 +455,11 @@
           <url>file://$PROJECT_DIR$/src/test/java/ploiu/ReflectionTestUtils.java</url>
           <line>11</line>
           <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/ploiu/ui/FolderInfoTests.java</url>
+          <line>200</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
