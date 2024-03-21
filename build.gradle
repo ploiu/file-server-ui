@@ -1,33 +1,24 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-buildscript {
-    dependencies {
-        classpath 'org.openjfx:javafx-plugin:0.0.13'
-    }
-}
 plugins {
     id 'java'
     id 'idea'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.26.0'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '3.0.0'
 }
 
 def versions = [
         junit   : '5.10.2',
         mockito : '5.11.0',
-        lombok  : '1.18.28',
-        jackson : '2.15.2',
-        slf4j   : '2.0.7',
-        wiremock: '3.0.0-beta-7'
+        lombok  : '1.18.32',
+        jackson : '2.17.0',
+        slf4j   : '2.0.12',
+        wiremock: '3.0.1'
 ]
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'org.openjfx.javafxplugin'
-
 group 'ploiu'
-version '1.0'
+version '1.2'
 
 repositories {
     mavenCentral()
@@ -38,7 +29,9 @@ configurations.all {
 }
 
 java {
-    version = JavaLanguageVersion.of(17)
+    version = JavaLanguageVersion.of(21)
+    sourceCompatibility = JavaLanguageVersion.of(21)
+    targetCompatibility = JavaLanguageVersion.of(21)
 }
 
 dependencies {
@@ -60,7 +53,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     // reactive stack
     implementation "io.reactivex.rxjava3:rxjava:3.1.8"
-    implementation "org.pdfsam.rxjava3:rxjavafx:3.0.2"
+    implementation "org.pdfsam.rxjava3:rxjavafx:3.0.3"
 
 
     compileOnly "org.projectlombok:lombok:$versions.lombok"
@@ -77,7 +70,7 @@ dependencies {
     testImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.11'
     testImplementation 'org.testfx:testfx-junit5:4.0.18'
     testImplementation 'org.assertj:assertj-core:3.25.3'
-    testImplementation 'org.testfx:openjfx-monocle:17.0.10'
+    testImplementation 'org.testfx:openjfx-monocle:21.0.2'
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$versions.junit"
 }
@@ -116,19 +109,19 @@ javafx {
 mainClassName = "ploiu.Main"
 
 jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    options = ['--strip-debug', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'Ploiu File Server'
     }
     mergedModule {
         additive = true
-        requires 'org.slf4j'
         requires 'jdk.crypto.ec'
     }
 
     jpackage {
         imageName = 'ploiu-file-server'
         skipInstaller = false
+        appVersion = version
         if (Os.isFamily(Os.FAMILY_UNIX)) {
             installerType = 'deb'
             imageOptions = ['--icon', 'src/main/resources/assets/img/icon.png']

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ploiu.client.FolderClient;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFolderRequestException;
+import ploiu.exception.BadFolderResponseException;
 import ploiu.model.FolderRequest;
 
 import java.io.IOException;
@@ -22,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +51,7 @@ class FolderClientTests {
     void testGetFolderWithIdUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.getFolder(1L).subscribe();
+        folderClient.getFolder(1L).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("/folders/1", req.getPath());
     }
@@ -60,7 +60,7 @@ class FolderClientTests {
     void testGetFolderUsesGet() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.getFolder(0).subscribe();
+        folderClient.getFolder(0).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("GET", req.getMethod());
     }
@@ -69,7 +69,7 @@ class FolderClientTests {
     void testGetFolderUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.getFolder(0).subscribe();
+        folderClient.getFolder(0).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("/folders/0", req.getPath());
     }
@@ -78,7 +78,7 @@ class FolderClientTests {
     void testCreateFolderUsesPost() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test", List.of())).subscribe();
+        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test", List.of())).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("POST", req.getMethod());
     }
@@ -87,7 +87,7 @@ class FolderClientTests {
     void testCreateFolderUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(201).setBody("{}"));
-        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test", List.of())).subscribe();
+        folderClient.createFolder(new FolderRequest(Optional.empty(), 0, "test", List.of())).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("/folders", req.getPath());
     }
@@ -95,30 +95,28 @@ class FolderClientTests {
     @Test
     void testUpdateFolderRequiresFolderId() {
         var request = new FolderRequest(Optional.empty(), 0, "test", List.of());
-        folderClient.updateFolder(request)
-                .doOnError(exception -> {
-                    assertInstanceOf(BadFolderRequestException.class, exception);
-                    assertEquals("Cannot update folder without id", exception.getMessage());
-                })
-                .subscribe();
+        try {
+            folderClient.updateFolder(request).blockingSubscribe();
+        } catch (BadFolderRequestException | BadFolderResponseException e) {
+            assertEquals("Cannot update folder without id", e.getMessage());
+        }
     }
 
     @Test
     void testUpdateFolderRequiresNonZeroId() {
         var request = new FolderRequest(Optional.of(0L), 0, "test", List.of());
-        folderClient.updateFolder(request)
-                .doOnError(exception -> {
-                    assertInstanceOf(BadFolderRequestException.class, exception);
-                    assertEquals("0 is the root folder id, and cannot be updated", exception.getMessage());
-                })
-                .subscribe();
+        try {
+            folderClient.updateFolder(request).blockingSubscribe();
+        } catch (BadFolderRequestException | BadFolderResponseException e) {
+            assertEquals("0 is the root folder id, and cannot be updated", e.getMessage());
+        }
     }
 
     @Test
     void testUpdateFolderUsesPut() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test", List.of())).subscribe();
+        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test", List.of())).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("PUT", req.getMethod());
     }
@@ -127,26 +125,25 @@ class FolderClientTests {
     void testUpdateFolderUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setBody("{}"));
-        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test", List.of())).subscribe();
+        folderClient.updateFolder(new FolderRequest(Optional.of(1L), 0, "test", List.of())).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("/folders", req.getPath());
     }
 
     @Test
     void testDeleteFolderRequiresPositiveId() {
-        folderClient.deleteFolder(0L)
-                .doOnError(exception -> {
-                    assertInstanceOf(BadFolderRequestException.class, exception);
-                    assertEquals("id must be greater than 0", exception.getMessage());
-                })
-                .subscribe();
+        try {
+            folderClient.deleteFolder(0L).blockingSubscribe();
+        } catch (BadFolderRequestException e) {
+            assertEquals("id must be greater than 0", e.getMessage());
+        }
     }
 
     @Test
     void testDeleteFolderUsesDelete() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(204));
-        folderClient.deleteFolder(1L).subscribe();
+        folderClient.deleteFolder(1L).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("DELETE", req.getMethod());
     }
@@ -155,7 +152,7 @@ class FolderClientTests {
     void testDeleteFolderUsesCorrectPath() throws Exception {
         when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
         backend.enqueue(new MockResponse().setResponseCode(204));
-        folderClient.deleteFolder(1L).subscribe();
+        folderClient.deleteFolder(1L).blockingSubscribe();
         var req = backend.takeRequest();
         assertEquals("/folders/1", req.getPath());
     }

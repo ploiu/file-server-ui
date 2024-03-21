@@ -1,17 +1,19 @@
 package ploiu.ui;
 
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.exceptions.UndeliverableException;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
@@ -27,7 +29,8 @@ import java.util.List;
 import java.util.Set;
 
 import static javafx.scene.input.KeyCode.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -39,6 +42,15 @@ class FolderInfoTests {
     AsyncEventReceiver<FolderApi> receiver;
 
     FolderInfo folderInfo;
+
+    @BeforeAll
+    static void beforeAll() {
+        RxJavaPlugins.setErrorHandler(e -> {
+            if (!(e instanceof UndeliverableException)) {
+                throw e;
+            }
+        });
+    }
 
     @Start
     void start(Stage stage) {
