@@ -21,6 +21,7 @@ import ploiu.model.TextInputDialogOptions;
 import ploiu.util.MimeUtils;
 import ploiu.util.UIUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -93,6 +94,9 @@ public class FileEntry extends AnchorPane {
     @FXML
     private void saveAsClicked(ActionEvent ignored) {
         var chooser = new DirectoryChooser();
+        // better user experience to default to the user dir, but also makes tests possible
+        var homeDirectory = new File(System.getProperty("user.home"));
+        chooser.setInitialDirectory(homeDirectory);
         chooser.setTitle("Save " + file.name() + "...");
         var selectedDir = chooser.showDialog(getScene().getWindow());
         if (selectedDir != null) {

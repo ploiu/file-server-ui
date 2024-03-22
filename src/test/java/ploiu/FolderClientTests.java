@@ -96,7 +96,7 @@ class FolderClientTests {
     void testUpdateFolderRequiresFolderId() {
         var request = new FolderRequest(Optional.empty(), 0, "test", List.of());
         try {
-            folderClient.updateFolder(request).blockingSubscribe();
+            folderClient.updateFolder(request).blockingGet();
         } catch (BadFolderRequestException | BadFolderResponseException e) {
             assertEquals("Cannot update folder without id", e.getMessage());
         }
@@ -106,7 +106,7 @@ class FolderClientTests {
     void testUpdateFolderRequiresNonZeroId() {
         var request = new FolderRequest(Optional.of(0L), 0, "test", List.of());
         try {
-            folderClient.updateFolder(request).blockingSubscribe();
+            folderClient.updateFolder(request).blockingGet();
         } catch (BadFolderRequestException | BadFolderResponseException e) {
             assertEquals("0 is the root folder id, and cannot be updated", e.getMessage());
         }
@@ -133,7 +133,7 @@ class FolderClientTests {
     @Test
     void testDeleteFolderRequiresPositiveId() {
         try {
-            folderClient.deleteFolder(0L).blockingSubscribe();
+            folderClient.deleteFolder(0L).blockingAwait();
         } catch (BadFolderRequestException e) {
             assertEquals("id must be greater than 0", e.getMessage());
         }

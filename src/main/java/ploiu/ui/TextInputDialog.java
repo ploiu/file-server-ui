@@ -68,6 +68,7 @@ public class TextInputDialog extends AnchorPane {
             if (event.getCode() == KeyCode.ENTER) {
                 submitEvent.handle(null);
             }
+            // TODO ESCAPE = close window
         });
     }
 }
