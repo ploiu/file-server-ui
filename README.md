@@ -9,10 +9,12 @@ A client frontend for [ploiu/file_server](https://github.com/ploiu/file_server),
 2. run `./gradlew jpackage`
 
 ### For Linux
+
 Linux requires extra tools to be installed:
+
 - `binutils`
 - `fakeroot`
-  
+
 both can be installed with apt
 
 ## Installing
@@ -23,6 +25,7 @@ will need to navigate to `C:\Program Files\ploiu-file-server` and manually add `
 for the same reason.
 
 Linux desktop file:
+
 ```ini
 [Desktop Entry]
 Type=Application

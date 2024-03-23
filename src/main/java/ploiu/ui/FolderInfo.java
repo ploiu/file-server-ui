@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.core.Single;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -152,11 +153,15 @@ public class FolderInfo extends AnchorPane {
             // make the user type the folder name they're deleting to confirm
             if (res.get().equals(folder.get().name())) {
                 folderReceiver.process(new FolderEvent(folder.get(), FolderEvent.Type.DELETE))
+                        .onErrorResumeNext(e -> {
+                            showErrorDialog(e.getMessage(), "Failed to Delete Folder", null);
+                            return Single.never();
+                        })
                         .doOnSuccess(ignoredRes -> folder.setValue(null))
                         .subscribe();
                 return true;
             }
-            showErrorDialog("[" + res.get() + "] does not match the folder name [" + folder.get().name() + "]", "Failed to delete folder", null);
+            showErrorDialog("[" + res.get() + "] does not match the folder name [" + folder.get().name() + "]", "Failed to Delete Folder", null);
             return false;
         };
         new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Delete")

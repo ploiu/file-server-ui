@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.Getter;
 import ploiu.event.Event;
 import ploiu.event.EventReceiver;
 import ploiu.model.TextInputDialogOptions;
@@ -23,6 +24,7 @@ public class TextInputDialog extends AnchorPane {
     private TextField textBox;
     @FXML
     private Button actionButton;
+    @Getter
     private final String windowTitle;
 
     public TextInputDialog(TextInputDialogOptions options) {
@@ -66,6 +68,7 @@ public class TextInputDialog extends AnchorPane {
             if (event.getCode() == KeyCode.ENTER) {
                 submitEvent.handle(null);
             }
+            // TODO ESCAPE = close window
         });
     }
 }
