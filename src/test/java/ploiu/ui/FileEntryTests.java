@@ -5,6 +5,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 import ploiu.event.AsyncEventReceiver;
+import ploiu.event.FileDeleteEvent;
 import ploiu.event.FileSaveEvent;
 import ploiu.event.FileUpdateEvent;
 import ploiu.model.FileApi;
@@ -30,7 +32,6 @@ import java.util.Set;
 import static javafx.scene.input.KeyCode.*;
 import static javafx.scene.input.MouseButton.SECONDARY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -133,7 +134,7 @@ class FileEntryTests {
         robot.clickOn("#renameFile");
         robot.clickOn("#textBox");
         // clear out the file name
-        robot.type(BACK_SPACE, 10);
+        robot.type(BACK_SPACE, fileEntry.getFile().name().length());
         robot.type(R, E, N, A, M, E, D, PERIOD, T, X, T);
 
         var dialog = (Stage) robot.listTargetWindows().get(1).getScene().getWindow();
@@ -145,42 +146,83 @@ class FileEntryTests {
     @Test
     @DisplayName("Test that rename file rejects null and blank strings")
     void testRenameRejectsNullStrings(FxRobot robot) {
-        fail();
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#renameFile");
+        robot.clickOn("#textBox");
+        // clear out the file name
+        robot.type(BACK_SPACE, fileEntry.getFile().name().length());
+        robot.clickOn("#actionButton");
+
+        verifyNoInteractions(fileReceiver);
     }
 
     @Test
     @DisplayName("Test that failing to rename file will show an error dialogue with the error message")
     void testRenameFileFail(FxRobot robot) {
-        fail();
+        when(fileReceiver.process(any())).thenReturn(Single.error(new RuntimeException("test message")));
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#renameFile");
+        robot.clickOn("#textBox");
+        // clear out the file name
+        robot.type(BACK_SPACE, fileEntry.getFile().name().length());
+        robot.type(R, E, N, A, M, E, D, PERIOD, T, X, T);
+        robot.clickOn("#actionButton");
+
+        var errorDialog = (Stage) robot.listTargetWindows().get(1);
+        assertEquals("Failed to Update File", errorDialog.getTitle());
     }
+
 
     @Test
     @DisplayName("Test that clicking delete file will show a confirm modal")
     void testDeleteFileClicked(FxRobot robot) {
-        fail();
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#deleteFile");
+
+        var modal = (ConfirmDialog) robot.listTargetWindows().get(1).getScene().getRoot();
+
+        assertEquals("Are you sure you want to delete this file?", ((Label) modal.lookup(".body-text")).getText());
     }
 
     @Test
     @DisplayName("Test that confirming deleting a file will attempt to delete the file")
     void testDeleteFileConfirm(FxRobot robot) {
-        fail();
+        when(fileReceiver.process(any())).thenReturn(Single.never());
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#deleteFile");
+        robot.clickOn("#confirmButton");
+
+        verify(fileReceiver).process(argThat(it -> it instanceof FileDeleteEvent && it.get().equals(fileEntry.getFile())));
     }
 
     @Test
     @DisplayName("Test that cancelling deleting a file will not attempt to delete the file")
     void testDeleteFileCancel(FxRobot robot) {
-        fail();
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#deleteFile");
+        robot.clickOn("#cancelButton");
+
+        verifyNoInteractions(fileReceiver);
     }
 
     @Test
     @DisplayName("Test that failing to delete the file will show an error modal")
     void testDeleteFileFail(FxRobot robot) {
-        fail();
+        when(fileReceiver.process(any())).thenReturn(Single.error(new RuntimeException("test message")));
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#deleteFile");
+        robot.clickOn("#confirmButton");
+
+        var errorDialog = (Stage) robot.listTargetWindows().get(1);
+        assertEquals("Failed to Delete File", errorDialog.getTitle());
     }
 
     @Test
     @DisplayName("clicking the info item will attempt to open the file info panel")
     void testInfoItemClicked(FxRobot robot) {
-        fail();
+        robot.clickOn(fileEntry, SECONDARY);
+        robot.clickOn("#info");
+
+        assertEquals(fileEntry.getFile(), editingFile.get());
     }
 }
