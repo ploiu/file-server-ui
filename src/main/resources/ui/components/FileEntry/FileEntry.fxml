@@ -14,10 +14,10 @@
     <fx:define>
         <ContextMenu fx:id="fileMenu">
             <items>
-                <MenuItem text="Save As..." onAction="#saveAsClicked"/>
-                <MenuItem text="Rename File" onAction="#renameItemClicked"/>
-                <MenuItem text="Delete File" onAction="#deleteItemClicked"/>
-                <MenuItem text="Info" onAction="#infoItemClicked"/>
+                <MenuItem fx:id="saveAs" text="Save As..." onAction="#saveAsClicked"/>
+                <MenuItem fx:id="renameFile" text="Rename File" onAction="#renameItemClicked"/>
+                <MenuItem fx:id="deleteFile" text="Delete File" onAction="#deleteItemClicked"/>
+                <MenuItem fx:id="info" text="Info" onAction="#infoItemClicked"/>
             </items>
         </ContextMenu>
     </fx:define>

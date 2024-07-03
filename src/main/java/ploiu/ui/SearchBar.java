@@ -36,7 +36,7 @@ public class SearchBar extends HBox {
 
     @FXML
     private void searchButtonClicked(ActionEvent event) {
-        receiver.process(new Event<>(searchButton.getText()))
+        receiver.process(new Event<>(searchField.getText()))
                 .subscribe();
     }
 

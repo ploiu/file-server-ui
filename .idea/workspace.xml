@@ -6,16 +6,11 @@
   <component name="BookmarksViewState">
     <option name="rewriteBookmarkType" value="true" />
   </component>
-  <component name="CargoProjects">
-    <cargoProject FILE="$PROJECT_DIR$/../file_server/Cargo.toml" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/img/server.svg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/img/server.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +30,12 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="file-server-ui" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -51,13 +51,16 @@
         <option value="CSS File" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.8/700ac791d5405a8252a9be47c9524195f65dc7b7/rxjava-3.1.8-sources.jar!/io/reactivex/rxjava3/core/Single.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="54a7dn4f" />
@@ -76,41 +79,63 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Main.executor": "Run",
-    "Gradle.Build file-server-ui.executor": "Run",
-    "Gradle.file-server-ui [:Main.main()].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last.edited.regexp": "test.a.txt",
-    "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
-    "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/main/resources/ui/components",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "AtomSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build file-server-ui.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ConfirmDialogTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ConfirmDialogTests.testBodyText.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ConfirmDialogTests.testWindowTitle.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FileEntryTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FileEntryTests.testDeleteFileClicked.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.FileEntryTests.testRenameFileFail.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FileEntryTests.testRenameFileOpensDialog.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FileEntryTests.testSaveAs.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.FileEntryTests.testSaveAsChosenDirectory.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FolderInfoTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FolderInfoTests.testDeleteBadConfirm.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FolderInfoTests.testRemoveTag.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FolderInfoTests.testRenameShowsModal.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.FolderInfoTests.testUpdateFailure.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.FolderInfoTests.testUpdateSuccess.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.FolderInfoTests.testViewShowsFolderFields.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.SearchBarTests.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.file-server-ui [:Main.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.file-server-ui [jpackage].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.file-server-ui [test].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.file-server-ui [tset].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;testfx&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last.edited.regexp&quot;: &quot;test.a.txt&quot;,
+    &quot;last_directory_selection&quot;: &quot;/home/ploiu/git/file-server-ui/src/main/java/ploiu/client&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/main/resources/ui/components&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.22936763&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "HTTP Request"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;HTTP Request&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReadonlyStatusHandler">
     <option name="SHOW_DIALOG" value="false" />
   </component>
@@ -131,6 +156,7 @@
       <recent name="ploiu.ui.DataTypes" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.ui" />
       <recent name="ploiu.model" />
       <recent name="ploiu.service" />
       <recent name="ploiu.util" />
@@ -147,19 +173,20 @@
       <command value="gradle test" />
       <command value="open untitled" />
       <command value="gradlew jlink" />
-      <command value="gradlew jpackage" />
       <command value="open File Server Ui Android" />
       <command value="gradlew clean build" />
       <command value="gradlew build" />
       <command value="gradlew help --scan" />
       <command value="gradle help --warning-mode=all" />
       <command value="file_server" />
-      <command value="gradlew test" />
       <command value="open file_server" />
+      <command value="gradlew tset" />
+      <command value="gradlew jpackage" />
+      <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="DragNDropServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+    <configuration name="FileEntryTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -172,7 +199,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.service.DragNDropServiceTests&quot;" />
+            <option value="&quot;ploiu.ui.FileEntryTests&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -183,7 +210,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FileEntryTests.testDeleteFileClicked" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -196,7 +223,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty&quot;" />
+            <option value="&quot;ploiu.ui.FileEntryTests.testDeleteFileClicked&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -207,7 +234,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FileSearchTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FileEntryTests.testRenameFileFail" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -220,7 +247,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.model.FileSearchTests&quot;" />
+            <option value="&quot;ploiu.ui.FileEntryTests.testRenameFileFail&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -231,26 +258,28 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="file-server-ui [help]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FileEntryTests.testRenameFileOpensDialog" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--scan" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="help" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ploiu.ui.FileEntryTests.testRenameFileOpensDialog&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -277,30 +306,27 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.FileSearchTests" />
-      <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
-      <item itemvalue="Gradle.file-server-ui [help]" />
+      <item itemvalue="Gradle.FileEntryTests.testDeleteFileClicked" />
+      <item itemvalue="Gradle.FileEntryTests.testRenameFileFail" />
+      <item itemvalue="Gradle.FileEntryTests" />
+      <item itemvalue="Gradle.FileEntryTests.testRenameFileOpensDialog" />
       <item itemvalue="Gradle.file-server-ui [test]" />
-      <item itemvalue="Gradle.DragNDropServiceTests" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.FileEntryTests" />
+        <item itemvalue="Gradle.FileEntryTests.testDeleteFileClicked" />
+        <item itemvalue="Gradle.FileEntryTests.testRenameFileFail" />
+        <item itemvalue="Gradle.FileEntryTests.testRenameFileOpensDialog" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.file-server-ui [help]" />
-        <item itemvalue="Gradle.FileSearchTests" />
-        <item itemvalue="Gradle.FileClientTests.testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty" />
-        <item itemvalue="Gradle.DragNDropServiceTests" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="RustProjectSettings">
-    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
-    <option name="version" value="2" />
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-249ae16d76d6-7c0527ad" />
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
       </set>
     </attachedChunks>
   </component>
@@ -414,6 +440,12 @@
       <workItem from="1702942585907" duration="6344000" />
       <workItem from="1703204563609" duration="3961000" />
       <workItem from="1703376111584" duration="980000" />
+      <workItem from="1710462433527" duration="4780000" />
+      <workItem from="1710545665881" duration="3984000" />
+      <workItem from="1711050450139" duration="233000" />
+      <workItem from="1711050691200" duration="13420000" />
+      <workItem from="1711221759400" duration="3852000" />
+      <workItem from="1711240369230" duration="2281000" />
     </task>
     <servers />
   </component>
@@ -439,35 +471,20 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java</url>
-          <line>114</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
       </pinned-members>
     </pin-to-top-manager>
-    <watches-manager>
-      <configuration name="GradleRunConfiguration">
-        <watch expression="Platform.isFxApplicationThread()" language="JAVA" custom="javafx.application.Platform" />
-        <watch expression="approximation.self" language="JAVA" />
-        <watch expression="approximation.childFiles" language="JAVA" />
-        <watch expression="approximation.childFolders" language="JAVA" />
-        <watch expression="f.self" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/file_server_ui$FolderInfoTests.ic" NAME="FolderInfoTests Coverage Results" MODIFIED="1710549350539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/file_server_ui$file_server_ui__test_.ic" NAME="file-server-ui [test] Coverage Results" MODIFIED="1711073227311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/file_server_ui$FileServiceTests.ic" NAME="FileServiceTests Coverage Results" MODIFIED="1697069069423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/file_server_ui$SearchBarTests.ic" NAME="SearchBarTests Coverage Results" MODIFIED="1710454138795" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

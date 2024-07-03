@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.core.Single;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,8 +22,11 @@ import ploiu.model.TextInputDialogOptions;
 import ploiu.util.MimeUtils;
 import ploiu.util.UIUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+
+import static ploiu.util.DialogUtils.showErrorDialog;
 
 public class FileEntry extends AnchorPane {
 
@@ -69,6 +73,10 @@ public class FileEntry extends AnchorPane {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
                 fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName, file.tags(), file.folderId())))
+                        .onErrorResumeNext(e -> {
+                            showErrorDialog(e.getMessage(), "Failed to Update File", null);
+                            return Single.never();
+                        })
                         .subscribe();
                 return true;
             }
@@ -82,6 +90,10 @@ public class FileEntry extends AnchorPane {
         EventReceiver<Boolean> dialogCallback = res -> {
             if (res.get()) {
                 fileReceiver.process(new FileDeleteEvent(file))
+                        .onErrorResumeNext(e -> {
+                            showErrorDialog(e.getMessage(), "Failed to Delete File", null);
+                            return Single.never();
+                        })
                         .subscribe();
                 return true;
             }
@@ -93,6 +105,9 @@ public class FileEntry extends AnchorPane {
     @FXML
     private void saveAsClicked(ActionEvent ignored) {
         var chooser = new DirectoryChooser();
+        // better user experience to default to the user dir, but also makes tests possible
+        var homeDirectory = new File(System.getProperty("user.home"));
+        chooser.setInitialDirectory(homeDirectory);
         chooser.setTitle("Save " + file.name() + "...");
         var selectedDir = chooser.showDialog(getScene().getWindow());
         if (selectedDir != null) {
