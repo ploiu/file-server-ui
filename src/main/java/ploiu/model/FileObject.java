@@ -10,5 +10,6 @@ import java.io.Serializable;
 public interface FileObject extends ServerObject, Serializable {
     long id();
 
-    @NotNull String name();
+    @NotNull
+    String name();
 }

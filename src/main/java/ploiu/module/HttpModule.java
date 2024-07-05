@@ -11,6 +11,7 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.message.BasicHeader;
+import ploiu.client.RetrofitFileClient;
 import ploiu.client.TagClient;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
@@ -69,5 +70,11 @@ public class HttpModule extends AbstractModule {
     @Provides
     TagClient tagClient(Retrofit retrofit) {
         return retrofit.create(TagClient.class);
+    }
+
+    @Inject
+    @Provides
+    RetrofitFileClient retrofitFileClient(Retrofit retrofit) {
+        return retrofit.create(RetrofitFileClient.class);
     }
 }

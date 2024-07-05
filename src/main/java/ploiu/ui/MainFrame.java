@@ -276,6 +276,7 @@ public class MainFrame extends AnchorPane {
                 .doOnSuccess(filePane.getChildren()::addAll)
                 .subscribe(ignored -> drawAddFile());
 
+
     }
 
     private FileEntry createFileEntry(FileApi file) {
