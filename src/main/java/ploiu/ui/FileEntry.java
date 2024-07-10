@@ -8,12 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import ploiu.event.*;
 import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
@@ -34,6 +36,7 @@ public class FileEntry extends AnchorPane {
     private final FileApi file;
     private final AsyncEventReceiver<FileObject> fileReceiver;
     private final ObjectProperty<FileApi> editingFile;
+    private final ObjectProperty<Image> previewImage;
     @FXML
     private ImageView icon;
     @FXML
@@ -41,10 +44,11 @@ public class FileEntry extends AnchorPane {
     @FXML
     private ContextMenu fileMenu;
 
-    public FileEntry(FileApi file, AsyncEventReceiver<FileObject> eventHandler, ObjectProperty<FileApi> editingFile) {
+    public FileEntry(FileApi file, AsyncEventReceiver<FileObject> eventHandler, ObjectProperty<FileApi> editingFile, @NotNull ObjectProperty<Image> previewImage) {
         super();
         this.editingFile = editingFile;
         this.file = file;
+        this.previewImage = previewImage;
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileEntry/FileEntry.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -62,9 +66,14 @@ public class FileEntry extends AnchorPane {
 
     @FXML
     private void initialize() {
-        this.setOnContextMenuRequested(event -> {
-            fileMenu.show(this, event.getScreenX(), event.getScreenY());
+        previewImage.addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                icon.setImage(UIUtils.MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name())));
+            } else {
+                icon.setImage(newValue);
+            }
         });
+        this.setOnContextMenuRequested(event -> fileMenu.show(this, event.getScreenX(), event.getScreenY()));
     }
 
     @FXML

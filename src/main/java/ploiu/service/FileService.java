@@ -7,21 +7,23 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.scene.image.Image;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Nullable;
 import ploiu.client.FileClient;
 import ploiu.client.RetrofitFileClient;
 import ploiu.model.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
-import static ploiu.Constants.PREVIEW_DIR;
 
+@Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FileService {
     private final FileClient fileClient;
@@ -78,49 +80,20 @@ public class FileService {
      * @param folder
      * @return
      */
-    public Observable<Tuple2<Long, Image>> getFilePreviewsForFolder(FolderApi folder) {
-        var cachedPreviews = getCachedPreviews(folder);
-
-        return Single.just(folder)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .map(FolderApi::id)
-                .flatMap(retrofitFileClient::getPreviewsForFolder)
-                // TODO save to cache dir and return file handles (or image data for java fx?)
-                .;
-
-    }
-
-    private Observable<Tuple2<Long, Image>> getCachedPreviews(FolderApi folder) {
-        var previewDir = new File(PREVIEW_DIR);
-        //noinspection ResultOfMethodCallIgnored
-        previewDir.mkdirs();
-        var fileNames = folder.files().stream().map(FileApi::name).toList();
+    public Single<Map<Long, Image>> getFilePreviewsForFolder(FolderApi folder) {
         return Observable.just(folder)
                 .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .flatMapIterable(f -> {
-                    var listed = previewDir.listFiles((dir, name) -> {
-                    /* we need to get the file id here and pair it with the name. This is to prevent
-                     reuploaded files with the same name from having the older file's contents */
-                        for (FileApi file : f.files()) {
-                            if (fileNames.contains(file.id() + "_" + name)) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-                    if (listed == null) {
-                        return List.of();
+                .map(FolderApi::id)
+                .flatMapSingle(retrofitFileClient::getPreviewsForFolder)
+                .map(map -> {
+                    Map<Long, Image> images = new HashMap<>();
+                    for (var entry : map.entrySet()) {
+                        var image = new Image(new ByteArrayInputStream(entry.getValue()), 100.25, 76.25, true, true);
+                        images.put(entry.getKey(), image);
                     }
-                    return Arrays.asList(listed);
+                    return images;
                 })
-                .map(f -> {
-                    var split = f.getName().split("_");
-                    var id = Long.parseLong(split[0]);
-                    var image = new Image(split[1], 100.25, 76.25, true, true);
-                    return new Tuple2<>(id, image);
-                });
+                .single(Map.of());
     }
 
 }

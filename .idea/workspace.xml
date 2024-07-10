@@ -8,13 +8,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/RetrofitFileClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/Tuple2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +72,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -329,8 +328,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
       </set>
     </attachedChunks>
   </component>
@@ -452,6 +451,12 @@
       <workItem from="1711240369230" duration="2281000" />
       <workItem from="1720047996291" duration="3057000" />
       <workItem from="1720142601330" duration="2510000" />
+      <workItem from="1720188285347" duration="188000" />
+      <workItem from="1720190241746" duration="4536000" />
+      <workItem from="1720206093496" duration="4370000" />
+      <workItem from="1720295325211" duration="3784000" />
+      <workItem from="1720640551355" duration="2452000" />
+      <workItem from="1720650719500" duration="1163000" />
     </task>
     <servers />
   </component>
