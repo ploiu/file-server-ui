@@ -9,8 +9,19 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/theme.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,10 +60,10 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -69,7 +80,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -112,7 +123,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;testfx&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;file__previews&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last.edited.regexp&quot;: &quot;test.a.txt&quot;,
@@ -127,7 +138,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.22936763&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -185,7 +196,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="FileEntryTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -325,8 +336,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
       </set>
     </attachedChunks>
   </component>
@@ -446,6 +457,14 @@
       <workItem from="1711050691200" duration="13420000" />
       <workItem from="1711221759400" duration="3852000" />
       <workItem from="1711240369230" duration="2281000" />
+      <workItem from="1720047996291" duration="3057000" />
+      <workItem from="1720142601330" duration="2510000" />
+      <workItem from="1720188285347" duration="188000" />
+      <workItem from="1720190241746" duration="4536000" />
+      <workItem from="1720206093496" duration="4370000" />
+      <workItem from="1720295325211" duration="3784000" />
+      <workItem from="1720640551355" duration="2452000" />
+      <workItem from="1720650719500" duration="6543000" />
     </task>
     <servers />
   </component>

@@ -7,9 +7,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.TilePane;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.client.FolderClient;
 import ploiu.event.*;
@@ -21,9 +23,7 @@ import ploiu.service.FileService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static ploiu.event.FolderEvent.Type.*;
@@ -39,7 +39,7 @@ public class MainFrame extends AnchorPane {
     @FXML
     private FlowPane folderPane;
     @FXML
-    private FlowPane filePane;
+    private TilePane filePane;
     @FXML
     private NavBar navigationBar;
     @FXML
@@ -48,6 +48,8 @@ public class MainFrame extends AnchorPane {
     private FolderApi currentFolder;
     private final ObjectProperty<FolderApi> editingFolder = new SimpleObjectProperty<>(null);
     private final ObjectProperty<FileApi> editingFile = new SimpleObjectProperty<>(null);
+    // contains all the current image previews
+    private final Map<Long, ObjectProperty<Image>> filePreviews = new HashMap<>();
     private FolderInfo folderInfo;
     private FileInfo fileInfo;
 
@@ -68,6 +70,7 @@ public class MainFrame extends AnchorPane {
                 .doOnSuccess(files -> {
                     this.folderPane.getChildren().clear();
                     this.filePane.getChildren().clear();
+                    // TODO pull previews
                     var fileEntries = files.stream().map(this::createFileEntry).toList();
                     this.filePane.getChildren().addAll(fileEntries);
                 })
@@ -213,15 +216,12 @@ public class MainFrame extends AnchorPane {
     };
 
     private final AsyncEventReceiver<FileObject> asyncFileCrudEvents = event -> {
-        if (event instanceof FileDeleteEvent) {
-            return asyncFileDeleteEvent.process(event);
-        } else if (event instanceof FileUpdateEvent) {
-            return asyncFileUpdateEvent.process(event);
-        } else if (event instanceof FileSaveEvent) {
-            return asyncFileSaveEvent.process(event);
-        } else {
-            return Single.just(false);
-        }
+        return switch (event) {
+            case FileDeleteEvent fileDeleteEvent -> asyncFileDeleteEvent.process(fileDeleteEvent);
+            case FileUpdateEvent fileUpdateEvent -> asyncFileUpdateEvent.process(fileUpdateEvent);
+            case FileSaveEvent fileSaveEvent -> asyncFileSaveEvent.process(fileSaveEvent);
+            default -> Single.just(false);
+        };
     };
 
     public MainFrame() {
@@ -257,7 +257,6 @@ public class MainFrame extends AnchorPane {
                 .observeOn(JavaFxScheduler.platform())
                 .toObservable()
                 .cache();
-
         // handle child folders
         folderReq
                 .doOnNext(ignored -> folderPane.getChildren().clear())
@@ -269,17 +268,45 @@ public class MainFrame extends AnchorPane {
 
         // handle child files
         folderReq
-                .doOnNext(ignored -> filePane.getChildren().clear())
+                .doOnNext(f -> {
+                    loadFilePreviews(f);
+                    filePane.getChildren().clear();
+                })
                 .flatMapIterable(FolderApi::files)
                 .map(this::createFileEntry)
                 .toList()
                 .doOnSuccess(filePane.getChildren()::addAll)
                 .subscribe(ignored -> drawAddFile());
+    }
 
+    private void loadFilePreviews(FolderApi folder) {
+        synchronized (filePreviews) {
+            filePreviews.clear();
+        }
+        if (folder.files().isEmpty()) {
+            return;
+        }
+        synchronized (filePreviews) {
+            for (var file : folder.files()) {
+                filePreviews.put(file.id(), new SimpleObjectProperty<>(null));
+            }
+        }
+        //noinspection ResultOfMethodCallIgnored
+        fileService
+                .getFilePreviewsForFolder(folder)
+                .subscribe(previewMap -> {
+                    synchronized (filePreviews) {
+                        previewMap.forEach((id, image) -> filePreviews.get(id).setValue(image));
+                    }
+                });
     }
 
     private FileEntry createFileEntry(FileApi file) {
-        var fileEntry = new FileEntry(file, asyncFileCrudEvents, editingFile);
+        ObjectProperty<Image> filePreview;
+        synchronized (filePreviews) {
+            filePreview = filePreviews.get(file.id());
+        }
+        var fileEntry = new FileEntry(file, asyncFileCrudEvents, editingFile, filePreview);
         var timesClicked = new AtomicInteger(0);
         var waitMillis = 250L;
         fileEntry.setOnMouseClicked(event -> {

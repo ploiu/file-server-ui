@@ -50,7 +50,7 @@ class FileEntryTests {
         fileReceiver = Mockito.mock();
         tags = Set.of(new TagApi(0L, "tag1"), new TagApi(1L, "tag2"), new TagApi(2L, "tag3"));
         var file = new FileApi(0, "name.txt", tags, 0L);
-        fileEntry = new FileEntry(file, fileReceiver, editingFile);
+        fileEntry = new FileEntry(file, fileReceiver, editingFile, new SimpleObjectProperty<>(null));
         stage.setScene(new Scene(new AnchorPane(fileEntry)));
         stage.show();
     }

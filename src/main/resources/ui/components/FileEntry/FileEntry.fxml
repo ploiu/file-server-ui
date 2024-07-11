@@ -2,14 +2,21 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="101.25" prefWidth="100.25"
+<?import javafx.scene.layout.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1"
          type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/17.0.2-ea" stylesheets="@FileEntry.css"
          onDragDetected="#onDragDetected">
-    <VBox>
-        <ImageView fx:id="icon" styleClass="image"/>
-        <Label fx:id="fileName" styleClass="text,file-name"/>
+    <VBox alignment="CENTER" fx:id="fileEntryContainer" styleClass="file-entry-container">
+        <AnchorPane.bottomAnchor>0</AnchorPane.bottomAnchor>
+        <AnchorPane.topAnchor>0</AnchorPane.topAnchor>
+        <AnchorPane.leftAnchor>0</AnchorPane.leftAnchor>
+        <AnchorPane.rightAnchor>0</AnchorPane.rightAnchor>
+        <HBox alignment="CENTER">
+            <ImageView fx:id="icon" styleClass="image"/>
+        </HBox>
+        <HBox alignment="CENTER">
+            <Label fx:id="fileName" styleClass="text"/>
+        </HBox>
     </VBox>
     <fx:define>
         <ContextMenu fx:id="fileMenu">

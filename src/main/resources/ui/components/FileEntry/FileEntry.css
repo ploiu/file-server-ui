@@ -1,7 +1,15 @@
 @import "../../theme.css";
 
-.image {
+.file-entry-container {
     -fx-cursor: hand;
+}
+
+.file-entry-container:hover {
+    -fx-background-color: -background-accent;
+}
+
+.image {
+    -fx-alignment: center;
 }
 
 .text {
@@ -11,4 +19,5 @@
     -fx-wrap-text: false;
     -fx-content-display: center;
     -fx-padding: 5px 0 0 0;
+    -fx-max-height: 10;
 }
