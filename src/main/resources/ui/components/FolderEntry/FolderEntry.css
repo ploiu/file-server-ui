@@ -5,10 +5,6 @@
     -fx-cursor: hand;
 }
 
-#icon {
-    -fx-image: url("../../../assets/img/folder.png");
-}
-
 .text {
     -fx-alignment: center;
     -fx-text-overrun: center-ellipsis;

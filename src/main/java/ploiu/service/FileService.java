@@ -88,7 +88,7 @@ public class FileService {
                 .map(map -> {
                     Map<Long, Image> images = new HashMap<>();
                     for (var entry : map.entrySet()) {
-                        var image = new Image(new ByteArrayInputStream(entry.getValue()), 100.25, 76.25, true, true);
+                        var image = new Image(new ByteArrayInputStream(entry.getValue()), 100, 100, true, true);
                         images.put(entry.getKey(), image);
                     }
                     return images;

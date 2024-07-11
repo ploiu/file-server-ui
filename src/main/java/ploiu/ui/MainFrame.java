@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.TilePane;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.client.FolderClient;
 import ploiu.event.*;
@@ -38,7 +39,7 @@ public class MainFrame extends AnchorPane {
     @FXML
     private FlowPane folderPane;
     @FXML
-    private FlowPane filePane;
+    private TilePane filePane;
     @FXML
     private NavBar navigationBar;
     @FXML

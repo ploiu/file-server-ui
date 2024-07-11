@@ -8,12 +8,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/theme.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -456,7 +464,7 @@
       <workItem from="1720206093496" duration="4370000" />
       <workItem from="1720295325211" duration="3784000" />
       <workItem from="1720640551355" duration="2452000" />
-      <workItem from="1720650719500" duration="1163000" />
+      <workItem from="1720650719500" duration="6543000" />
     </task>
     <servers />
   </component>

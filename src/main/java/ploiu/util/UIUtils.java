@@ -22,7 +22,7 @@ public final class UIUtils {
                 .parallelStream()
                 .forEach(mimeType -> {
                     var icon = MimeUtils.getFileIconForMimeType(mimeType);
-                    MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, 100.25, 76.25, true, true));
+                    MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, 100, 100, true, true));
                 });
     }
 

@@ -27,7 +27,7 @@
             <ScrollPane fx:id="scrollPane">
                 <VBox>
                     <FlowPane fx:id="folderPane" layoutX="13.0" layoutY="64.0" styleClass="item-row"/>
-                    <FlowPane fx:id="filePane" layoutX="13.0" layoutY="64.0" styleClass="item-row"/>
+                    <TilePane fx:id="filePane" layoutX="13.0" layoutY="64.0" styleClass="item-row" hgap="10" vgap="10"/>
                 </VBox>
             </ScrollPane>
         </VBox>
