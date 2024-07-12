@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,7 +25,6 @@ import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.CreateFileRequest;
-import ploiu.model.FileSearch;
 import ploiu.model.UpdateFileRequest;
 
 import java.io.BufferedReader;
@@ -143,32 +141,6 @@ public class FileClientTests {
         backend.enqueue(new MockResponse());
         fileClient.getFileContents(1).blockingGet();
         verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/1")), any(HttpClientResponseHandler.class));
-    }
-
-    @ParameterizedTest(name = "Test that [{0}] is rejected for search")
-    @NullAndEmptySource
-    @ValueSource(strings = {" ", "\n", "\r", "\t"})
-    void testSearchContentsThrowsExceptionIfQueryIsNullOrEmpty(String query) {
-        var e = assertThrows(Exception.class, () -> fileClient.search(FileSearch.fromInput(query)).blockingGet()).getCause();
-        assertInstanceOf(BadFileRequestException.class, e);
-        assertEquals("Query cannot be null or empty.", e.getMessage());
-
-    }
-
-    @Test
-    void testSearchContentsUsesGET() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
-        backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search(FileSearch.fromInput("whatever")).blockingGet();
-        verify(httpClient).execute(argThat(req -> req instanceof HttpGet), any(HttpClientResponseHandler.class));
-    }
-
-    @Test
-    void testSearchContentsUsesCorrectPath() throws Exception {
-        when(serverConfig.getBaseUrl()).thenReturn("http://localhost:" + backend.getPort());
-        backend.enqueue(new MockResponse().setBody("[]"));
-        fileClient.search(FileSearch.fromInput("whatever")).blockingGet();
-        verify(httpClient).execute(argThat(req -> req.getPath().equals("/files/metadata?search=whatever")), any(HttpClientResponseHandler.class));
     }
 
     @Test

@@ -9,19 +9,14 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/RetrofitFileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/RetrofitFileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/model/FileSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/model/FileSearch.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/MainFrame.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileEntry/FileEntry.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/NavBar/NavBar.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/theme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileClientTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,63 +85,63 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build file-server-ui.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ConfirmDialogTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ConfirmDialogTests.testBodyText.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ConfirmDialogTests.testWindowTitle.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FileEntryTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FileEntryTests.testDeleteFileClicked.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.FileEntryTests.testRenameFileFail.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FileEntryTests.testRenameFileOpensDialog.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FileEntryTests.testSaveAs.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.FileEntryTests.testSaveAsChosenDirectory.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FolderInfoTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FolderInfoTests.testDeleteBadConfirm.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FolderInfoTests.testRemoveTag.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FolderInfoTests.testRenameShowsModal.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.FolderInfoTests.testUpdateFailure.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.FolderInfoTests.testUpdateSuccess.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.FolderInfoTests.testViewShowsFolderFields.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.SearchBarTests.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.file-server-ui [:Main.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.file-server-ui [jpackage].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.file-server-ui [test].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.file-server-ui [tset].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;file__previews&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last.edited.regexp&quot;: &quot;test.a.txt&quot;,
-    &quot;last_directory_selection&quot;: &quot;/home/ploiu/git/file-server-ui/src/main/java/ploiu/client&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ploiu/git/file-server-ui/src/main/resources/ui/components&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.22936763&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Main.executor": "Run",
+    "Gradle.Build file-server-ui.executor": "Run",
+    "Gradle.ConfirmDialogTests.executor": "Run",
+    "Gradle.ConfirmDialogTests.testBodyText.executor": "Run",
+    "Gradle.ConfirmDialogTests.testWindowTitle.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.FileEntryTests.executor": "Run",
+    "Gradle.FileEntryTests.testDeleteFileClicked.executor": "Debug",
+    "Gradle.FileEntryTests.testRenameFileFail.executor": "Run",
+    "Gradle.FileEntryTests.testRenameFileOpensDialog.executor": "Run",
+    "Gradle.FileEntryTests.testSaveAs.executor": "Debug",
+    "Gradle.FileEntryTests.testSaveAsChosenDirectory.executor": "Run",
+    "Gradle.FolderInfoTests.executor": "Run",
+    "Gradle.FolderInfoTests.testDeleteBadConfirm.executor": "Run",
+    "Gradle.FolderInfoTests.testRemoveTag.executor": "Run",
+    "Gradle.FolderInfoTests.testRenameShowsModal.executor": "Debug",
+    "Gradle.FolderInfoTests.testUpdateFailure.executor": "Run",
+    "Gradle.FolderInfoTests.testUpdateSuccess.executor": "Debug",
+    "Gradle.FolderInfoTests.testViewShowsFolderFields.executor": "Debug",
+    "Gradle.SearchBarTests.executor": "Run",
+    "Gradle.file-server-ui [:Main.main()].executor": "Run",
+    "Gradle.file-server-ui [jpackage].executor": "Run",
+    "Gradle.file-server-ui [test].executor": "Run",
+    "Gradle.file-server-ui [tset].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "file__previews",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last.edited.regexp": "test.a.txt",
+    "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
+    "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/main/resources/ui/components",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.22936763",
+    "settings.editor.selected.configurable": "terminal",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;HTTP Request&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "HTTP Request"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReadonlyStatusHandler">
     <option name="SHOW_DIALOG" value="false" />
   </component>
@@ -196,7 +191,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="FileEntryTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -325,11 +320,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.FileEntryTests" />
         <item itemvalue="Gradle.FileEntryTests.testDeleteFileClicked" />
         <item itemvalue="Gradle.FileEntryTests.testRenameFileFail" />
         <item itemvalue="Gradle.FileEntryTests.testRenameFileOpensDialog" />
-        <item itemvalue="Gradle.file-server-ui [test]" />
       </list>
     </recent_temporary>
   </component>
@@ -464,7 +459,8 @@
       <workItem from="1720206093496" duration="4370000" />
       <workItem from="1720295325211" duration="3784000" />
       <workItem from="1720640551355" duration="2452000" />
-      <workItem from="1720650719500" duration="6543000" />
+      <workItem from="1720650719500" duration="6892000" />
+      <workItem from="1720737106377" duration="6524000" />
     </task>
     <servers />
   </component>

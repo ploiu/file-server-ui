@@ -6,6 +6,8 @@ import java.awt.Desktop;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ploiu.Constants.LIST_IMAGE_SIZE;
+
 /**
  * Created to offload the loading of file images off of the {@link ploiu.ui.FileEntry} class.
  * This should hold methods and fields to help the ui side of the application
@@ -22,7 +24,7 @@ public final class UIUtils {
                 .parallelStream()
                 .forEach(mimeType -> {
                     var icon = MimeUtils.getFileIconForMimeType(mimeType);
-                    MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, 100, 100, true, true));
+                    MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true));
                 });
     }
 

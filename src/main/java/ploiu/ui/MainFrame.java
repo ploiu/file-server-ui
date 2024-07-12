@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -12,6 +13,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.TilePane;
+import lombok.extern.slf4j.Slf4j;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.client.FolderClient;
 import ploiu.event.*;
@@ -24,12 +26,14 @@ import ploiu.service.FileService;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static ploiu.event.FolderEvent.Type.*;
 import static ploiu.util.DialogUtils.showErrorDialog;
 import static ploiu.util.UIUtils.desktop;
 
+@Slf4j
 public class MainFrame extends AnchorPane {
     private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
@@ -57,24 +61,22 @@ public class MainFrame extends AnchorPane {
     // search bar
     @SuppressWarnings("FieldCanBeLocal")
     private final AsyncEventReceiver<String> asyncSearchEvents = event -> {
-        fileService
-                .search(event.get())
-                .observeOn(JavaFxScheduler.platform())
-                .doOnError(e -> {
-                    if (e instanceof BadFileRequestException) {
-                        showErrorDialog(e.getMessage(), "Bad Search Text", null);
-                    } else if (e instanceof BadFileResponseException) {
-                        showErrorDialog(e.getMessage(), "Server Error", null);
-                    }
-                })
-                .doOnSuccess(files -> {
-                    this.folderPane.getChildren().clear();
-                    this.filePane.getChildren().clear();
-                    // TODO pull previews
-                    var fileEntries = files.stream().map(this::createFileEntry).toList();
-                    this.filePane.getChildren().addAll(fileEntries);
-                })
-                .subscribe();
+        synchronized (filePreviews) {
+            filePreviews.clear();
+        }
+        fileService.search(event.get()).observeOn(JavaFxScheduler.platform()).doOnError(e -> {
+            if (e instanceof BadFileRequestException) {
+                showErrorDialog(e.getMessage(), "Bad Search Text", null);
+            } else if (e instanceof BadFileResponseException) {
+                showErrorDialog(e.getMessage(), "Server Error", null);
+            }
+        }).doOnSuccess(files -> {
+            loadFilePreviews(files.stream().map(FileApi::id).toList());
+            this.folderPane.getChildren().clear();
+            this.filePane.getChildren().clear();
+            var fileEntries = files.stream().map(this::createFileEntry).toList();
+            this.filePane.getChildren().addAll(fileEntries);
+        }).subscribe();
         return Single.just(true);
     };
 
@@ -88,10 +90,7 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncFolderUpdateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
-            return folderClient
-                    .updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags()))
-                    .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
-                    .map(ignored -> true);
+            return folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags())).doOnSuccess(ignored -> asyncLoadFolder(currentFolder)).map(ignored -> true);
         } else {
             return Single.error(new UnsupportedOperationException("Only type UPDATE is supported for updateFolderEvent"));
         }
@@ -100,12 +99,7 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
             var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name(), fe.get().tags());
-            return folderClient
-                    .createFolder(req)
-                    .observeOn(JavaFxScheduler.platform())
-                    .doFinally(() -> asyncLoadFolder(currentFolder))
-                    .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to create folder", null))
-                    .map(ignored -> true);
+            return folderClient.createFolder(req).observeOn(JavaFxScheduler.platform()).doFinally(() -> asyncLoadFolder(currentFolder)).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to create folder", null)).map(ignored -> true);
         }
 
         return Single.error(new UnsupportedOperationException("asyncCreateFolderEvent requires FolderEvent of type CREATE"));
@@ -113,12 +107,7 @@ public class MainFrame extends AnchorPane {
 
     private final AsyncEventReceiver<FolderApi> asyncFolderDeleteEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == DELETE) {
-            return folderClient
-                    .deleteFolder(fe.get().id())
-                    .observeOn(JavaFxScheduler.platform())
-                    .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to delete folder", null))
-                    .doOnComplete(() -> asyncLoadFolder(currentFolder))
-                    .toSingle(() -> true);
+            return folderClient.deleteFolder(fe.get().id()).observeOn(JavaFxScheduler.platform()).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to delete folder", null)).doOnComplete(() -> asyncLoadFolder(currentFolder)).toSingle(() -> true);
         }
         return Single.error(new UnsupportedOperationException("asyncDeleteFolderEvent requires FolderEvent of type DELETE"));
     };
@@ -141,14 +130,11 @@ public class MainFrame extends AnchorPane {
             return Single.just(false);
         }
         if (event instanceof FileUploadEvent uploadEvent) {
-            return fileService.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file))
-                    .doAfterSuccess(result -> {
-                        if (uploadEvent.getFolderId() == currentFolder.id()) {
-                            asyncLoadFolder(currentFolder);
-                        }
-                    })
-                    .doOnError(e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null))
-                    .map(it -> it.id() > -1);
+            return fileService.createFile(new CreateFileRequest(uploadEvent.getFolderId(), file)).doAfterSuccess(result -> {
+                if (uploadEvent.getFolderId() == currentFolder.id()) {
+                    asyncLoadFolder(currentFolder);
+                }
+            }).doOnError(e -> showErrorDialog("Failed to upload file. Please check server logs for details", "Failed to upload file", null)).map(it -> it.id() > -1);
         } else {
             return Single.error(new UnsupportedOperationException("asyncFileUploadEvent only supports FileUploadEvent"));
         }
@@ -156,12 +142,10 @@ public class MainFrame extends AnchorPane {
 
     private final AsyncEventReceiver<FileObject> asyncFileDeleteEvent = event -> {
         if (event instanceof FileDeleteEvent) {
-            return fileService.deleteFile(event.get().id())
-                    .doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null))
-                    .andThen(Single.fromCallable(() -> {
-                        asyncLoadFolder(currentFolder);
-                        return true;
-                    }));
+            return fileService.deleteFile(event.get().id()).doOnError(e -> showErrorDialog("Failed to delete file [" + event.get().name() + ". Error details: " + e.getMessage(), "Failed to delete file", null)).andThen(Single.fromCallable(() -> {
+                asyncLoadFolder(currentFolder);
+                return true;
+            }));
         } else {
             return Single.error(new UnsupportedOperationException("asyncFileDeleteEvent only supports FileDeleteEvent"));
         }
@@ -176,10 +160,7 @@ public class MainFrame extends AnchorPane {
             } else {
                 throw new UnsupportedOperationException("Unknown subclass of FileObject");
             }
-            return fileService.updateFile(req)
-                    .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
-                    .doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null))
-                    .map(ignored -> true);
+            return fileService.updateFile(req).doOnSuccess(ignored -> asyncLoadFolder(currentFolder)).doOnError(e -> showErrorDialog("Failed to update file. Message is " + e.getMessage(), "Failed to update file", null)).map(ignored -> true);
         } else {
             return Single.error(new UnsupportedOperationException("asyncFileUpdateEvent only supports FileUpdateEvent"));
         }
@@ -193,10 +174,7 @@ public class MainFrame extends AnchorPane {
             }
             var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(file.name()::equalsIgnoreCase);
             var loadingModal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
-            var saveAction = fileService
-                    .saveAndGetFile(file, saveEvent.getDirectory())
-                    .doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null))
-                    .doFinally(loadingModal::close);
+            var saveAction = fileService.saveAndGetFile(file, saveEvent.getDirectory()).doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null)).doFinally(loadingModal::close);
             if (fileExists) {
                 var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> {
                     if (res.get()) {
@@ -250,33 +228,15 @@ public class MainFrame extends AnchorPane {
 
     private void asyncLoadFolder(FolderApi folder) {
         // pull the folder
-        var folderReq = folderClient
-                .getFolder(folder.id())
-                .doOnSuccess(this::setCurrentFolder)
-                .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null))
-                .observeOn(JavaFxScheduler.platform())
-                .toObservable()
-                .cache();
+        var folderReq = folderClient.getFolder(folder.id()).doOnSuccess(this::setCurrentFolder).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null)).observeOn(JavaFxScheduler.platform()).toObservable().cache();
         // handle child folders
-        folderReq
-                .doOnNext(ignored -> folderPane.getChildren().clear())
-                .flatMapIterable(FolderApi::folders)
-                .map(this::createFolderEntry)
-                .toList()
-                .doOnSuccess(this.folderPane.getChildren()::addAll)
-                .subscribe(ignored -> drawAddFolder());
+        folderReq.doOnNext(ignored -> folderPane.getChildren().clear()).flatMapIterable(FolderApi::folders).map(this::createFolderEntry).toList().doOnSuccess(this.folderPane.getChildren()::addAll).subscribe(ignored -> drawAddFolder());
 
         // handle child files
-        folderReq
-                .doOnNext(f -> {
-                    loadFilePreviews(f);
-                    filePane.getChildren().clear();
-                })
-                .flatMapIterable(FolderApi::files)
-                .map(this::createFileEntry)
-                .toList()
-                .doOnSuccess(filePane.getChildren()::addAll)
-                .subscribe(ignored -> drawAddFile());
+        folderReq.doOnNext(f -> {
+            loadFilePreviews(f);
+            filePane.getChildren().clear();
+        }).flatMapIterable(FolderApi::files).map(this::createFileEntry).toList().doOnSuccess(filePane.getChildren()::addAll).subscribe(ignored -> drawAddFile());
     }
 
     private void loadFilePreviews(FolderApi folder) {
@@ -292,13 +252,39 @@ public class MainFrame extends AnchorPane {
             }
         }
         //noinspection ResultOfMethodCallIgnored
-        fileService
-                .getFilePreviewsForFolder(folder)
-                .subscribe(previewMap -> {
-                    synchronized (filePreviews) {
-                        previewMap.forEach((id, image) -> filePreviews.get(id).setValue(image));
-                    }
-                });
+        fileService.getFilePreviewsForFolder(folder).subscribe(previewMap -> {
+            synchronized (filePreviews) {
+                previewMap.forEach((id, image) -> filePreviews.get(id).setValue(image));
+            }
+        });
+    }
+
+    private void loadFilePreviews(Collection<Long> fileIds) {
+        synchronized (filePreviews) {
+            filePreviews.clear();
+        }
+        if (fileIds.isEmpty()) {
+            return;
+        }
+        synchronized (filePreviews) {
+            for (var id : fileIds) {
+                filePreviews.put(id, new SimpleObjectProperty<>(null));
+            }
+        }
+
+        Collection<Maybe<Tuple2<Long, Image>>> images = new HashSet<>();
+        for (var id : fileIds) {
+            var req = fileService.getFilePreview(id)
+                    .map(img -> new Tuple2<>(id, img));
+
+            images.add(req);
+        }
+
+        Maybe.merge(images).toObservable()
+                .delay(1, TimeUnit.SECONDS)
+                .doOnNext(img -> filePreviews.get(img.first()).setValue(img.second()))
+                .subscribe(ignored -> {
+                }, e -> log.error("Failed to retrieve file preview for file", e));
     }
 
     private FileEntry createFileEntry(FileApi file) {
@@ -325,9 +311,7 @@ public class MainFrame extends AnchorPane {
                             // open the file
                             var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
                             modal.open();
-                            fileService.saveAndGetFile(file, null)
-                                    .doFinally(modal::close)
-                                    .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                            fileService.saveAndGetFile(file, null).doFinally(modal::close).subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
                         } else {
                             editingFile.set(file);
                         }
@@ -344,13 +328,11 @@ public class MainFrame extends AnchorPane {
         folderEntry.setOnMouseClicked(mouseEvent -> {
             // left click is used for entry, right click is used for modifying properties
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                Single.just(folder)
-                        .observeOn(JavaFxScheduler.platform())
-                        .subscribe(it -> {
-                            folderPane.getChildren().clear();
-                            navigationBar.push(it);
-                            asyncLoadFolder(it);
-                        });
+                Single.just(folder).observeOn(JavaFxScheduler.platform()).subscribe(it -> {
+                    folderPane.getChildren().clear();
+                    navigationBar.push(it);
+                    asyncLoadFolder(it);
+                });
             }
         });
         return folderEntry;
@@ -378,10 +360,8 @@ public class MainFrame extends AnchorPane {
         if (board.hasFiles() && !event.isConsumed()) {
             event.consume();
             event.acceptTransferModes(TransferMode.COPY);
-            dragNDropService.dropFiles(board.getFiles(), currentFolder, getScene().getWindow())
-                    .doOnComplete(() -> asyncLoadFolder(currentFolder))
-                    .subscribe(() -> {
-                    }, e -> showErrorDialog(e.getMessage(), "Failed to upload files", null));
+            dragNDropService.dropFiles(board.getFiles(), currentFolder, getScene().getWindow()).doOnComplete(() -> asyncLoadFolder(currentFolder)).subscribe(() -> {
+            }, e -> showErrorDialog(e.getMessage(), "Failed to upload files", null));
         }
     }
 
@@ -404,14 +384,11 @@ public class MainFrame extends AnchorPane {
                 folderInfo = null;
             } else if (f != null) {
                 // we don't contain detailed info about the folder unless we directly pull it
-                folderClient.getFolder(f.id())
-                        .observeOn(JavaFxScheduler.platform())
-                        .doOnSuccess(retrieved -> {
-                            this.folderInfo = new FolderInfo(retrieved, asyncFolderCrudEvents);
-                            this.getChildren().add(folderInfo);
-                            folderInfo.toFront();
-                        })
-                        .subscribe();
+                folderClient.getFolder(f.id()).observeOn(JavaFxScheduler.platform()).doOnSuccess(retrieved -> {
+                    this.folderInfo = new FolderInfo(retrieved, asyncFolderCrudEvents);
+                    this.getChildren().add(folderInfo);
+                    folderInfo.toFront();
+                }).subscribe();
 
             }
         });
@@ -421,15 +398,11 @@ public class MainFrame extends AnchorPane {
                 fileInfo = null;
             } else if (f != null) {
                 // make sure we have updated file information
-                fileService
-                        .getMetadata(f.id())
-                        .observeOn(JavaFxScheduler.platform())
-                        .doOnSuccess(retrieved -> {
-                            this.fileInfo = new FileInfo(retrieved, asyncFileCrudEvents);
-                            this.getChildren().add(fileInfo);
-                            fileInfo.toFront();
-                        })
-                        .subscribe();
+                fileService.getMetadata(f.id()).observeOn(JavaFxScheduler.platform()).doOnSuccess(retrieved -> {
+                    this.fileInfo = new FileInfo(retrieved, asyncFileCrudEvents);
+                    this.getChildren().add(fileInfo);
+                    fileInfo.toFront();
+                }).subscribe();
             }
         });
     }

@@ -1,6 +1,5 @@
 package ploiu.client;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.inject.Inject;
@@ -22,12 +21,14 @@ import org.apache.hc.core5.http.message.StatusLine;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
-import ploiu.model.*;
+import ploiu.model.ApiMessage;
+import ploiu.model.CreateFileRequest;
+import ploiu.model.FileApi;
+import ploiu.model.UpdateFileRequest;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
-import java.util.Collection;
 import java.util.Objects;
 
 @Slf4j
@@ -112,24 +113,6 @@ public class FileClient {
                 }
             });
         });
-    }
-
-    // I don't like this and would prefer an Observable<FileApi>...but I'd have to change the backend server to allow streaming and that would take a lot of effort
-    // also probably not worth it because of the small scale this project fits
-    public Single<Collection<FileApi>> search(FileSearch query) {
-        if (query.isEmpty()) {
-            return Single.error(new BadFileRequestException("Query cannot be null or empty."));
-        }
-        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata" + query.toQueryString());
-        return Single.fromCallable(() -> httpClient.execute(req, res -> {
-            var status = new StatusLine(res);
-            if (!status.isSuccessful()) {
-                var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-            return mapper.readValue(res.getEntity().getContent(), new TypeReference<Collection<FileApi>>() {
-            });
-        }));
     }
 
     public Single<FileApi> createFile(CreateFileRequest request) {

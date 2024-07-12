@@ -2,12 +2,14 @@ package ploiu.service;
 
 import com.google.inject.Inject;
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.scene.image.Image;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.ResponseBody;
 import org.jetbrains.annotations.Nullable;
 import ploiu.client.FileClient;
 import ploiu.client.RetrofitFileClient;
@@ -22,6 +24,7 @@ import java.util.Map;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
+import static ploiu.Constants.LIST_IMAGE_SIZE;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -52,7 +55,8 @@ public class FileService {
     }
 
     public Single<Collection<FileApi>> search(String query) {
-        return Single.just(query).map(FileSearch::fromInput).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMap(fileClient::search);
+        return Single.just(query).map(FileSearch::fromInput).observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
+                .flatMap(search -> retrofitFileClient.search(search.query(), search.tags()));
     }
 
     public Single<FileApi> getMetadata(long id) {
@@ -88,12 +92,22 @@ public class FileService {
                 .map(map -> {
                     Map<Long, Image> images = new HashMap<>();
                     for (var entry : map.entrySet()) {
-                        var image = new Image(new ByteArrayInputStream(entry.getValue()), 100, 100, true, true);
+                        var image = new Image(new ByteArrayInputStream(entry.getValue()), LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true);
                         images.put(entry.getKey(), image);
                     }
                     return images;
                 })
                 .single(Map.of());
+    }
+
+    public Maybe<Image> getFilePreview(Long id) {
+        return Observable.just(id)
+                .observeOn(Schedulers.io())
+                .flatMap(retrofitFileClient::getFilePreview)
+                .onErrorComplete()
+                .map(ResponseBody::bytes)
+                .map(data -> new Image(new ByteArrayInputStream(data), LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true))
+                .singleElement();
     }
 
 }
