@@ -1,9 +1,10 @@
 package ploiu.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 public record FolderApi(
@@ -19,5 +20,20 @@ public record FolderApi(
         Collection<FileApi> files,
         @NotNull
         Collection<TagApi> tags
-) implements ServerObject, Serializable {
+) implements ServerObject {
+    public String toJson() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static FolderApi fromJson(String json) {
+        try {
+            return new ObjectMapper().readValue(json, FolderApi.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

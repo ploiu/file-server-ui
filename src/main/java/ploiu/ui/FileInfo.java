@@ -140,7 +140,7 @@ public class FileInfo extends AnchorPane {
             updateFile(updatedFile);
             return true;
         };
-        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), confirmCallback, "Enter Tag Title"));
+        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), confirmCallback, "Add Tag").windowTitle("Enter Tag Title"));
     }
 
     @FXML

@@ -110,14 +110,16 @@ public class NavBar extends HBox {
                             event.consume();
                             dragNDropService.dropFiles(board.getFiles(), folder, getScene().getWindow())
                                     .subscribe();
-                        } else if (board.getContent(DataTypes.FOLDER) instanceof FolderApi droppedFolder) {
+                        } else if (board.getContent(DataTypes.FOLDER) instanceof String droppedFolder) {
                             event.consume();
-                            var newApi = new FolderApi(droppedFolder.id(), folder.id(), droppedFolder.name(), droppedFolder.path(), droppedFolder.folders(), droppedFolder.files(), droppedFolder.tags());
+                            var parsed = FolderApi.fromJson(droppedFolder);
+                            var newApi = new FolderApi(parsed.id(), folder.id(), parsed.name(), parsed.path(), parsed.folders(), parsed.files(), parsed.tags());
                             folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
                                     .subscribe();
-                        } else if (board.getContent(DataTypes.FILE) instanceof FileApi droppedFile) {
+                        } else if (board.getContent(DataTypes.FILE) instanceof String droppedFile) {
                             event.consume();
-                            var newApi = new FileApi(droppedFile.id(), droppedFile.name(), droppedFile.tags(), folder.id());
+                            var parsed = FileApi.fromJson(droppedFile);
+                            var newApi = new FileApi(parsed.id(), parsed.name(), parsed.tags(), folder.id());
                             fileReceiver.process(new FileUpdateEvent(newApi))
                                     .subscribe();
                         }
