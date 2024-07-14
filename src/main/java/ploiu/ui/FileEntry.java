@@ -37,6 +37,7 @@ public class FileEntry extends AnchorPane {
     private final AsyncEventReceiver<FileObject> fileReceiver;
     private final ObjectProperty<FileApi> editingFile;
     private final ObjectProperty<Image> previewImage;
+
     @FXML
     private ImageView icon;
     @FXML
@@ -128,7 +129,8 @@ public class FileEntry extends AnchorPane {
     @FXML
     private void onDragDetected(MouseEvent e) {
         var board = startDragAndDrop(TransferMode.MOVE);
-        board.setContent(Map.of(DataTypes.FILE, this.file));
+
+        board.setContent(Map.of(DataTypes.FILE, file.toJson()));
         e.consume();
     }
 
