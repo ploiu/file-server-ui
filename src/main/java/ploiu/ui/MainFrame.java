@@ -15,13 +15,13 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.TilePane;
 import lombok.extern.slf4j.Slf4j;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
-import ploiu.client.FolderClient;
 import ploiu.event.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.*;
 import ploiu.service.DragNDropService;
 import ploiu.service.FileService;
+import ploiu.service.FolderService;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import static ploiu.util.UIUtils.desktop;
 
 @Slf4j
 public class MainFrame extends AnchorPane {
-    private final FolderClient folderClient = App.INJECTOR.getInstance(FolderClient.class);
+    private final FolderService folderService = App.INJECTOR.getInstance(FolderService.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
     @FXML
@@ -90,7 +90,7 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncFolderUpdateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
             var folder = fe.get();
-            return folderClient.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags())).doOnSuccess(ignored -> asyncLoadFolder(currentFolder)).map(ignored -> true);
+            return folderService.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags())).doOnSuccess(ignored -> asyncLoadFolder(currentFolder)).map(ignored -> true);
         } else {
             return Single.error(new UnsupportedOperationException("Only type UPDATE is supported for updateFolderEvent"));
         }
@@ -99,7 +99,7 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
             var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name(), fe.get().tags());
-            return folderClient.createFolder(req).observeOn(JavaFxScheduler.platform()).doFinally(() -> asyncLoadFolder(currentFolder)).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to create folder", null)).map(ignored -> true);
+            return folderService.createFolder(req).observeOn(JavaFxScheduler.platform()).doFinally(() -> asyncLoadFolder(currentFolder)).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to create folder", null)).map(ignored -> true);
         }
 
         return Single.error(new UnsupportedOperationException("asyncCreateFolderEvent requires FolderEvent of type CREATE"));
@@ -107,7 +107,7 @@ public class MainFrame extends AnchorPane {
 
     private final AsyncEventReceiver<FolderApi> asyncFolderDeleteEvent = event -> {
         if (event instanceof FolderEvent fe && fe.getType() == DELETE) {
-            return folderClient.deleteFolder(fe.get().id()).observeOn(JavaFxScheduler.platform()).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to delete folder", null)).doOnComplete(() -> asyncLoadFolder(currentFolder)).toSingle(() -> true);
+            return folderService.deleteFolder(fe.get().id()).observeOn(JavaFxScheduler.platform()).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to delete folder", null)).doOnComplete(() -> asyncLoadFolder(currentFolder)).toSingle(() -> true);
         }
         return Single.error(new UnsupportedOperationException("asyncDeleteFolderEvent requires FolderEvent of type DELETE"));
     };
@@ -228,7 +228,7 @@ public class MainFrame extends AnchorPane {
 
     private void asyncLoadFolder(FolderApi folder) {
         // pull the folder
-        var folderReq = folderClient.getFolder(folder.id()).doOnSuccess(this::setCurrentFolder).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null)).observeOn(JavaFxScheduler.platform()).toObservable().cache();
+        var folderReq = folderService.getFolder(folder.id()).doOnSuccess(this::setCurrentFolder).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null)).observeOn(JavaFxScheduler.platform()).toObservable().cache();
         // handle child folders
         folderReq.doOnNext(ignored -> folderPane.getChildren().clear()).flatMapIterable(FolderApi::folders).map(this::createFolderEntry).toList().doOnSuccess(this.folderPane.getChildren()::addAll).subscribe(ignored -> drawAddFolder());
 
@@ -252,7 +252,7 @@ public class MainFrame extends AnchorPane {
             }
         }
         //noinspection ResultOfMethodCallIgnored
-        fileService.getFilePreviewsForFolder(folder).subscribe(previewMap -> {
+        folderService.getFilePreviewsForFolder(folder).subscribe(previewMap -> {
             synchronized (filePreviews) {
                 previewMap.forEach((id, image) -> filePreviews.get(id).setValue(image));
             }
@@ -384,7 +384,7 @@ public class MainFrame extends AnchorPane {
                 folderInfo = null;
             } else if (f != null) {
                 // we don't contain detailed info about the folder unless we directly pull it
-                folderClient.getFolder(f.id()).observeOn(JavaFxScheduler.platform()).doOnSuccess(retrieved -> {
+                folderService.getFolder(f.id()).observeOn(JavaFxScheduler.platform()).doOnSuccess(retrieved -> {
                     this.folderInfo = new FolderInfo(retrieved, asyncFolderCrudEvents);
                     this.getChildren().add(folderInfo);
                     folderInfo.toFront();

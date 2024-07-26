@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ploiu.client.FileClient;
+import ploiu.client.DeprecatedFileClient;
 import ploiu.model.FileApi;
 import ploiu.service.FileService;
 
@@ -29,7 +29,7 @@ public class FileServiceTests {
     private final File saveDir = new File("file_server_ui_test_temp_dir").getAbsoluteFile();
 
     @Mock
-    FileClient fileClient;
+    DeprecatedFileClient fileClient;
 
     @InjectMocks
     FileService fileService;

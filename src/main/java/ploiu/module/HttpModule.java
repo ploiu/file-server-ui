@@ -11,7 +11,8 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.message.BasicHeader;
-import ploiu.client.RetrofitFileClient;
+import ploiu.client.FileClient;
+import ploiu.client.FolderClient;
 import ploiu.client.TagClient;
 import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
@@ -26,6 +27,7 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 import static org.apache.hc.core5.http.HttpHeaders.ACCEPT;
 import static org.apache.hc.core5.http.HttpHeaders.AUTHORIZATION;
 
+@SuppressWarnings("unused")
 public class HttpModule extends AbstractModule {
 
     @Inject
@@ -74,7 +76,13 @@ public class HttpModule extends AbstractModule {
 
     @Inject
     @Provides
-    RetrofitFileClient retrofitFileClient(Retrofit retrofit) {
-        return retrofit.create(RetrofitFileClient.class);
+    FileClient retrofitFileClient(Retrofit retrofit) {
+        return retrofit.create(FileClient.class);
+    }
+
+    @Inject
+    @Provides
+    FolderClient retrofitFolderClient(Retrofit retrofit) {
+        return retrofit.create(FolderClient.class);
     }
 }

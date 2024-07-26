@@ -7,7 +7,6 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.stage.Window;
 import lombok.RequiredArgsConstructor;
-import ploiu.client.FolderClient;
 import ploiu.model.*;
 import ploiu.ui.LoadingModal;
 import ploiu.util.FolderApproximator;
@@ -19,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DragNDropService {
-    private final FolderClient folderClient;
+    private final FolderService folderService;
     private final FileService fileService;
 
     public Completable dropFiles(Collection<File> files, FolderApi targetFolder, Window currentWindow) {
@@ -83,6 +82,6 @@ public class DragNDropService {
 
     Single<FolderApi> uploadFolder(FolderApproximation approximation, FolderApi targetFolder) {
         var req = new FolderRequest(Optional.empty(), targetFolder.id(), approximation.self().getName(), targetFolder.tags());
-        return folderClient.createFolder(req);
+        return folderService.createFolder(req);
     }
 }

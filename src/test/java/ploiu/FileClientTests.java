@@ -20,7 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ploiu.client.FileClient;
+import ploiu.client.DeprecatedFileClient;
 import ploiu.config.ServerConfig;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
@@ -49,7 +49,7 @@ public class FileClientTests {
     ServerConfig serverConfig;
 
     @InjectMocks
-    FileClient fileClient;
+    DeprecatedFileClient fileClient;
 
     MockWebServer backend;
 
