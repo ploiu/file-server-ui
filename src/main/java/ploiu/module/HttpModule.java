@@ -11,6 +11,7 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.message.BasicHeader;
+import ploiu.client.ApiClient;
 import ploiu.client.FileClient;
 import ploiu.client.FolderClient;
 import ploiu.client.TagClient;
@@ -84,5 +85,11 @@ public class HttpModule extends AbstractModule {
     @Provides
     FolderClient retrofitFolderClient(Retrofit retrofit) {
         return retrofit.create(FolderClient.class);
+    }
+
+    @Inject
+    @Provides
+    ApiClient retrofitApiClient(Retrofit retrofit) {
+        return retrofit.create(ApiClient.class);
     }
 }

@@ -38,7 +38,12 @@ public class MimeUtils {
     public static String determineMimeType(String fileName) {
         var mimeType = URLConnection.guessContentTypeFromName(fileName);
         if (mimeType == null) {
-            return "unknown";
+            var split = fileName.toLowerCase().split("\\.");
+            var extension = split[split.length - 1];
+            return switch (fileName.toLowerCase()) {
+                case "stl" -> "model";
+                default -> "unknown";
+            };
         }
         return mimeType.split("/")[0];
     }
