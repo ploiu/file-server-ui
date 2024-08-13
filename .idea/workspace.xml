@@ -8,14 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/DeprecatedApiClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/ApiClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ApiClientTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ApiClientTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/DeprecatedApiClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/DeprecatedFileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/DeprecatedFileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +192,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.file-server-ui [test]">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="FileEntryTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -321,11 +321,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.FolderServiceTests" />
-        <item itemvalue="Gradle.FolderServiceTests.testGetFolderWithIdUsesCorrectPath" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.FileEntryTests" />
+        <item itemvalue="Gradle.FolderServiceTests.testGetFolderWithIdUsesCorrectPath" />
+        <item itemvalue="Gradle.FolderServiceTests" />
         <item itemvalue="Gradle.FileEntryTests.testDeleteFileClicked" />
+        <item itemvalue="Gradle.FileEntryTests" />
       </list>
     </recent_temporary>
   </component>
@@ -469,6 +469,10 @@
       <workItem from="1721563468125" duration="573000" />
       <workItem from="1722020822003" duration="2592000" />
       <workItem from="1722100318035" duration="2139000" />
+      <workItem from="1722215257747" duration="301000" />
+      <workItem from="1722813357262" duration="1572000" />
+      <workItem from="1723579279578" duration="121000" />
+      <workItem from="1723579415543" duration="1759000" />
     </task>
     <servers />
   </component>

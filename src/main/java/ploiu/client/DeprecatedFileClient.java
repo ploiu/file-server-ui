@@ -33,15 +33,13 @@ import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Inject)
+@Deprecated(forRemoval = true)
 public class DeprecatedFileClient {
     private final HttpClient httpClient;
     private final ServerConfig serverConfig;
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module());
 
     public Single<FileApi> getMetadata(long id) {
-        if (id < 0) {
-            return Single.error(new BadFileRequestException("Id cannot be negative."));
-        }
         var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata/" + id);
         return Single.fromCallable(() -> httpClient.execute(req, res -> {
             var status = new StatusLine(res);
@@ -56,9 +54,6 @@ public class DeprecatedFileClient {
     }
 
     public Completable deleteFile(long id) {
-        if (id < 0) {
-            return Completable.error(new BadFileRequestException("Id cannot be negative."));
-        }
         var req = new HttpDelete(serverConfig.getBaseUrl() + "/files/" + id);
         return Completable.fromCallable(() -> httpClient.execute(req, res -> {
             var status = new StatusLine(res);
@@ -73,9 +68,6 @@ public class DeprecatedFileClient {
     }
 
     public Single<ByteArrayInputStream> getFileContents(long id) {
-        if (id < 0) {
-            return Single.error(new BadFileRequestException("Id cannot be negative."));
-        }
         return Single.fromCallable(() -> {
             var req = new HttpGet(serverConfig.getBaseUrl() + "/files/" + id);
             return httpClient.execute(req, res -> {
@@ -91,12 +83,6 @@ public class DeprecatedFileClient {
     }
 
     public Single<FileApi> updateFile(UpdateFileRequest request) {
-        if (request.id() < 0) {
-            return Single.error(new BadFileRequestException("Id cannot be negative."));
-        }
-        if (request.name().isBlank()) {
-            return Single.error(new BadFileRequestException("Name cannot be blank."));
-        }
         var req = new HttpPut(serverConfig.getBaseUrl() + "/files");
         return Single.fromCallable(() -> {
             req.setEntity(new StringEntity(mapper.writeValueAsString(request)));
@@ -116,39 +102,6 @@ public class DeprecatedFileClient {
     }
 
     public Single<FileApi> createFile(CreateFileRequest request) {
-        var file = request.file();
-        Objects.requireNonNull(file, "File cannot be null.");
-        if (!file.exists()) {
-            return Single.error(new BadFileRequestException("The selected file does not exist."));
-        }
-        var splitName = file.getName().split("\\.");
-        var mimeType = URLConnection.guessContentTypeFromName(file.getName());
-        var multipart = MultipartEntityBuilder.create()
-                .setMode(HttpMultipartMode.STRICT)
-                .addBinaryBody("file", file, ContentType.create(mimeType == null ? "text/plain" : mimeType), file.getName().replace("(", "leftParenthese").replace(")", "rightParenthese"))
-                .addTextBody("folderId", String.valueOf(request.folderId()));
-        if (splitName.length > 1) {
-            // file has extension, add it
-            multipart.addTextBody("extension", splitName[splitName.length - 1]);
-        }
-        try (var built = multipart.build()) {
-            var req = new HttpPost(serverConfig.getBaseUrl() + "/files" + (request.force() ? "?force" : ""));
-            req.setEntity(built);
-            return Single.just(
-                            httpClient.execute(req, res -> {
-                                var status = new StatusLine(res);
-                                if (status.getStatusCode() != 201) {
-                                    var message = mapper.readValue(res.getEntity().getContent(), ApiMessage.class).message();
-                                    throw new BadFileResponseException(message);
-                                }
-                                // by returning the Single here, we prevent us from spamming the backend server all at once
-                                return Single.just(mapper.readValue(res.getEntity().getContent(), FileApi.class));
-                            })
-                    )
-                    .flatMap(it -> it);
-
-        } catch (IOException e) {
-            return Single.error(e);
-        }
+        throw new UnsupportedOperationException();
     }
 }

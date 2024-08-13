@@ -2,11 +2,10 @@ package ploiu.client;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import ploiu.model.FileApi;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.Collection;
 
@@ -17,4 +16,8 @@ public interface FileClient {
 
     @GET("/files/metadata")
     Single<Collection<FileApi>> search(@Query("search") String search, @Query("tags") Collection<String> tags);
+
+    @Multipart
+    @POST("/files")
+    Single<FileApi> createFile(@Part MultipartBody.Part file, @Part MultipartBody.Part extension, @Part MultipartBody.Part folderId);
 }

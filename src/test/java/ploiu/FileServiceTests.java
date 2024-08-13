@@ -46,10 +46,10 @@ public class FileServiceTests {
     }
 
     @Test
-    void testSaveAndGetFile_CACHE_DIR() throws Exception {
+    void testGetFile_Contents_CACHE_DIR() throws Exception {
         when(fileClient.getFileContents(anyLong()))
                 .thenReturn(Single.just(new ByteArrayInputStream("test".getBytes())));
-        var savedFile = fileService.saveAndGetFile(new FileApi(0, "test.txt", List.of(), null), null)
+        var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null), null)
                 .blockingGet();
         assertEquals(new File(CACHE_DIR), savedFile.getParentFile());
         // cache dir can have a lot of files, so append the file ID to help make it unique
@@ -62,10 +62,10 @@ public class FileServiceTests {
     }
 
     @Test
-    void testSaveAndGetFile() throws Exception {
+    void testGetFileContents() throws Exception {
         when(fileClient.getFileContents(anyLong()))
                 .thenReturn(Single.just(new ByteArrayInputStream("test".getBytes())));
-        var savedFile = fileService.saveAndGetFile(new FileApi(0, "test.txt", List.of(), null), saveDir)
+        var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null), saveDir)
                 .blockingGet();
         assertEquals(saveDir, savedFile.getParentFile());
         assertEquals("test.txt", savedFile.getName());

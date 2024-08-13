@@ -174,7 +174,7 @@ public class MainFrame extends AnchorPane {
             }
             var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(file.name()::equalsIgnoreCase);
             var loadingModal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
-            var saveAction = fileService.saveAndGetFile(file, saveEvent.getDirectory()).doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null)).doFinally(loadingModal::close);
+            var saveAction = fileService.getFileContents(file, saveEvent.getDirectory()).doOnError(e -> showErrorDialog("Failed to save file: " + e.getMessage(), "Failed to save file", null)).doFinally(loadingModal::close);
             if (fileExists) {
                 var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> {
                     if (res.get()) {
@@ -311,7 +311,7 @@ public class MainFrame extends AnchorPane {
                             // open the file
                             var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
                             modal.open();
-                            fileService.saveAndGetFile(file, null).doFinally(modal::close).subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
+                            fileService.getFileContents(file, null).doFinally(modal::close).subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
                         } else {
                             editingFile.set(file);
                         }
