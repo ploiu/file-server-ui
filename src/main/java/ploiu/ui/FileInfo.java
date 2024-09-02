@@ -177,7 +177,7 @@ public class FileInfo extends AnchorPane {
     void openClicked() {
         var modal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
         modal.open();
-        fileService.saveAndGetFile(file.get(), null)
+        fileService.getFileContents(file.get(), null)
                 .doFinally(modal::close)
                 .subscribe(desktop::open, e -> showErrorDialog("Failed to open file: " + e.getMessage(), "Failed to open file", null));
     }
