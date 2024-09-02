@@ -1,5 +1,6 @@
 package ploiu.client;
 
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
@@ -20,4 +21,7 @@ public interface FileClient {
     @Multipart
     @POST("/files")
     Single<FileApi> createFile(@Part MultipartBody.Part file, @Part MultipartBody.Part extension, @Part MultipartBody.Part folderId);
+
+    @GET("/files/metadata/{id}")
+    Maybe<FileApi> getMetadata(@Path("id") long id);
 }

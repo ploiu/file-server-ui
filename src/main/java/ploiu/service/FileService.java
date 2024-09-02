@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import ploiu.client.DeprecatedFileClient;
 import ploiu.client.FileClient;
 import ploiu.exception.BadFileRequestException;
+import ploiu.exception.BadFileResponseException;
 import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
 import ploiu.model.FileSearch;
@@ -80,7 +81,11 @@ public class FileService {
         if(id < 0) {
             return Single.error(new BadFileRequestException("Id cannot be negative."));
         }
-        return Single.just(id).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMap(deprecatedClient::getMetadata);
+        return Single.just(id)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMapMaybe(client::getMetadata)
+                .switchIfEmpty(Single.error(new BadFileResponseException("The file with the passed id could not be found.")));
     }
 
     public Completable deleteFile(long id) {

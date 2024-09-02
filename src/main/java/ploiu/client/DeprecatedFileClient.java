@@ -39,20 +39,6 @@ public class DeprecatedFileClient {
     private final ServerConfig serverConfig;
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new Jdk8Module());
 
-    public Single<FileApi> getMetadata(long id) {
-        var req = new HttpGet(serverConfig.getBaseUrl() + "/files/metadata/" + id);
-        return Single.fromCallable(() -> httpClient.execute(req, res -> {
-            var status = new StatusLine(res);
-            var body = res.getEntity().getContent();
-            if (status.isSuccessful()) {
-                return mapper.readValue(body, FileApi.class);
-            } else {
-                var message = mapper.readValue(body, ApiMessage.class).message();
-                throw new BadFileResponseException(message);
-            }
-        }));
-    }
-
     public Completable deleteFile(long id) {
         var req = new HttpDelete(serverConfig.getBaseUrl() + "/files/" + id);
         return Completable.fromCallable(() -> httpClient.execute(req, res -> {
@@ -99,9 +85,5 @@ public class DeprecatedFileClient {
                 }
             });
         });
-    }
-
-    public Single<FileApi> createFile(CreateFileRequest request) {
-        throw new UnsupportedOperationException();
     }
 }
