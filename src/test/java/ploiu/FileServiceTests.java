@@ -2,6 +2,8 @@ package ploiu;
 
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,14 +24,15 @@ import ploiu.model.UpdateFileRequest;
 import ploiu.service.FileService;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static ploiu.Constants.CACHE_DIR;
 
@@ -57,7 +60,7 @@ public class FileServiceTests {
     @Test
     void testGetFile_Contents_CACHE_DIR() throws Exception {
         when(fileClient.getFileContents(anyLong()))
-                .thenReturn(Single.just(new ByteArrayInputStream("test".getBytes())));
+                .thenReturn(Single.just(ResponseBody.create("test".getBytes(StandardCharsets.UTF_8), MediaType.get("text/plain"))));
         var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null), null)
                 .blockingGet();
         assertEquals(new File(CACHE_DIR), savedFile.getParentFile());
@@ -73,7 +76,7 @@ public class FileServiceTests {
     @Test
     void testGetFileContents() throws Exception {
         when(fileClient.getFileContents(anyLong()))
-                .thenReturn(Single.just(new ByteArrayInputStream("test".getBytes())));
+                .thenReturn(Single.just(ResponseBody.create("test".getBytes(StandardCharsets.UTF_8), MediaType.get("text/plain"))));
         var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null), saveDir)
                 .blockingGet();
         assertEquals(saveDir, savedFile.getParentFile());
@@ -87,7 +90,7 @@ public class FileServiceTests {
 
     @Test
     void testGetMetadataThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(Exception.class, () -> fileClient.getMetadata(-1).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileService.getMetadata(-1).blockingGet()).getCause();
         assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Id cannot be negative.", e.getMessage());
     }
@@ -101,13 +104,15 @@ public class FileServiceTests {
 
     @Test
     void testDeleteFileThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileService.deleteFile(-1).blockingAwait()).getCause();
+        var e = assertThrows(Exception.class, () -> fileService.deleteFile(-1).blockingAwait()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Id cannot be negative.", e.getMessage());
     }
 
     @Test
     void testGetFileContentsThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileService.getFileContents(-1).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileService.getFileContents(new FileApi(-1, "", List.of(), null), null).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Id cannot be negative.", e.getMessage());
     }
 
@@ -119,14 +124,20 @@ public class FileServiceTests {
 
     @Test
     void testCreateFileRequiresFileToExist() {
-        var e = assertThrows(BadFileRequestException.class, () -> fileService.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis()))).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileService.createFile(new CreateFileRequest(0, new File("bad file.bad file" + System.currentTimeMillis()))).blockingGet()).getCause();
+        assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("The selected file does not exist.", e.getMessage());
     }
 
     @Test
     @DisplayName("CreateFile does not pass trailing dot to client if no file extension is passed")
-    void testCreateFileWithoutExtensionNoTrailingDot() {
-        fail("unimplemented");
+    void testCreateFileWithoutExtensionNoTrailingDot() throws Exception {
+        var file = new File(saveDir.getAbsolutePath() + "/test_noExtension");
+        file.createNewFile();
+        var req = new CreateFileRequest(0, file);
+        when(fileClient.createFile(any(), any(), any())).thenReturn(Single.just(new FileApi(0, "", List.of(), null)));
+        fileService.createFile(req).blockingSubscribe();
+        verify(fileClient).createFile(any(), isNull(), any());
     }
 
     @EmptySource

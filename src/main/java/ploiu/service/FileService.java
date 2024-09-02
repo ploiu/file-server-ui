@@ -14,7 +14,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import org.jetbrains.annotations.Nullable;
-import ploiu.client.DeprecatedFileClient;
 import ploiu.client.FileClient;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
@@ -37,12 +36,12 @@ import static ploiu.Constants.LIST_IMAGE_SIZE;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FileService {
-    private final DeprecatedFileClient deprecatedClient;
     private final FileClient client;
 
     /**
      * saves the contents of the associated {@code fileApi to the disk and then returns its contents.
      * If the file is already on the disk, no call to the file server is made.
+     *
      * @param fileApi
      * @param directory
      * @return
@@ -62,10 +61,10 @@ public class FileService {
             // file name differs here because the cache dir could have a ton of files with the same name if we don't include the file id
             return new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
         }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMap(fsFile -> {
-            return deprecatedClient.getFileContents(fileApi.id()).observeOn(Schedulers.io()).map(contents -> {
+            return client.getFileContents(fileApi.id()).observeOn(Schedulers.io()).map(res -> {
                 //noinspection ResultOfMethodCallIgnored
                 fsFile.createNewFile();
-                Files.copy(contents, fsFile.toPath(), REPLACE_EXISTING);
+                Files.copy(res.byteStream(), fsFile.toPath(), REPLACE_EXISTING);
                 return fsFile;
             });
         });
@@ -78,7 +77,7 @@ public class FileService {
     }
 
     public Single<FileApi> getMetadata(long id) {
-        if(id < 0) {
+        if (id < 0) {
             return Single.error(new BadFileRequestException("Id cannot be negative."));
         }
         return Single.just(id)
@@ -92,7 +91,7 @@ public class FileService {
         if (id < 0) {
             return Completable.error(new BadFileRequestException("Id cannot be negative."));
         }
-        return Single.just(id).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMapCompletable(deprecatedClient::deleteFile);
+        return Single.just(id).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMapCompletable(client::deleteFile);
     }
 
     public Single<FileApi> updateFile(UpdateFileRequest request) {
@@ -102,7 +101,7 @@ public class FileService {
         if (request.name().isBlank()) {
             return Single.error(new BadFileRequestException("Name cannot be blank."));
         }
-        return Single.just(request).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMap(deprecatedClient::updateFile);
+        return Single.just(request).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMap(client::updateFile);
     }
 
     public Single<FileApi> createFile(CreateFileRequest request) {
@@ -119,7 +118,7 @@ public class FileService {
         var fileName = file.getName().replace("(", "leftParenthese").replace(")", "rightParenthese");
         var filePart = MultipartBody.Part.createFormData("file", fileName, RequestBody.create(file, MediaType.parse(mimeType)));
         var folderPart = MultipartBody.Part.createFormData("folderId", String.valueOf(request.folderId()));
-        return client.createFile(filePart, extension != null ?  MultipartBody.Part.createFormData("extension", extension) : null, folderPart)
+        return client.createFile(filePart, extension != null ? MultipartBody.Part.createFormData("extension", extension) : null, folderPart)
                 .subscribeOn(Schedulers.io());
     }
 

@@ -1,11 +1,13 @@
 package ploiu.client;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import ploiu.model.FileApi;
+import ploiu.model.UpdateFileRequest;
 import retrofit2.http.*;
 
 import java.util.Collection;
@@ -24,4 +26,13 @@ public interface FileClient {
 
     @GET("/files/metadata/{id}")
     Maybe<FileApi> getMetadata(@Path("id") long id);
+
+    @GET("/files/{id}")
+    Single<ResponseBody> getFileContents(@Path("id") long id);
+
+    @PUT("/files")
+    Single<FileApi> updateFile(@Body UpdateFileRequest file);
+
+    @DELETE("/files/{id}")
+    Completable deleteFile(@Path("id") long id);
 }
