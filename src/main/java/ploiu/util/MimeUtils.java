@@ -40,7 +40,7 @@ public class MimeUtils {
         if (mimeType == null) {
             var split = fileName.toLowerCase().split("\\.");
             var extension = split[split.length - 1];
-            return switch (fileName.toLowerCase()) {
+            return switch (extension.toLowerCase()) {
                 case "stl" -> "model";
                 default -> "unknown";
             };
