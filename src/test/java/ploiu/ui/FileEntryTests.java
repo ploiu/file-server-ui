@@ -49,7 +49,7 @@ class FileEntryTests {
         // can't use annotation-based mocking for ui tests, because mocks aren't initialized at this point
         fileReceiver = Mockito.mock();
         tags = Set.of(new TagApi(0L, "tag1"), new TagApi(1L, "tag2"), new TagApi(2L, "tag3"));
-        var file = new FileApi(0, "name.txt", tags, 0L);
+        var file = new FileApi(0, "name.txt", tags, 0L, null, null, null);
         fileEntry = new FileEntry(file, fileReceiver, editingFile, new SimpleObjectProperty<>(null));
         stage.setScene(new Scene(new AnchorPane(fileEntry)));
         stage.show();
@@ -120,7 +120,7 @@ class FileEntryTests {
 
         verify(fileReceiver).process(argThat(it -> {
             if (it instanceof FileUpdateEvent evt) {
-                return evt.get().equals(new FileApi(0L, "renamed.txt", tags, 0L));
+                return evt.get().equals(new FileApi(0L, "renamed.txt", tags, 0L, null, null, null));
             } else {
                 return false;
             }

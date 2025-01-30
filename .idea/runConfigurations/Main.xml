@@ -5,7 +5,7 @@
     <option name="PROGRAM_PARAMETERS" value="-Xmx=1G" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="ploiu.*" />
+        <option name="PATTERN" value="ploiu.search.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
