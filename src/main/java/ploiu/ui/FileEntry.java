@@ -82,7 +82,7 @@ public class FileEntry extends AnchorPane {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
-                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName, file.tags(), file.folderId())))
+                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName, file.tags(), file.folderId(), null, null, null)))
                         .onErrorResumeNext(e -> {
                             showErrorDialog(e.getMessage(), "Failed to Update File", null);
                             return Single.never();

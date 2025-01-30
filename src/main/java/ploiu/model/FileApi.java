@@ -1,5 +1,6 @@
 package ploiu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
@@ -7,8 +8,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public record FileApi(long id, @NotNull String name, @NotNull Collection<TagApi> tags,
-                      @Nullable Long folderId) implements FileObject {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record FileApi(
+        long id,
+        @NotNull String name,
+        @NotNull Collection<TagApi> tags,
+        @Nullable Long folderId,
+        // size, dateCreated, and fileType are never null when pulled back, but are read only, so passing them in create
+        // or update events is useless. Therefore, `null` can be passed instead
+        @Nullable Long size,
+        @Nullable String dateCreated,
+        @Nullable String fileType
+) implements FileObject {
 
     public String toJson() {
         try {

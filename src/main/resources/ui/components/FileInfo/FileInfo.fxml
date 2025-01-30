@@ -10,23 +10,26 @@
     <VBox fx:id="rootPane"
           AnchorPane.rightAnchor="0"
           styleClass="info-pane" viewOrder="2">
-        <!--info labels-->
-        <VBox fx:id="fileInfo">
-            <VBox.margin>
-                <Insets left="10"/>
-            </VBox.margin>
-            <!--<Label fx:id="sizeLabel" styleClass="text" />-->
-            <!--<Label fx:id="dateCreatedLabel" styleClass="text" />-->
-        </VBox>
         <!--file icon, action buttons-->
-        <AnchorPane fx:id="iconButtonWrapper">
-            <ImageView fx:id="fileIcon" preserveRatio="true" AnchorPane.topAnchor="12"/>
-            <!--buttons-->
-            <HBox fx:id="buttonWrapper"
-                  AnchorPane.leftAnchor="138"
-                  AnchorPane.rightAnchor="10"
-                  AnchorPane.topAnchor="43"
-                  AnchorPane.bottomAnchor="0">
+        <VBox fx:id="iconButtonWrapper">
+            <padding>
+                <Insets top="20" right="20" left="20" bottom="20"/>
+            </padding>
+            <!--icon, title, and metadata-->
+            <HBox>
+                <ImageView fx:id="fileIcon" preserveRatio="true"/>
+                <!--title and metadata-->
+                <VBox>
+                    <Label fx:id="fileTitle" styleClass="text"/>
+                    <Label fx:id="metadata" styleClass="text"/>
+                </VBox>
+            </HBox>
+
+            <!--open, rename, delete buttons-->
+            <HBox fx:id="buttonWrapper">
+                <VBox.margin>
+                    <Insets top="20"/>
+                </VBox.margin>
                 <Button fx:id="openButton"
                         styleClass="btn,btn-primary"
                         text="Open"
@@ -48,21 +51,19 @@
                     </HBox.margin>
                 </Button>
             </HBox>
-            <Button
-                    AnchorPane.leftAnchor="138"
-                    AnchorPane.rightAnchor="10"
-                    AnchorPane.topAnchor="93"
-                    AnchorPane.bottomAnchor="0"
-                    text="Save"
-                    onAction="#saveClicked"
-                    styleClass="btn,btn-primary"/>
-        </AnchorPane>
-        <!--file title-->
-        <Label fx:id="fileTitle" styleClass="text">
-            <VBox.margin>
-                <Insets left="10" top="10"/>
-            </VBox.margin>
-        </Label>
+            <!--save button-->
+            <HBox>
+                <VBox.margin>
+                    <Insets top="20"/>
+                </VBox.margin>
+                <Button
+                        text="Save"
+                        onAction="#saveClicked"
+                        HBox.hgrow="ALWAYS"
+                        maxWidth="Infinity"
+                        styleClass="btn,btn-primary"/>
+            </HBox>
+        </VBox>
         <!--tags-->
         <HBox>
             <VBox.margin>

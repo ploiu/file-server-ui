@@ -20,6 +20,7 @@ import ploiu.event.*;
 import ploiu.model.*;
 import ploiu.service.FileService;
 import ploiu.util.MimeUtils;
+import ploiu.util.UIUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,13 +46,15 @@ public class FileInfo extends AnchorPane {
     @FXML
     private FlowPane tagList;
     @FXML
-    private AnchorPane iconButtonWrapper;
+    private VBox iconButtonWrapper;
     @FXML
     private HBox buttonWrapper;
     @FXML
     private ImageView fileIcon;
     @FXML
     private Button openButton;
+    @FXML
+    private Label metadata;
 
     public FileInfo(FileApi file, AsyncEventReceiver<FileObject> fileReceiver) {
         this.file.addListener(this::onFileChanged);
@@ -94,13 +97,14 @@ public class FileInfo extends AnchorPane {
         var f = file.get();
         var updatedTags = new ArrayList<>(f.tags());
         updatedTags.remove(tag);
-        var updatedFile = new FileApi(f.id(), f.name(), updatedTags, f.folderId());
+        var updatedFile = new FileApi(f.id(), f.name(), updatedTags, f.folderId(), f.size(), f.dateCreated(), f.fileType());
         updateFile(updatedFile);
     }
 
     @FXML
     void initialize() {
         this.fileTitle.setText(file.get().name());
+        this.metadata.setText(buildMetadataString());
         setLayoutX(0);
         buttonSizeHandler();
         Platform.runLater(() -> {
@@ -115,6 +119,12 @@ public class FileInfo extends AnchorPane {
                 updateWidth(newWidth.doubleValue());
             });
         });
+    }
+
+    private String buildMetadataString() {
+        return "Size: " + UIUtils.convertSizeToBytes(file.get().size()) + "\n"
+                + "Date Created: " + file.get().dateCreated() + "\n"
+                + "Type: " + file.get().fileType();
     }
 
     private void updateFile(FileApi updatedFile) {
@@ -136,7 +146,7 @@ public class FileInfo extends AnchorPane {
             var f = file.get();
             var tags = new HashSet<>(f.tags());
             tags.add(new TagApi(null, res.get()));
-            var updatedFile = new FileApi(f.id(), f.name(), tags, f.folderId());
+            var updatedFile = new FileApi(f.id(), f.name(), tags, f.folderId(), f.size(), f.dateCreated(), f.fileType());
             updateFile(updatedFile);
             return true;
         };
@@ -149,7 +159,7 @@ public class FileInfo extends AnchorPane {
             var val = e.get();
             if (val != null && !val.isBlank()) {
                 var old = file.get();
-                var newFile = new FileApi(old.id(), val, old.tags(), old.folderId());
+                var newFile = new FileApi(old.id(), val, old.tags(), old.folderId(), old.size(), old.dateCreated(), old.fileType());
                 updateFile(newFile);
                 return true;
             }

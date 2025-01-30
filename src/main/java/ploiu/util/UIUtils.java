@@ -28,6 +28,28 @@ public final class UIUtils {
                 });
     }
 
+    public static String convertSizeToBytes(Long bytes) {
+        var kib = 1024f;
+        var mib = kib * 1024f;
+        var gib = mib * 1024f;
+        var tib = gib * 1024f;
+        var pib = tib * 1024f;
+        if (bytes < kib) {
+            return bytes + " bytes";
+        } else if (bytes < mib) {
+            return String.format("%.1f KiB", bytes / kib);
+        } else if (bytes < gib) {
+            return String.format("%.1f MiB", bytes / mib);
+        } else if (bytes < tib) {
+            return String.format("%.1f GiB", bytes / gib);
+        } else if (bytes < pib) {
+            return String.format("%.1f TiB", bytes / tib);
+        } else {
+            // no way will there ever be 1 singular file that large
+            return String.format("%.1f PiB", bytes / pib);
+        }
+    }
+
     private UIUtils() {
     }
 }
