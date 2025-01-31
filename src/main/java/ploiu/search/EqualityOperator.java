@@ -20,7 +20,7 @@ public enum EqualityOperator {
     }
 
     public static EqualityOperator parse(String op) {
-        return switch(op.trim()) {
+        return switch (op.trim()) {
             case "<" -> LT;
             case ">" -> GT;
             case "=", "==", "===" -> EQ;

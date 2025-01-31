@@ -34,5 +34,4 @@ open module file.server.ui.main {
     exports ploiu.config;
     exports ploiu.exception;
     exports ploiu.model;
-    exports ploiu.search to javafx.graphics;
 }
