@@ -1,6 +1,6 @@
 package ploiu.search;
 
-enum TokenTypes {
+public enum TokenTypes {
     /**
      * start of an attribute portion ("@")
      */

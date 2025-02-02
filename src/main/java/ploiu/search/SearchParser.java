@@ -17,6 +17,7 @@ public final class SearchParser {
      * @return
      */
     public static Search parse(String search) {
+        search = search.trim().replaceAll(" {2,}", " ");
         var tokens = tokenize(search);
         // searchText is always just gonna be a concatenation of normal text so it's ok to have 1 dedicated to it
         var searchText = new StringBuilder();
@@ -31,7 +32,7 @@ public final class SearchParser {
                 index = handleTagTokens(tokens, index, builder);
                 tags.add(builder.toString());
             } else if (current.type() == TokenTypes.ATTRIBUTE_START) {
-                var builder = new Attribute.AttributeBuilder();
+                var builder = Attribute.builder();
                 index = handleAttributeTokens(tokens, index, builder);
                 attributes.add(builder.build());
             } else {
