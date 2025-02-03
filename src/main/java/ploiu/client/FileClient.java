@@ -28,6 +28,7 @@ public interface FileClient {
     @GET("/files/metadata/{id}")
     Maybe<FileApi> getMetadata(@Path("id") long id);
 
+    @Streaming
     @GET("/files/{id}")
     Single<ResponseBody> getFileContents(@Path("id") long id);
 

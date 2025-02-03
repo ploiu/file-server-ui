@@ -60,13 +60,18 @@ public class FileService {
             new File(CACHE_DIR).mkdirs();
             // file name differs here because the cache dir could have a ton of files with the same name if we don't include the file id
             return new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
-        }).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).flatMap(fsFile -> {
-            return client.getFileContents(fileApi.id()).observeOn(Schedulers.io()).map(res -> {
-                //noinspection ResultOfMethodCallIgnored
-                fsFile.createNewFile();
-                Files.copy(res.byteStream(), fsFile.toPath(), REPLACE_EXISTING);
-                return fsFile;
-            });
+        })
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .flatMap(fsFile -> {
+                return client.getFileContents(fileApi.id())
+                    .observeOn(Schedulers.io())
+                    .map(res -> {
+                    //noinspection ResultOfMethodCallIgnored
+                    fsFile.createNewFile();
+                    Files.copy(res.byteStream(), fsFile.toPath(), REPLACE_EXISTING);
+                    return fsFile;
+                });
         });
 
     }

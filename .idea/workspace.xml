@@ -9,20 +9,13 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/search/Attribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/search/Attribute.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/search/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/search/Search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/search/SearchParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/search/SearchParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/img/.xdp-application.png-xX0Mv2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/img/multipart.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/search/SearchParserTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/search/SearchParserTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FolderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FolderService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,19 +137,19 @@
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "file-metadata",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last.edited.regexp": "1kb",
     "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
-    "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/main/resources/ui/components",
+    "last_opened_file_path": "/Users/clanglitz/Development/file-server-ui/src/main/resources",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
     "settings.editor.selected.configurable": "preferences.pluginManager",
@@ -181,6 +174,7 @@
       <recent name="ploiu.event" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/resources/ui/components" />
       <recent name="$PROJECT_DIR$/src/test/java/ploiu" />
       <recent name="$PROJECT_DIR$/src/test/resources" />
@@ -224,7 +218,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.FileEntryTests.testRenameFileConfirm">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="FileEntryTests.testRenameFileConfirm" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -362,8 +356,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
       </set>
     </attachedChunks>
   </component>
@@ -514,6 +508,7 @@
       <workItem from="1738277061614" duration="8383000" />
       <workItem from="1738448278538" duration="14357000" />
       <workItem from="1738538119144" duration="9013000" />
+      <workItem from="1738612100375" duration="2738000" />
     </task>
     <servers />
   </component>
@@ -547,6 +542,24 @@
           </properties>
           <option name="timeStamp" value="9" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/App.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java</url>
+          <line>48</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
