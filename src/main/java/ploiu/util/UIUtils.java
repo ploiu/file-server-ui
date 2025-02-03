@@ -20,11 +20,11 @@ public final class UIUtils {
 
     // load all the icons into memory on application start, instead of on the fly
     public static void init() {
-        MimeUtils.MIME_TYPES
+        MimeUtils.FILE_TYPES
                 .parallelStream()
-                .forEach(mimeType -> {
-                    var icon = MimeUtils.getFileIconForMimeType(mimeType);
-                    MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true));
+                .forEach(fileType -> {
+                    var icon = MimeUtils.getFileIconForType(fileType.toLowerCase());
+                    MIME_IMAGE_MAPPING.put(fileType.toLowerCase(), new Image(icon, LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true));
                 });
     }
 

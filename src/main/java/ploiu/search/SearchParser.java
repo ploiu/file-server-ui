@@ -2,7 +2,6 @@ package ploiu.search;
 
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * Parses a string input by the user into a search object that represents the type of search the backend can understand
@@ -41,7 +40,7 @@ public final class SearchParser {
             }
         }
         var cleanedText = searchText.toString().trim().replaceAll(" +", " ");
-        return new Search(cleanedText.isEmpty() ? Optional.empty() : Optional.of(cleanedText), tags, attributes);
+        return new Search(cleanedText, tags, attributes);
     }
 
     /**

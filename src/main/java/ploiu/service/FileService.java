@@ -19,8 +19,8 @@ import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.CreateFileRequest;
 import ploiu.model.FileApi;
-import ploiu.model.FileSearch;
 import ploiu.model.UpdateFileRequest;
+import ploiu.search.SearchParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -71,9 +71,10 @@ public class FileService {
 
     }
 
-    public Single<Collection<FileApi>> search(String query) {
-        return Single.just(query).map(FileSearch::fromInput).observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
-                .flatMap(search -> client.search(search.query(), search.tags()));
+    public Single<Collection<FileApi>> search(String input) {
+        var parsed = SearchParser.parse(input);
+        return client.search(parsed.text(), parsed.tags(), parsed.attributes())
+                .subscribeOn(Schedulers.io());
     }
 
     public Single<FileApi> getMetadata(long id) {

@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -60,7 +61,7 @@ public class FileInfo extends AnchorPane {
         this.file.addListener(this::onFileChanged);
         this.file.setValue(file);
         this.fileReceiver = fileReceiver;
-        this.iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(MimeUtils.determineMimeType(file.name()));
+        this.iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(file.fileType().toLowerCase());
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileInfo/FileInfo.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -78,7 +79,7 @@ public class FileInfo extends AnchorPane {
         Platform.runLater(() -> {
             tagList.getChildren().clear();
             fileTitle.setText(newFile.name());
-            iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(MimeUtils.determineMimeType(newFile.name()));
+            iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(newFile.fileType().toLowerCase());
             var image = new Image(iconPathLocation, 128, 128, true, true);
             fileIcon.setImage(image);
             var tags = newFile.tags();
@@ -108,6 +109,7 @@ public class FileInfo extends AnchorPane {
         setLayoutX(0);
         buttonSizeHandler();
         Platform.runLater(() -> {
+            //set default file icon before going to fetch file preview
             var image = new Image(iconPathLocation, 128, 128, true, true);
             fileIcon.setImage(image);
             minWidthProperty().bind(getScene().widthProperty());
@@ -119,6 +121,11 @@ public class FileInfo extends AnchorPane {
                 updateWidth(newWidth.doubleValue());
             });
         });
+        // try and fetch actual file preview
+        fileService
+                .getFilePreview(file.get().id())
+                .subscribeOn(Schedulers.io())
+                .subscribe(img -> Platform.runLater(() -> fileIcon.setImage(img)), err -> {/* no op - no icon */});
     }
 
     private String buildMetadataString() {
@@ -165,7 +172,7 @@ public class FileInfo extends AnchorPane {
             }
             return false;
         };
-        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), callback, "Rename File"));
+        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), callback, "Rename File").initialText(file.get().name()));
     }
 
     @FXML

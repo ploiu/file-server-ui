@@ -63,7 +63,7 @@ public final class Attribute {
         if ("fileSize".equals(this.field)) {
             return handleFileSizeByteAlias(value);
         }
-        return value;
+        return value.toLowerCase();
     }
 
     private String handleFileSizeByteAlias(String value) {

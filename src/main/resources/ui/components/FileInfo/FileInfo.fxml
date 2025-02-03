@@ -20,6 +20,9 @@
                 <ImageView fx:id="fileIcon" preserveRatio="true"/>
                 <!--title and metadata-->
                 <VBox>
+                    <padding>
+                        <Insets left="20"/>
+                    </padding>
                     <Label fx:id="fileTitle" styleClass="text"/>
                     <Label fx:id="metadata" styleClass="text"/>
                 </VBox>
