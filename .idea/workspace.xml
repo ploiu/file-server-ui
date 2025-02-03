@@ -9,12 +9,20 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/DeprecatedFileClient.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/search/Attribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/search/Attribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/search/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/search/Search.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/search/SearchParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/search/SearchParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/FileServiceTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/MimeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/util/UIUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/img/.xdp-application.png-xX0Mv2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/img/multipart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FileInfo/FileInfo.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/search/SearchParserTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/search/SearchParserTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,10 +61,11 @@
         <option value="FxmlFile" />
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="JUnit5 Test Class" />
-        <option value="Record" />
         <option value="Interface" />
+        <option value="Record" />
+        <option value="Enum" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -87,13 +96,16 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.Main.executor": "Run",
+    "Gradle.AttributeTests.executor": "Run",
     "Gradle.Build file-server-ui.executor": "Run",
     "Gradle.ConfirmDialogTests.executor": "Run",
     "Gradle.ConfirmDialogTests.testBodyText.executor": "Run",
     "Gradle.ConfirmDialogTests.testWindowTitle.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
+    "Gradle.EqualityOperatorTests.executor": "Run",
     "Gradle.FileEntryTests.executor": "Run",
     "Gradle.FileEntryTests.testDeleteFileClicked.executor": "Debug",
+    "Gradle.FileEntryTests.testRenameFileConfirm.executor": "Debug",
     "Gradle.FileEntryTests.testRenameFileFail.executor": "Run",
     "Gradle.FileEntryTests.testRenameFileOpensDialog.executor": "Run",
     "Gradle.FileEntryTests.testSaveAs.executor": "Debug",
@@ -111,7 +123,18 @@
     "Gradle.FolderServiceTests.executor": "Run",
     "Gradle.FolderServiceTests.testGetFolderWithIdUsesCorrectPath.executor": "Run",
     "Gradle.SearchBarTests.executor": "Run",
+    "Gradle.SearchParserTests.executor": "Run",
+    "Gradle.SearchParserTests.testParseAttributes.executor": "Run",
+    "Gradle.SearchParserTests.testParseFullThing.executor": "Run",
+    "Gradle.SearchParserTests.testParseGetsEntireSearch.executor": "Run",
+    "Gradle.SearchParserTests.testParseHandlesNoSearch.executor": "Run",
+    "Gradle.SearchParserTests.testParseMultipleTags.executor": "Run",
+    "Gradle.SearchParserTests.testParseSingleTag.executor": "Run",
+    "Gradle.SearchParserTests.testParseStripsExtraSpacesFromSearch.executor": "Run",
     "Gradle.file-server-ui [:Main.main()].executor": "Run",
+    "Gradle.file-server-ui [:ploiu.Main.main()].executor": "Run",
+    "Gradle.file-server-ui [build -XskipTests=true].executor": "Run",
+    "Gradle.file-server-ui [build].executor": "Run",
     "Gradle.file-server-ui [jpackage].executor": "Run",
     "Gradle.file-server-ui [test].executor": "Run",
     "Gradle.file-server-ui [tset].executor": "Run",
@@ -121,10 +144,10 @@
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "remove__apache__http__client",
+    "git-widget-placeholder": "file-metadata",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last.edited.regexp": "test.a.txt",
+    "last.edited.regexp": "1kb",
     "last_directory_selection": "/home/ploiu/git/file-server-ui/src/main/java/ploiu/client",
     "last_opened_file_path": "/home/ploiu/git/file-server-ui/src/main/resources/ui/components",
     "list.type.of.created.stylesheet": "CSS",
@@ -136,11 +159,15 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.22936763",
-    "settings.editor.selected.configurable": "editing.templates",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ],
     "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "SQLite",
       "HTTP Request"
     ]
   }
@@ -165,6 +192,7 @@
       <recent name="ploiu.ui.DataTypes" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="ploiu.search" />
       <recent name="ploiu.ui" />
       <recent name="ploiu.model" />
       <recent name="ploiu.service" />
@@ -184,18 +212,20 @@
       <command value="gradlew jlink" />
       <command value="open File Server Ui Android" />
       <command value="gradlew clean build" />
-      <command value="gradlew build" />
       <command value="gradlew help --scan" />
       <command value="gradle help --warning-mode=all" />
       <command value="file_server" />
       <command value="open file_server" />
       <command value="gradlew tset" />
       <command value="gradlew jpackage" />
+      <command value="gradlew build -XskipTests=true" />
+      <command value="gradlew build" />
+      <command value="gradlew build -x test" />
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="FileServiceTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.FileEntryTests.testRenameFileConfirm">
+    <configuration name="FileEntryTests.testRenameFileConfirm" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -208,7 +238,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FileServiceTests&quot;" />
+            <option value="&quot;ploiu.ui.FileEntryTests.testRenameFileConfirm&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -219,7 +249,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FileServiceTests.testGetMetadataThrowsExceptionIfFileIsNotFound" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="SearchParserTests.testParseFullThing" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -232,7 +262,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FileServiceTests.testGetMetadataThrowsExceptionIfFileIsNotFound&quot;" />
+            <option value="&quot;ploiu.search.SearchParserTests.testParseFullThing&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -243,7 +273,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FileServiceTests.testGetMetadataThrowsExceptionIfIdIsNegative" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="SearchParserTests.testParseHandlesNoSearch" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -256,7 +286,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;ploiu.FileServiceTests.testGetMetadataThrowsExceptionIfIdIsNegative&quot;" />
+            <option value="&quot;ploiu.search.SearchParserTests.testParseHandlesNoSearch&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -267,7 +297,7 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="FolderServiceTests.testGetFolderWithIdUsesCorrectPath" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="file-server-ui [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -278,17 +308,15 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;ploiu.FolderServiceTests.testGetFolderWithIdUsesCorrectPath&quot;" />
+            <option value="build" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="file-server-ui [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -315,27 +343,27 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Gradle.FileServiceTests" />
-      <item itemvalue="Gradle.FileServiceTests.testGetMetadataThrowsExceptionIfIdIsNegative" />
-      <item itemvalue="Gradle.FileServiceTests.testGetMetadataThrowsExceptionIfFileIsNotFound" />
-      <item itemvalue="Gradle.FolderServiceTests.testGetFolderWithIdUsesCorrectPath" />
+      <item itemvalue="Gradle.FileEntryTests.testRenameFileConfirm" />
+      <item itemvalue="Gradle.SearchParserTests.testParseHandlesNoSearch" />
+      <item itemvalue="Gradle.file-server-ui [build]" />
+      <item itemvalue="Gradle.SearchParserTests.testParseFullThing" />
       <item itemvalue="Gradle.file-server-ui [test]" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.FileServiceTests" />
-        <item itemvalue="Gradle.FileServiceTests.testGetMetadataThrowsExceptionIfIdIsNegative" />
-        <item itemvalue="Gradle.FileServiceTests.testGetMetadataThrowsExceptionIfFileIsNotFound" />
+        <item itemvalue="Gradle.FileEntryTests.testRenameFileConfirm" />
+        <item itemvalue="Gradle.SearchParserTests.testParseHandlesNoSearch" />
+        <item itemvalue="Gradle.file-server-ui [build]" />
+        <item itemvalue="Gradle.SearchParserTests.testParseFullThing" />
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.FolderServiceTests.testGetFolderWithIdUsesCorrectPath" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -477,7 +505,15 @@
       <workItem from="1723579415543" duration="1759000" />
       <workItem from="1724970950777" duration="859000" />
       <workItem from="1725232600933" duration="4982000" />
-      <workItem from="1725297781548" duration="5261000" />
+      <workItem from="1725297781548" duration="7330000" />
+      <workItem from="1728608785719" duration="83000" />
+      <workItem from="1730563268465" duration="32000" />
+      <workItem from="1738191994582" duration="611000" />
+      <workItem from="1738271045357" duration="5729000" />
+      <workItem from="1738276791358" duration="217000" />
+      <workItem from="1738277061614" duration="8383000" />
+      <workItem from="1738448278538" duration="14357000" />
+      <workItem from="1738538119144" duration="9013000" />
     </task>
     <servers />
   </component>
@@ -505,16 +541,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java</url>
-          <line>152</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java</url>
-          <line>395</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.RuntimeException" package="java.lang">
             <option name="NOTIFY_CAUGHT" value="false" />
@@ -528,6 +554,13 @@
         <PinnedItemInfo parentTag="org.apache.hc.client5.http.impl.classic.InternalHttpClient" memberName="execChain" />
       </pinned-members>
     </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="GradleRunConfiguration">
+        <watch expression="index" language="JAVA" />
+        <watch expression="start" language="JAVA" />
+        <watch expression="tokens[start]" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

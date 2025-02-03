@@ -20,12 +20,34 @@ public final class UIUtils {
 
     // load all the icons into memory on application start, instead of on the fly
     public static void init() {
-        MimeUtils.MIME_TYPES
+        MimeUtils.FILE_TYPES
                 .parallelStream()
-                .forEach(mimeType -> {
-                    var icon = MimeUtils.getFileIconForMimeType(mimeType);
-                    MIME_IMAGE_MAPPING.put(mimeType, new Image(icon, LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true));
+                .forEach(fileType -> {
+                    var icon = MimeUtils.getFileIconForType(fileType.toLowerCase());
+                    MIME_IMAGE_MAPPING.put(fileType.toLowerCase(), new Image(icon, LIST_IMAGE_SIZE, LIST_IMAGE_SIZE, true, true));
                 });
+    }
+
+    public static String convertSizeToBytes(Long bytes) {
+        var kib = 1024f;
+        var mib = kib * 1024f;
+        var gib = mib * 1024f;
+        var tib = gib * 1024f;
+        var pib = tib * 1024f;
+        if (bytes < kib) {
+            return bytes + " bytes";
+        } else if (bytes < mib) {
+            return String.format("%.1f KiB", bytes / kib);
+        } else if (bytes < gib) {
+            return String.format("%.1f MiB", bytes / mib);
+        } else if (bytes < tib) {
+            return String.format("%.1f GiB", bytes / gib);
+        } else if (bytes < pib) {
+            return String.format("%.1f TiB", bytes / tib);
+        } else {
+            // no way will there ever be 1 singular file that large
+            return String.format("%.1f PiB", bytes / pib);
+        }
     }
 
     private UIUtils() {

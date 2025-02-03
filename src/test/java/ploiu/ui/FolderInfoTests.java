@@ -57,7 +57,7 @@ class FolderInfoTests {
         receiver = Mockito.mock(AsyncEventReceiver.class);
         var tags = new HashSet<>(Set.of(new TagApi(0L, "tag1"), new TagApi(1L, "tag2"), new TagApi(2L, "tag3")));
         var subfolders = new HashSet<>(Set.of(new FolderApi(2, 1, "sub1", null, Set.of(), Set.of(), Set.of())));
-        var subfiles = new HashSet<>(Set.of(new FileApi(0L, "file1", List.of(), null)));
+        var subfiles = new HashSet<>(Set.of(new FileApi(0L, "file1", List.of(), null, null, null, null)));
         folderInfo = new FolderInfo(new FolderApi(1, 0, "test", null, subfolders, subfiles, tags), receiver);
         stage.setScene(new Scene(new AnchorPane(folderInfo)));
         stage.show();

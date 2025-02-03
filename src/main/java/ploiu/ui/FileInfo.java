@@ -1,5 +1,6 @@
 package ploiu.ui;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -20,6 +21,7 @@ import ploiu.event.*;
 import ploiu.model.*;
 import ploiu.service.FileService;
 import ploiu.util.MimeUtils;
+import ploiu.util.UIUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,19 +47,21 @@ public class FileInfo extends AnchorPane {
     @FXML
     private FlowPane tagList;
     @FXML
-    private AnchorPane iconButtonWrapper;
+    private VBox iconButtonWrapper;
     @FXML
     private HBox buttonWrapper;
     @FXML
     private ImageView fileIcon;
     @FXML
     private Button openButton;
+    @FXML
+    private Label metadata;
 
     public FileInfo(FileApi file, AsyncEventReceiver<FileObject> fileReceiver) {
         this.file.addListener(this::onFileChanged);
         this.file.setValue(file);
         this.fileReceiver = fileReceiver;
-        this.iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(MimeUtils.determineMimeType(file.name()));
+        this.iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(file.fileType().toLowerCase());
         var loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/components/FileInfo/FileInfo.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -75,7 +79,7 @@ public class FileInfo extends AnchorPane {
         Platform.runLater(() -> {
             tagList.getChildren().clear();
             fileTitle.setText(newFile.name());
-            iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(MimeUtils.determineMimeType(newFile.name()));
+            iconPathLocation = MimeUtils.MIME_TYPE_ICON_NAMES.get(newFile.fileType().toLowerCase());
             var image = new Image(iconPathLocation, 128, 128, true, true);
             fileIcon.setImage(image);
             var tags = newFile.tags();
@@ -94,16 +98,18 @@ public class FileInfo extends AnchorPane {
         var f = file.get();
         var updatedTags = new ArrayList<>(f.tags());
         updatedTags.remove(tag);
-        var updatedFile = new FileApi(f.id(), f.name(), updatedTags, f.folderId());
+        var updatedFile = new FileApi(f.id(), f.name(), updatedTags, f.folderId(), f.size(), f.dateCreated(), f.fileType());
         updateFile(updatedFile);
     }
 
     @FXML
     void initialize() {
         this.fileTitle.setText(file.get().name());
+        this.metadata.setText(buildMetadataString());
         setLayoutX(0);
         buttonSizeHandler();
         Platform.runLater(() -> {
+            //set default file icon before going to fetch file preview
             var image = new Image(iconPathLocation, 128, 128, true, true);
             fileIcon.setImage(image);
             minWidthProperty().bind(getScene().widthProperty());
@@ -115,6 +121,17 @@ public class FileInfo extends AnchorPane {
                 updateWidth(newWidth.doubleValue());
             });
         });
+        // try and fetch actual file preview
+        fileService
+                .getFilePreview(file.get().id())
+                .subscribeOn(Schedulers.io())
+                .subscribe(img -> Platform.runLater(() -> fileIcon.setImage(img)), err -> {/* no op - no icon */});
+    }
+
+    private String buildMetadataString() {
+        return "Size: " + UIUtils.convertSizeToBytes(file.get().size()) + "\n"
+                + "Date Created: " + file.get().dateCreated() + "\n"
+                + "Type: " + file.get().fileType();
     }
 
     private void updateFile(FileApi updatedFile) {
@@ -136,7 +153,7 @@ public class FileInfo extends AnchorPane {
             var f = file.get();
             var tags = new HashSet<>(f.tags());
             tags.add(new TagApi(null, res.get()));
-            var updatedFile = new FileApi(f.id(), f.name(), tags, f.folderId());
+            var updatedFile = new FileApi(f.id(), f.name(), tags, f.folderId(), f.size(), f.dateCreated(), f.fileType());
             updateFile(updatedFile);
             return true;
         };
@@ -149,13 +166,13 @@ public class FileInfo extends AnchorPane {
             var val = e.get();
             if (val != null && !val.isBlank()) {
                 var old = file.get();
-                var newFile = new FileApi(old.id(), val, old.tags(), old.folderId());
+                var newFile = new FileApi(old.id(), val, old.tags(), old.folderId(), old.size(), old.dateCreated(), old.fileType());
                 updateFile(newFile);
                 return true;
             }
             return false;
         };
-        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), callback, "Rename File"));
+        new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), callback, "Rename File").initialText(file.get().name()));
     }
 
     @FXML

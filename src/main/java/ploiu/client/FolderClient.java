@@ -9,7 +9,7 @@ import retrofit2.http.*;
 import java.util.Map;
 
 public interface FolderClient {
-    @GET("/folders/{id}")
+    @GET("/folders/metadata/{id}")
     Single<FolderApi> getFolder(@Path("id") long id);
 
     @GET("/folders/preview/{id}")

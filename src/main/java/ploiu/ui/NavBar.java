@@ -119,7 +119,7 @@ public class NavBar extends HBox {
                         } else if (board.getContent(DataTypes.FILE) instanceof String droppedFile) {
                             event.consume();
                             var parsed = FileApi.fromJson(droppedFile);
-                            var newApi = new FileApi(parsed.id(), parsed.name(), parsed.tags(), folder.id());
+                            var newApi = new FileApi(parsed.id(), parsed.name(), parsed.tags(), folder.id(), null, null, null);
                             fileReceiver.process(new FileUpdateEvent(newApi))
                                     .subscribe();
                         }

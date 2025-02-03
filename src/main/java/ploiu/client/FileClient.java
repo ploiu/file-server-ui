@@ -8,6 +8,7 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import ploiu.model.FileApi;
 import ploiu.model.UpdateFileRequest;
+import ploiu.search.Attribute;
 import retrofit2.http.*;
 
 import java.util.Collection;
@@ -18,7 +19,7 @@ public interface FileClient {
     Observable<ResponseBody> getFilePreview(@Path("id") long id);
 
     @GET("/files/metadata")
-    Single<Collection<FileApi>> search(@Query("search") String search, @Query("tags") Collection<String> tags);
+    Single<Collection<FileApi>> search(@Query("search") String search, @Query("tags") Collection<String> tags, @Query("attributes") Collection<Attribute> attributes);
 
     @Multipart
     @POST("/files")

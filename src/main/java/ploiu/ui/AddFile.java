@@ -50,6 +50,9 @@ public class AddFile extends AnchorPane {
     }
 
     private void uploadFiles(Collection<File> files) {
+        if (files == null || files.isEmpty()) {
+            return;
+        }
         var modal = new LoadingModal(new LoadingModalOptions(this.getScene().getWindow(), LoadingModalOptions.LoadingType.DETERMINATE));
         var modalProgress = new AtomicInteger(0);
         // percentage; no multiplying by 100 at the end because the max changes and we calc that later

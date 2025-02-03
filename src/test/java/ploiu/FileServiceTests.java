@@ -61,7 +61,7 @@ public class FileServiceTests {
     void testGetFile_Contents_CACHE_DIR() throws Exception {
         when(fileClient.getFileContents(anyLong()))
                 .thenReturn(Single.just(ResponseBody.create("test".getBytes(StandardCharsets.UTF_8), MediaType.get("text/plain"))));
-        var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null), null)
+        var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null, null, null, null), null)
                 .blockingGet();
         assertEquals(new File(CACHE_DIR), savedFile.getParentFile());
         // cache dir can have a lot of files, so append the file ID to help make it unique
@@ -77,7 +77,7 @@ public class FileServiceTests {
     void testGetFileContents() throws Exception {
         when(fileClient.getFileContents(anyLong()))
                 .thenReturn(Single.just(ResponseBody.create("test".getBytes(StandardCharsets.UTF_8), MediaType.get("text/plain"))));
-        var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null), saveDir)
+        var savedFile = fileService.getFileContents(new FileApi(0, "test.txt", List.of(), null, null, null, null), saveDir)
                 .blockingGet();
         assertEquals(saveDir, savedFile.getParentFile());
         assertEquals("test.txt", savedFile.getName());
@@ -111,7 +111,7 @@ public class FileServiceTests {
 
     @Test
     void testGetFileContentsThrowsExceptionIfIdIsNegative() {
-        var e = assertThrows(Exception.class, () -> fileService.getFileContents(new FileApi(-1, "", List.of(), null), null).blockingGet()).getCause();
+        var e = assertThrows(Exception.class, () -> fileService.getFileContents(new FileApi(-1, "", List.of(), null, null, null, null), null).blockingGet()).getCause();
         assertInstanceOf(BadFileRequestException.class, e);
         assertEquals("Id cannot be negative.", e.getMessage());
     }
@@ -135,7 +135,7 @@ public class FileServiceTests {
         var file = new File(saveDir.getAbsolutePath() + "/test_noExtension");
         file.createNewFile();
         var req = new CreateFileRequest(0, file);
-        when(fileClient.createFile(any(), any(), any())).thenReturn(Single.just(new FileApi(0, "", List.of(), null)));
+        when(fileClient.createFile(any(), any(), any())).thenReturn(Single.just(new FileApi(0, "", List.of(), null, null, null, null)));
         fileService.createFile(req).blockingSubscribe();
         verify(fileClient).createFile(any(), isNull(), any());
     }

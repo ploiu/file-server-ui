@@ -21,7 +21,6 @@ import ploiu.model.ConfirmDialogOptions;
 import ploiu.model.FileApi;
 import ploiu.model.FileObject;
 import ploiu.model.TextInputDialogOptions;
-import ploiu.util.MimeUtils;
 import ploiu.util.UIUtils;
 
 import java.io.File;
@@ -56,7 +55,7 @@ public class FileEntry extends AnchorPane {
         try {
             loader.load();
             this.fileName.setText(file.name());
-            var image = UIUtils.MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name()));
+            var image = UIUtils.MIME_IMAGE_MAPPING.get(file.fileType().toLowerCase());
             icon.setImage(image);
             this.fileReceiver = eventHandler;
             Tooltip.install(this, new Tooltip(file.name()));
@@ -69,7 +68,7 @@ public class FileEntry extends AnchorPane {
     private void initialize() {
         previewImage.addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
-                icon.setImage(UIUtils.MIME_IMAGE_MAPPING.get(MimeUtils.determineMimeType(file.name())));
+                icon.setImage(UIUtils.MIME_IMAGE_MAPPING.get(file.fileType().toLowerCase()));
             } else {
                 icon.setImage(newValue);
             }
@@ -82,7 +81,7 @@ public class FileEntry extends AnchorPane {
         EventReceiver<String> renameCallback = evt -> {
             var newName = evt.get();
             if (newName != null && !newName.isBlank()) {
-                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName, file.tags(), file.folderId())))
+                fileReceiver.process(new FileUpdateEvent(new FileApi(file.id(), newName, file.tags(), file.folderId(), null, null, null)))
                         .onErrorResumeNext(e -> {
                             showErrorDialog(e.getMessage(), "Failed to Update File", null);
                             return Single.never();
