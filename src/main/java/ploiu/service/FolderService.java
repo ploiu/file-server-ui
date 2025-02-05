@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.scene.image.Image;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import ploiu.client.FolderClient;
 import ploiu.exception.BadFolderRequestException;
 import ploiu.exception.BadFolderResponseException;
@@ -15,9 +16,12 @@ import ploiu.model.FolderApi;
 import ploiu.model.FolderRequest;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.LIST_IMAGE_SIZE;
 
 @Slf4j
@@ -89,5 +93,31 @@ public class FolderService {
             }
             return images;
         }).single(Map.of());
+    }
+
+    public Completable downloadFolder(FolderApi folder, @NotNull File directory) {
+        if (folder.id() < 1) {
+            return Completable.error(new BadFolderRequestException("Id cannot be negative, and cannot download root folder."));
+        }
+        return Single.fromCallable(() -> {
+                    //noinspection ResultOfMethodCallIgnored
+                    directory.mkdirs();
+                    return new File(directory.getAbsolutePath() + "/" + folder.name() + ".tar");
+                })
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMapCompletable(f -> {
+                    return client
+                            .downloadFolder(folder.id())
+                            .subscribeOn(Schedulers.io())
+                            .map(resBody -> {
+                                // doesn't matter if the file already exists or not (because the user would confirm if they want to overwrite it earlier), we're saving to it
+                                //noinspection ResultOfMethodCallIgnored
+                                f.createNewFile();
+                                Files.copy(resBody.byteStream(), f.toPath(), REPLACE_EXISTING);
+                                return f;
+                            })
+                            .flatMapCompletable(ignored -> Completable.complete());
+                });
     }
 }

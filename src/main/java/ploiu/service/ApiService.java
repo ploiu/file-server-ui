@@ -45,6 +45,7 @@ public class ApiService {
                         log.error("Incompatible with current server version.");
                     }
                     return matches;
-                });
+                })
+                .doOnError(e -> log.error("Failed to check server version", e));
     }
 }

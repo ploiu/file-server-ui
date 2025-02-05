@@ -1,6 +1,7 @@
-package ploiu.event;
+package ploiu.event.file;
 
 import lombok.Getter;
+import ploiu.event.Event;
 import ploiu.model.FileObject;
 
 import java.io.File;

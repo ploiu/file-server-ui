@@ -19,7 +19,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.matcher.control.LabeledMatchers;
 import ploiu.event.AsyncEventReceiver;
-import ploiu.event.FolderEvent;
+import ploiu.event.folder.FolderDeleteEvent;
+import ploiu.event.folder.FolderUpdateEvent;
 import ploiu.model.FileApi;
 import ploiu.model.FolderApi;
 import ploiu.model.TagApi;
@@ -35,7 +36,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 import static org.testfx.api.FxAssert.verifyThat;
-import static ploiu.event.FolderEvent.Type.UPDATE;
 
 @ExtendWith({ApplicationExtension.class, MockitoExtension.class})
 class FolderInfoTests {
@@ -84,7 +84,7 @@ class FolderInfoTests {
         robot.clickOn(dialog.lookup("#actionButton"));
 
         verify(receiver).process(argThat(folder ->
-                ((FolderEvent) folder).getType() == UPDATE
+                folder instanceof FolderUpdateEvent
                         && folder.get().name().equals("renamed"))
         );
     }
@@ -124,7 +124,7 @@ class FolderInfoTests {
         robot.type(T, E, S, T);
         robot.clickOn(dialog.lookup("#actionButton"));
 
-        verify(receiver).process(argThat(evt -> ((FolderEvent) evt).getType() == FolderEvent.Type.DELETE && evt.get().id() == 1));
+        verify(receiver).process(argThat(evt -> (evt instanceof FolderDeleteEvent && evt.get().id() == 1)));
     }
 
     @Test
@@ -187,7 +187,7 @@ class FolderInfoTests {
         robot.type(T, E, S, T);
         robot.clickOn(dialog.lookup("#actionButton"));
 
-        verify(receiver).process(argThat(event -> ((FolderEvent) event).getType() == UPDATE && event.get().tags().contains(new TagApi(null, "test"))));
+        verify(receiver).process(argThat(event -> event instanceof FolderUpdateEvent && event.get().tags().contains(new TagApi(null, "test"))));
     }
 
     @Test

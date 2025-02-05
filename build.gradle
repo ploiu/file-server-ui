@@ -41,10 +41,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:$versions.jackson"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$versions.jackson"
     implementation 'org.jetbrains:annotations:24.0.1'
-    implementation 'com.google.inject:guice:5.1.0'
-    // TODO replace with retrofit (see #39) because apparently I can't properly build a multipart form to save my life
-    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
-    implementation 'org.apache.httpcomponents:httpmime:4.5.14'
+    implementation 'com.google.inject:guice:7.0.0'
     // http client
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

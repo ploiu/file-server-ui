@@ -15,7 +15,8 @@ import javafx.scene.layout.VBox;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
-import ploiu.event.FolderEvent;
+import ploiu.event.folder.FolderDeleteEvent;
+import ploiu.event.folder.FolderUpdateEvent;
 import ploiu.model.FolderApi;
 import ploiu.model.TagApi;
 import ploiu.model.TextInputDialogOptions;
@@ -107,7 +108,7 @@ public class FolderInfo extends AnchorPane {
     }
 
     private void updateFolder(FolderApi updatedFolder) {
-        var event = new FolderEvent(updatedFolder, FolderEvent.Type.UPDATE);
+        var event = new FolderUpdateEvent(updatedFolder);
         folderReceiver.process(event)
                 .observeOn(JavaFxScheduler.platform())
                 .doOnError(e -> showErrorDialog("Failed to update folder, error is " + e.getMessage(), "Failed to update folder", null))
@@ -152,7 +153,7 @@ public class FolderInfo extends AnchorPane {
         EventReceiver<String> dialogCallback = res -> {
             // make the user type the folder name they're deleting to confirm
             if (res.get().equals(folder.get().name())) {
-                folderReceiver.process(new FolderEvent(folder.get(), FolderEvent.Type.DELETE))
+                folderReceiver.process(new FolderDeleteEvent(folder.get()))
                         .onErrorResumeNext(e -> {
                             showErrorDialog(e.getMessage(), "Failed to Delete Folder", null);
                             return Single.never();

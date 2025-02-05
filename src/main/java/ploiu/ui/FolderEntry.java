@@ -12,17 +12,21 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
 import lombok.Getter;
 import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
-import ploiu.event.FileUpdateEvent;
-import ploiu.event.FolderEvent;
+import ploiu.event.file.FileUpdateEvent;
+import ploiu.event.folder.FolderDeleteEvent;
+import ploiu.event.folder.FolderSaveEvent;
+import ploiu.event.folder.FolderUpdateEvent;
 import ploiu.model.FileApi;
 import ploiu.model.FileObject;
 import ploiu.model.FolderApi;
 import ploiu.model.TextInputDialogOptions;
 import ploiu.service.DragNDropService;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -79,8 +83,7 @@ public class FolderEntry extends AnchorPane {
         EventReceiver<String> dialogCallback = evt -> {
             var newName = evt.get();
             var newFolder = new FolderApi(folder.id(), folder.parentId(), newName, null, folder.folders(), folder.files(), folder.tags());
-            folderReceiver.process(new FolderEvent(newFolder, FolderEvent.Type.UPDATE))
-                    .subscribe();
+            folderReceiver.process(new FolderUpdateEvent(newFolder)).subscribe();
             return true;
         };
         var dialog = new TextInputDialog(new TextInputDialogOptions(getScene().getWindow(), dialogCallback, "Rename Folder"));
@@ -92,7 +95,7 @@ public class FolderEntry extends AnchorPane {
         EventReceiver<String> dialogCallback = res -> {
             // make the user type the folder name they're deleting to confirm
             if (res.get().equals(folderName.getText())) {
-                folderReceiver.process(new FolderEvent(folder, FolderEvent.Type.DELETE))
+                folderReceiver.process(new FolderDeleteEvent(folder))
                         .subscribe();
                 return true;
             }
@@ -107,6 +110,20 @@ public class FolderEntry extends AnchorPane {
     @FXML
     private void infoItemClicked(ActionEvent event) {
         folderToEdit.setValue(folder);
+    }
+
+    @FXML
+    private void downloadItemClicked(ActionEvent event) {
+        var chooser = new DirectoryChooser();
+        var homeDir = new File(System.getProperty("user.home"));
+        chooser.setInitialDirectory(homeDir);
+        chooser.setTitle("Save " + folder.name() + "...");
+        var selectedDir = chooser.showDialog(getScene().getWindow());
+        // dir will be null if user cancelled
+        if (selectedDir != null) {
+            folderReceiver.process(new FolderSaveEvent(folder, selectedDir))
+                    .subscribe();
+        }
     }
 
     @FXML
@@ -134,7 +151,7 @@ public class FolderEntry extends AnchorPane {
                 event.consume();
                 var parsed = FolderApi.fromJson(droppedFolder);
                 var newApi = new FolderApi(parsed.id(), folder.id(), parsed.name(), parsed.path(), parsed.folders(), parsed.files(), parsed.tags());
-                folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
+                folderReceiver.process(new FolderUpdateEvent(newApi))
                         .subscribe();
             } else if (board.getContent(DataTypes.FILE) instanceof String droppedFile) {
                 event.consume();

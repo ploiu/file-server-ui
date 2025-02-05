@@ -28,6 +28,7 @@
             <items>
                 <MenuItem text="Rename Folder" onAction="#renameItemClicked"/>
                 <MenuItem text="Delete Folder" onAction="#deleteItemClicked"/>
+                <MenuItem text="Download Folder" onAction="#downloadItemClicked"/>
                 <MenuItem text="Info" onAction="#infoItemClicked"/>
             </items>
         </ContextMenu>
