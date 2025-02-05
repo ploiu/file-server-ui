@@ -46,6 +46,6 @@ public class ApiService {
                     }
                     return matches;
                 })
-            .doOnError(e -> log.error("Failed to check server version", e));
+                .doOnError(e -> log.error("Failed to check server version", e));
     }
 }

@@ -1,7 +1,8 @@
-package ploiu.event;
+package ploiu.event.file;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import ploiu.event.Event;
 
 import java.io.File;
 

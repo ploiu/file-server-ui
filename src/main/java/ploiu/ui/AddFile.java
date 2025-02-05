@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import ploiu.event.AsyncEventReceiver;
-import ploiu.event.FileUploadEvent;
+import ploiu.event.file.FileUploadEvent;
 import ploiu.model.LoadingModalOptions;
 
 import java.io.File;

@@ -7,7 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import ploiu.event.AsyncEventReceiver;
 import ploiu.event.EventReceiver;
-import ploiu.event.FolderEvent;
+import ploiu.event.folder.FolderCreateEvent;
 import ploiu.model.FolderApi;
 import ploiu.model.TextInputDialogOptions;
 
@@ -42,7 +42,7 @@ public class AddFolder extends AnchorPane {
             EventReceiver<String> callback = evt -> {
                 var folderName = evt.get();
                 var dummyFolder = new FolderApi(-1, currentFolderId, folderName, null, List.of(), List.of(), List.of());
-                this.receiver.process(new FolderEvent(dummyFolder, FolderEvent.Type.CREATE))
+                this.receiver.process(new FolderCreateEvent(dummyFolder))
                         .subscribe();
                 return true;
             };

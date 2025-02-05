@@ -10,8 +10,8 @@ import javafx.scene.layout.HBox;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.event.AsyncEventReceiver;
 import ploiu.event.Event;
-import ploiu.event.FileUpdateEvent;
-import ploiu.event.FolderEvent;
+import ploiu.event.file.FileUpdateEvent;
+import ploiu.event.folder.FolderUpdateEvent;
 import ploiu.model.FileApi;
 import ploiu.model.FileObject;
 import ploiu.model.FolderApi;
@@ -114,7 +114,7 @@ public class NavBar extends HBox {
                             event.consume();
                             var parsed = FolderApi.fromJson(droppedFolder);
                             var newApi = new FolderApi(parsed.id(), folder.id(), parsed.name(), parsed.path(), parsed.folders(), parsed.files(), parsed.tags());
-                            folderReceiver.process(new FolderEvent(newApi, FolderEvent.Type.UPDATE))
+                            folderReceiver.process(new FolderUpdateEvent(newApi))
                                     .subscribe();
                         } else if (board.getContent(DataTypes.FILE) instanceof String droppedFile) {
                             event.consume();

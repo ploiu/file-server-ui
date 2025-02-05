@@ -8,14 +8,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/folder/FolderCreateEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/folder/FolderDeleteEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/folder/FolderSaveEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/folder/FolderUpdateEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FileClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/client/FolderClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/ApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileDeleteEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/file/FileDeleteEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileSaveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/file/FileSaveEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUpdateEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/file/FileUpdateEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FileUploadEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/file/FileUploadEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/event/FolderEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/event/folder/FolderEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/service/FolderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/service/FolderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/AddFolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FileInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/FolderInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/MainFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/ui/NavBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ui/components/FolderEntry/FolderEntry.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FileEntryTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/ploiu/ui/FolderInfoTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ploiu/ui/FolderInfoTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,8 +72,8 @@
         <option value="Interface" />
         <option value="Record" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -137,7 +152,7 @@
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "download-folder",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last.edited.regexp": "1kb",
@@ -218,7 +233,7 @@
       <command value="gradlew test" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Gradle.file-server-ui [test]">
     <configuration name="FileEntryTests.testRenameFileConfirm" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -345,11 +360,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.file-server-ui [test]" />
         <item itemvalue="Gradle.FileEntryTests.testRenameFileConfirm" />
         <item itemvalue="Gradle.SearchParserTests.testParseHandlesNoSearch" />
         <item itemvalue="Gradle.file-server-ui [build]" />
         <item itemvalue="Gradle.SearchParserTests.testParseFullThing" />
-        <item itemvalue="Gradle.file-server-ui [test]" />
       </list>
     </recent_temporary>
   </component>

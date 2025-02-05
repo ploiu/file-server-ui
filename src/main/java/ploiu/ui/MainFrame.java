@@ -15,7 +15,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.TilePane;
 import lombok.extern.slf4j.Slf4j;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
-import ploiu.event.*;
+import ploiu.event.AsyncEventReceiver;
+import ploiu.event.file.FileDeleteEvent;
+import ploiu.event.file.FileSaveEvent;
+import ploiu.event.file.FileUpdateEvent;
+import ploiu.event.file.FileUploadEvent;
+import ploiu.event.folder.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.*;
@@ -29,7 +34,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static ploiu.event.FolderEvent.Type.*;
 import static ploiu.util.DialogUtils.showErrorDialog;
 import static ploiu.util.UIUtils.desktop;
 
@@ -88,7 +92,7 @@ public class MainFrame extends AnchorPane {
     };
 
     private final AsyncEventReceiver<FolderApi> asyncFolderUpdateEvent = event -> {
-        if (event instanceof FolderEvent fe && fe.getType() == UPDATE) {
+        if (event instanceof FolderUpdateEvent fe) {
             var folder = fe.get();
             return folderService.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags())).doOnSuccess(ignored -> asyncLoadFolder(currentFolder)).map(ignored -> true);
         } else {
@@ -97,7 +101,7 @@ public class MainFrame extends AnchorPane {
     };
 
     private final AsyncEventReceiver<FolderApi> asyncFolderCreateEvent = event -> {
-        if (event instanceof FolderEvent fe && fe.getType() == CREATE) {
+        if (event instanceof FolderCreateEvent fe) {
             var req = new FolderRequest(Optional.empty(), currentFolder.id(), fe.get().name(), fe.get().tags());
             return folderService.createFolder(req).observeOn(JavaFxScheduler.platform()).doFinally(() -> asyncLoadFolder(currentFolder)).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to create folder", null)).map(ignored -> true);
         }
@@ -106,18 +110,49 @@ public class MainFrame extends AnchorPane {
     };
 
     private final AsyncEventReceiver<FolderApi> asyncFolderDeleteEvent = event -> {
-        if (event instanceof FolderEvent fe && fe.getType() == DELETE) {
+        if (event instanceof FolderDeleteEvent fe) {
             return folderService.deleteFolder(fe.get().id()).observeOn(JavaFxScheduler.platform()).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to delete folder", null)).doOnComplete(() -> asyncLoadFolder(currentFolder)).toSingle(() -> true);
         }
         return Single.error(new UnsupportedOperationException("asyncDeleteFolderEvent requires FolderEvent of type DELETE"));
     };
 
+    private final AsyncEventReceiver<FolderApi> asyncFolderSaveEvent = event -> {
+        if (event instanceof FolderSaveEvent saveEvent) {
+            var dir = saveEvent.getSaveDir();
+            if (!dir.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                dir.mkdirs();
+            }
+            var fileName = saveEvent.get().name() + ".tar";
+            var fileExists = Arrays.stream(dir.listFiles()).filter(File::isFile).map(File::getName).anyMatch(fileName::equalsIgnoreCase);
+            var loadingModal = new LoadingModal(new LoadingModalOptions(getScene().getWindow(), LoadingModalOptions.LoadingType.INDETERMINATE));
+            var saveAction = folderService.downloadFolder(saveEvent.get(), saveEvent.getSaveDir()).doOnError(e -> showErrorDialog("Failed to save folder: " + e.getMessage(), "Failed to save folder", null)).doFinally(loadingModal::close);
+            if (fileExists) {
+                var modal = new ConfirmDialog(new ConfirmDialogOptions(getScene().getWindow(), res -> {
+                    if (res.get()) {
+                        loadingModal.open();
+                        saveAction.subscribe();
+                    }
+                    return true;
+                }, "That file already exists. Do you wish to overwrite?"));
+            } else {
+                loadingModal.open();
+                saveAction.subscribe();
+            }
+        } else {
+            return Single.error(new UnsupportedOperationException("asyncFolderSaveEvent only supports FolderSaveEvent"));
+        }
+        return Single.just(true);
+    };
+
     private final AsyncEventReceiver<FolderApi> asyncFolderCrudEvents = event -> {
         if (event instanceof FolderEvent fe) {
-            return switch (fe.getType()) {
-                case UPDATE -> asyncFolderUpdateEvent.process(fe);
-                case CREATE -> asyncFolderCreateEvent.process(fe);
-                case DELETE -> asyncFolderDeleteEvent.process(fe);
+            return switch (fe) {
+                case FolderUpdateEvent f -> asyncFolderUpdateEvent.process(f);
+                case FolderCreateEvent f -> asyncFolderCreateEvent.process(f);
+                case FolderDeleteEvent f -> asyncFolderDeleteEvent.process(f);
+                case FolderSaveEvent f -> asyncFolderSaveEvent.process(f);
+                default -> throw new UnsupportedOperationException(fe + " is not a valid instance of FolderEvent");
             };
         }
         return Single.error(new UnsupportedOperationException("FolderEvent required for asyncFolderCrudEvents"));

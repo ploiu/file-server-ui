@@ -31,4 +31,6 @@ open module file.server.ui.main {
     exports ploiu.config;
     exports ploiu.exception;
     exports ploiu.model;
+    exports ploiu.event.file to javafx.fxml, javafx.graphics;
+    exports ploiu.event.folder to javafx.fxml, javafx.graphics;
 }
