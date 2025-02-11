@@ -33,5 +33,5 @@ public enum TokenTypes {
     /**
      * catch-all
      */
-    UNKNOWN;
+    UNKNOWN
 }

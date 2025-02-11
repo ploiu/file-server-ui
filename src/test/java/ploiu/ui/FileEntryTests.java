@@ -87,7 +87,7 @@ class FileEntryTests {
 
         verify(fileReceiver).process(argThat(it -> {
             if (it instanceof FileSaveEvent evt) {
-                return it.get().equals(fileEntry.getFile()) && ((FileSaveEvent) it).getDirectory() != null;
+                return it.get().equals(fileEntry.getFile()) && evt.getDirectory() != null;
             } else {
                 return false;
             }

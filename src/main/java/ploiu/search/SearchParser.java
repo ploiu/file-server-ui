@@ -158,7 +158,7 @@ public final class SearchParser {
         /**
          * the default mode, set whenever we encounter a space and are either in "FILE_NAME", "ATTRIBUTE_VALUE", or "TAG_NAME"
          */
-        UNSET;
+        UNSET
     }
 
     record TokenAndMode(Token token, Modes mode) {
