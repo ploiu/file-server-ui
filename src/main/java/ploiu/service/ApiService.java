@@ -11,6 +11,7 @@ import ploiu.config.AuthenticationConfig;
 import ploiu.config.ServerConfig;
 import ploiu.model.ApiInfo;
 import ploiu.model.CreatePasswordRequest;
+import ploiu.util.UIUtils;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Inject)
@@ -47,5 +48,18 @@ public class ApiService {
                     return matches;
                 })
                 .doOnError(e -> log.error("Failed to check server version", e));
+    }
+
+    /**
+     * retrieves the used storage on the backend server and parses it as a human-readable format
+     *
+     * @return human readable format for how much storage has been used (e.g. "30gb / 1tb used")
+     */
+    public Single<String> getStorageUsed() {
+        return client
+                .getStorageInfo()
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .map(info -> String.format("%s / %s used", UIUtils.convertSizeToBytes(info.totalSpace() - info.freeSpace()), UIUtils.convertSizeToBytes(info.totalSpace())));
     }
 }

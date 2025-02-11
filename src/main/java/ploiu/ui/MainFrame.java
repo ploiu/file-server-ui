@@ -13,6 +13,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.pdfsam.rxjavafx.schedulers.JavaFxScheduler;
 import ploiu.event.AsyncEventReceiver;
@@ -24,6 +25,7 @@ import ploiu.event.folder.*;
 import ploiu.exception.BadFileRequestException;
 import ploiu.exception.BadFileResponseException;
 import ploiu.model.*;
+import ploiu.service.ApiService;
 import ploiu.service.DragNDropService;
 import ploiu.service.FileService;
 import ploiu.service.FolderService;
@@ -41,6 +43,7 @@ import static ploiu.util.UIUtils.desktop;
 public class MainFrame extends AnchorPane {
     private final FolderService folderService = App.INJECTOR.getInstance(FolderService.class);
     private final FileService fileService = App.INJECTOR.getInstance(FileService.class);
+    private final ApiService apiService = App.INJECTOR.getInstance(ApiService.class);
     private final DragNDropService dragNDropService = App.INJECTOR.getInstance(DragNDropService.class);
     @FXML
     private ScrollPane scrollPane;
@@ -94,7 +97,9 @@ public class MainFrame extends AnchorPane {
     private final AsyncEventReceiver<FolderApi> asyncFolderUpdateEvent = event -> {
         if (event instanceof FolderUpdateEvent fe) {
             var folder = fe.get();
-            return folderService.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags())).doOnSuccess(ignored -> asyncLoadFolder(currentFolder)).map(ignored -> true);
+            return folderService.updateFolder(new FolderRequest(Optional.of(folder.id()), folder.parentId(), folder.name(), folder.tags()))
+                    .doOnSuccess(ignored -> asyncLoadFolder(currentFolder))
+                    .map(ignored -> true);
         } else {
             return Single.error(new UnsupportedOperationException("Only type UPDATE is supported for updateFolderEvent"));
         }
@@ -263,15 +268,36 @@ public class MainFrame extends AnchorPane {
 
     private void asyncLoadFolder(FolderApi folder) {
         // pull the folder
-        var folderReq = folderService.getFolder(folder.id()).doOnSuccess(this::setCurrentFolder).doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null)).observeOn(JavaFxScheduler.platform()).toObservable().cache();
+        var folderReq = folderService.getFolder(folder.id())
+                .doOnSuccess(this::setCurrentFolder)
+                .doOnError(e -> showErrorDialog(e.getMessage(), "Failed to pull folder", null))
+                .observeOn(JavaFxScheduler.platform())
+                .toObservable()
+                .cache();
         // handle child folders
-        folderReq.doOnNext(ignored -> folderPane.getChildren().clear()).flatMapIterable(FolderApi::folders).map(this::createFolderEntry).toList().doOnSuccess(this.folderPane.getChildren()::addAll).subscribe(ignored -> drawAddFolder());
+        folderReq.doOnNext(ignored -> folderPane.getChildren().clear())
+                .flatMapIterable(FolderApi::folders)
+                .map(this::createFolderEntry)
+                .toList()
+                .doOnSuccess(this.folderPane.getChildren()::addAll)
+                .subscribe(ignored -> drawAddFolder());
 
         // handle child files
         folderReq.doOnNext(f -> {
-            loadFilePreviews(f);
-            filePane.getChildren().clear();
-        }).flatMapIterable(FolderApi::files).map(this::createFileEntry).toList().doOnSuccess(filePane.getChildren()::addAll).subscribe(ignored -> drawAddFile());
+                    loadFilePreviews(f);
+                    filePane.getChildren().clear();
+                })
+                .flatMapIterable(FolderApi::files)
+                .map(this::createFileEntry)
+                .toList()
+                .doOnSuccess(filePane.getChildren()::addAll)
+                .subscribe(ignored -> drawAddFile());
+        // pulling the folder was probably after an update or change of some sort, so update the title to reflect how much storage is next
+        apiService.getStorageUsed()
+                .subscribe(
+                        storageAmount -> Platform.runLater(() -> ((Stage) getScene().getWindow()).setTitle("Ploiu File Server " + storageAmount)),
+                        error -> log.error("Failed to pull storage amount", error)
+                );
     }
 
     private void loadFilePreviews(FolderApi folder) {

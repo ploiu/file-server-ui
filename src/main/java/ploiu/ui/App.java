@@ -30,7 +30,7 @@ public class App extends Application {
                     if (value) {
                         var root = new MainFrame();
                         Scene scene = new Scene(root);
-                        stage.setTitle("File Server UI");
+                        stage.setTitle("Ploiu File Server");
                         stage.setScene(scene);
                         stage.show();
                     } else {
