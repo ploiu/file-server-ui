@@ -156,4 +156,38 @@ public class FileServiceTests {
         assertEquals("Id cannot be negative.", e.getMessage());
     }
 
+    @Test
+    @DisplayName("splitFileName splits regular file")
+    void testSplitFileNameRegular() throws Exception {
+        var input = "test.jpg";
+        var expected = new String[] {"test", "jpg"};
+        assertArrayEquals(expected, fileService.splitFileName(input));
+    }
+
+    @Test
+    @DisplayName("splitFileName splits file with multiple dots in name")
+    void testSplitFileNameMultipleExtension() throws Exception {
+        // created from default android camera app sometimes
+        var input = "test.MP.jpg";
+        var expected = new String[] {"test", "MP.jpg"};
+        assertArrayEquals(expected, fileService.splitFileName(input));
+    }
+
+    @Test
+    @DisplayName("splitFileName doesn't split file names without extensions")
+    void testSplitFileNameWorksWithNoExtension() throws Exception {
+        var input = "LICENSE";
+        var expected = new String[]{"LICENSE"};
+        assertArrayEquals(expected, fileService.splitFileName(input));
+    }
+
+    @Test
+    @DisplayName("splitFileName treats leading . files as only having an extension")
+    void testSplitFileNameLeadingPeriod() throws Exception {
+        var input = ".bashrc";
+        var expected = new String[]{"", "bashrc"};
+        assertArrayEquals(expected, fileService.splitFileName(input));
+    }
+
+
 }

@@ -28,6 +28,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static ploiu.Constants.CACHE_DIR;
@@ -37,6 +38,7 @@ import static ploiu.Constants.LIST_IMAGE_SIZE;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class FileService {
     private final FileClient client;
+    private static final Pattern EXTENSION_PATTERN = Pattern.compile("\\..+$");
 
     /**
      * saves the contents of the associated {@code fileApi to the disk and then returns its contents.
@@ -47,6 +49,7 @@ public class FileService {
      * @return
      */
     public Single<File> getFileContents(FileApi fileApi, @Nullable File directory) {
+        var fileName = fileApi.name().replaceAll("leftParenthese", "(").replaceAll("rightParenthese", ")");
         if (fileApi.id() < 0) {
             return Single.error(new BadFileRequestException("Id cannot be negative."));
         }
@@ -54,12 +57,12 @@ public class FileService {
                     if (directory != null) {
                         //noinspection ResultOfMethodCallIgnored
                         directory.mkdirs();
-                        return new File(directory.getAbsolutePath() + "/" + fileApi.name());
+                        return new File(directory.getAbsolutePath() + "/" + fileName);
                     }
                     //noinspection ResultOfMethodCallIgnored
                     new File(CACHE_DIR).mkdirs();
                     // file name differs here because the cache dir could have a ton of files with the same name if we don't include the file id
-                    return new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileApi.name());
+                    return new File(CACHE_DIR + "/" + fileApi.id() + "_" + fileName);
                 })
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
@@ -116,12 +119,12 @@ public class FileService {
         if (!file.exists()) {
             return Single.error(new BadFileRequestException("The selected file does not exist."));
         }
-        var splitName = file.getName().split("\\.");
+        var splitName = splitFileName(file.getName());
         var mimeType = URLConnection.guessContentTypeFromName(file.getName());
         mimeType = mimeType == null ? "text/plain" : mimeType;
         var extension = splitName.length > 1 ? splitName[splitName.length - 1] : null;
         var force = request.force();
-        var fileName = file.getName().replace("(", "leftParenthese").replace(")", "rightParenthese");
+        var fileName = splitName[0].replace("(", "leftParenthese").replace(")", "rightParenthese");
         var filePart = MultipartBody.Part.createFormData("file", fileName, RequestBody.create(file, MediaType.parse(mimeType)));
         var folderPart = MultipartBody.Part.createFormData("folderId", String.valueOf(request.folderId()));
         return client.createFile(filePart, extension != null ? MultipartBody.Part.createFormData("extension", extension) : null, folderPart)
@@ -138,4 +141,25 @@ public class FileService {
                 .singleElement();
     }
 
+    /**
+     * splits the passed name into up to 2 parts, file name will always be index 0, and file extension (if it exists) will always be index 1
+     * This is meant to give more accurate detection of file name extensions due to how the server behaves (it uses rocket)
+     *
+     * @param name
+     * @return
+     */
+    public String[] splitFileName(String name) {
+        if(name.startsWith(".")) {
+            return new String[] {"", name.substring(1)};
+        }
+        var matcher = EXTENSION_PATTERN.matcher(name);
+        var hasExtension = matcher.find();
+        var splitName = new String[hasExtension ? 2 : 1];
+        if(hasExtension) {
+            // to maintain compatibility, the extension field can't start with a .
+            splitName[1] = matcher.group().substring(1);
+        }
+        splitName[0] = name.replaceAll(EXTENSION_PATTERN.pattern(), "");
+        return splitName;
+    }
 }
