@@ -18,7 +18,7 @@ def versions = [
 ]
 
 group 'ploiu'
-version '1.2.1'
+def applicationVersion =  '1.2.1'
 
 repositories {
     mavenCentral()
@@ -108,7 +108,7 @@ jlink {
     jpackage {
         imageName = 'ploiu-file-server'
         skipInstaller = false
-        appVersion = version
+        appVersion = applicationVersion
         if (Os.isFamily(Os.FAMILY_UNIX)) {
             installerType = 'deb'
             imageOptions = ['--icon', 'src/main/resources/assets/img/icon.png']
