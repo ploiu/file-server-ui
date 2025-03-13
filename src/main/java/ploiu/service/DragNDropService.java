@@ -13,8 +13,11 @@ import ploiu.util.FolderApproximator;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DragNDropService {
@@ -60,7 +63,11 @@ public class DragNDropService {
         return uploadFolder(approximation, targetFolder)
                 .toObservable()
                 .flatMap(folderApi -> {
+                    // to prevent from overwhelming the server, we're pseudo batching files into groups and then making a pause in between each upload group
                     var uploadedFiles = Observable.fromIterable(approximation.childFiles())
+                            .buffer(30)
+                            .zipWith(Observable.interval(5, TimeUnit.SECONDS), (item, interval) -> item)
+                            .flatMapIterable(f -> f)
                             .flatMap(f -> uploadFile(f, folderApi).toObservable());
 
                     if (approximation.childFolders().isEmpty()) {
@@ -74,6 +81,16 @@ public class DragNDropService {
                     }
                 });
     }
+
+    //Observable<Observable<FileApi>> chunkUploads(Collection<File> files, FolderApi folder) {
+    //    var chunkedFiles = partition(files.iterator(), 20);
+    //    var windowed = new HashSet<Observable<FileApi>>();
+    //    chunkedFiles.forEachRemaining(chunk -> {
+    //        for (var file : chunk) {
+    //            uploadFile(file, folder)
+    //        }
+    //    });
+    //}
 
     Single<FileApi> uploadFile(File file, FolderApi targetFolder) {
         var req = new CreateFileRequest(targetFolder.id(), file);

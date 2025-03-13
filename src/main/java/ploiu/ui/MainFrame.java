@@ -315,7 +315,11 @@ public class MainFrame extends AnchorPane {
         //noinspection ResultOfMethodCallIgnored
         folderService.getFilePreviewsForFolder(folder).subscribe(previewMap -> {
             synchronized (filePreviews) {
-                previewMap.forEach((id, image) -> filePreviews.get(id).setValue(image));
+                previewMap.forEach((id, image) -> {
+                    if (filePreviews.containsKey(id)) {
+                        filePreviews.get(id).setValue(image);
+                    }
+                });
             }
         });
     }
