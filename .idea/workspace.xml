@@ -9,7 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a843b790-cfe6-434a-a39a-515a7808b00a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ploiu/module/HttpModule.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,6 +134,7 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last.edited.regexp&quot;: &quot;1kb&quot;,
     &quot;last_directory_selection&quot;: &quot;/home/ploiu/git/file-server-ui/src/main/java/ploiu/client&quot;,
@@ -199,7 +200,6 @@
       <command value="gradle test" />
       <command value="open untitled" />
       <command value="gradlew jlink" />
-      <command value="open File Server Ui Android" />
       <command value="gradlew clean build" />
       <command value="gradlew help --scan" />
       <command value="gradle help --warning-mode=all" />
@@ -341,18 +341,18 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.file-server-ui [test]" />
-        <item itemvalue="Gradle.FileEntryTests.testRenameFileConfirm" />
-        <item itemvalue="Gradle.SearchParserTests.testParseHandlesNoSearch" />
         <item itemvalue="Gradle.file-server-ui [build]" />
+        <item itemvalue="Gradle.SearchParserTests.testParseHandlesNoSearch" />
         <item itemvalue="Gradle.SearchParserTests.testParseFullThing" />
+        <item itemvalue="Gradle.FileEntryTests.testRenameFileConfirm" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
       </set>
     </attachedChunks>
   </component>
@@ -510,6 +510,8 @@
       <workItem from="1740273543663" duration="876000" />
       <workItem from="1741396871839" duration="87000" />
       <workItem from="1741399883662" duration="31000" />
+      <workItem from="1741904421914" duration="5164000" />
+      <workItem from="1746216827019" duration="1635000" />
     </task>
     <servers />
   </component>

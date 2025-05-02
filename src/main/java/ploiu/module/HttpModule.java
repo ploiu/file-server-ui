@@ -17,6 +17,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
+
 @SuppressWarnings("unused")
 public class HttpModule extends AbstractModule {
 
@@ -29,6 +33,10 @@ public class HttpModule extends AbstractModule {
                     var req = chain.request().newBuilder().addHeader("Authorization", authConfig.basicAuth()).build();
                     return chain.proceed(req);
                 })
+                .connectTimeout(1, TimeUnit.DAYS)
+                .callTimeout(Duration.of(1, ChronoUnit.DAYS))
+                .readTimeout(Duration.of(1, ChronoUnit.DAYS))
+                .writeTimeout(Duration.of(1, ChronoUnit.DAYS))
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(serverConfig.getBaseUrl())
