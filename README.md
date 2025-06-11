@@ -2,6 +2,11 @@
 
 A client frontend for [ploiu/file_server](https://github.com/ploiu/file_server), written in java
 
+>[!NOTE]
+>This project is archived, a rewrite is in the works and will be published as it becomes more concrete.
+>I heavily dislike the javafx framework. It feels like a hack and does a terrible job half-adapting web standards like CSS, along with finicky and hard to read documentation.
+>I'd rather use something that doesn't even try to use web standards than something that (frankly) half-asses it
+
 ## Building
 
 1. make sure you have the server certificate in the same directory as this README, and make sure it's
