@@ -1,5 +1,7 @@
 package ploiu.module;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.inject.AbstractModule;
@@ -24,9 +26,14 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public class HttpModule extends AbstractModule {
 
+    @Provides
+    JacksonConverterFactory mapper() {
+        return JacksonConverterFactory.create(new ObjectMapper().registerModule(new Jdk8Module()).disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
+    }
+
     @Inject
     @Provides
-    Retrofit retrofitClient(ServerConfig serverConfig, AuthenticationConfig authConfig) {
+    Retrofit retrofitClient(JacksonConverterFactory jsonConverter, ServerConfig serverConfig, AuthenticationConfig authConfig) {
         // use okhttp so I can add headers to every request
         var client = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
@@ -40,7 +47,7 @@ public class HttpModule extends AbstractModule {
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(serverConfig.getBaseUrl())
-                .addConverterFactory(JacksonConverterFactory.create(new ObjectMapper().registerModule(new Jdk8Module())))
+                .addConverterFactory(jsonConverter)
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(client)
                 .build();

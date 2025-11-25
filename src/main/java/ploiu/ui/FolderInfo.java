@@ -125,7 +125,7 @@ public class FolderInfo extends AnchorPane {
         EventReceiver<String> confirmCallback = res -> {
             var f = folder.get();
             var tags = new HashSet<>(f.tags());
-            tags.add(new TagApi(null, res.get()));
+            tags.add(new TagApi(null, res.get(), null));
             var updatedFolder = new FolderApi(f.id(), f.parentId(), f.name(), f.path(), f.folders(), f.files(), tags);
             updateFolder(updatedFolder);
             return true;

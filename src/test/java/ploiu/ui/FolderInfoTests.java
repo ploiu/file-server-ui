@@ -55,7 +55,7 @@ class FolderInfoTests {
     @Start
     void start(Stage stage) {
         receiver = Mockito.mock(AsyncEventReceiver.class);
-        var tags = new HashSet<>(Set.of(new TagApi(0L, "tag1"), new TagApi(1L, "tag2"), new TagApi(2L, "tag3")));
+        var tags = new HashSet<>(Set.of(new TagApi(0L, "tag1", null), new TagApi(1L, "tag2", null), new TagApi(2L, "tag3", null)));
         var subfolders = new HashSet<>(Set.of(new FolderApi(2, 1, "sub1", null, Set.of(), Set.of(), Set.of())));
         var subfiles = new HashSet<>(Set.of(new FileApi(0L, "file1", List.of(), null, null, null, null)));
         folderInfo = new FolderInfo(new FolderApi(1, 0, "test", null, subfolders, subfiles, tags), receiver);
@@ -164,7 +164,7 @@ class FolderInfoTests {
         // remove one from middle of list so we know we aren't accidentally removing first or last instead of specific one
         robot.clickOn(LabeledMatchers.hasText("tag2"));
 
-        verify(receiver).process(argThat(folder -> folder.get().tags().size() == 2 && !folder.get().tags().contains(new TagApi(1L, "tag2"))));
+        verify(receiver).process(argThat(folder -> folder.get().tags().size() == 2 && !folder.get().tags().contains(new TagApi(1L, "tag2", null))));
     }
 
     @Test
@@ -187,7 +187,7 @@ class FolderInfoTests {
         robot.type(T, E, S, T);
         robot.clickOn(dialog.lookup("#actionButton"));
 
-        verify(receiver).process(argThat(event -> event instanceof FolderUpdateEvent && event.get().tags().contains(new TagApi(null, "test"))));
+        verify(receiver).process(argThat(event -> event instanceof FolderUpdateEvent && event.get().tags().contains(new TagApi(null, "test", null))));
     }
 
     @Test

@@ -156,7 +156,7 @@ public class FileInfo extends AnchorPane {
         EventReceiver<String> confirmCallback = res -> {
             var f = file.get();
             var tags = new HashSet<>(f.tags());
-            tags.add(new TagApi(null, res.get()));
+            tags.add(new TagApi(null, res.get(), null));
             var updatedFile = new FileApi(f.id(), f.name(), tags, f.folderId(), f.size(), f.dateCreated(), f.fileType());
             updateFile(updatedFile);
             return true;
